@@ -15,7 +15,7 @@ before_install:
     - npm install hexo-cli -g
 
 install:
-    - yarn install  # 安装依赖
+    - yarn install --ignore-engines  # 安装依赖
 
 branches:
   only:
@@ -32,4 +32,4 @@ deploy:
   keep-history: true
   on:
     branch: master
-  local-dir: public
+  local-dir: blog/public
