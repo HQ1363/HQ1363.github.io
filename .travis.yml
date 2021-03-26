@@ -1,13 +1,29 @@
 sudo: false
+
 language: node_js
+
 node_js:
   - 10 # use nodejs v10 LTS
-cache: npm
+
+cache:
+    apt: true
+    directories:
+        - node_modules
+
+before_install:
+    - npm install hexo-cli -g
+
+install:
+    - npm install  # 安装hexo及插件
+
 branches:
   only:
     - master # build master branch only
+
 script:
+  - hexo clean # 清除
   - hexo generate # generate static files
+
 deploy:
   provider: pages
   skip-cleanup: true
