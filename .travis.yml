@@ -15,15 +15,15 @@ before_install:
     - npm install hexo-cli -g
 
 install:
-    - npm install  # 安装hexo及插件
+    - yarn install  # 安装依赖
 
 branches:
   only:
     - master # build master branch only
 
 script:
-  - hexo clean # 清除
-  - hexo generate # generate static files
+  - yarn clean # 清除
+  - yarn build # generate static files
 
 deploy:
   provider: pages
