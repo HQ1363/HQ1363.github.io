@@ -364,12 +364,16 @@ android_chrome_color: "#222"
 codeblock:
   # Code Highlight theme
   # All available themes: https://theme-next.js.org/highlight/
+  highlight:
+    enable: true
+  prismjs:
+    enable: false
   theme:
-    light: default
-    dark: tomorrow-night
+    light: a11y-dark
+    dark: a11y-dark
   prism:
-    light: prism
-    dark: prism-dark
+    light: prism-a11y-dark
+    dark: prism-a11y-dark
   # Add copy button on codeblock
   copy_button:
     enable: true
