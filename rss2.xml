@@ -9,19 +9,16 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Sun, 28 Mar 2021 03:08:35 GMT</pubDate>
+    <pubDate>Sun, 28 Mar 2021 03:58:53 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
       <title>Hello World</title>
       <link>http://hq1363.github.io/2021/03/28/hello-world/</link>
       <guid>http://hq1363.github.io/2021/03/28/hello-world/</guid>
-      <pubDate>Sun, 28 Mar 2021 03:08:35 GMT</pubDate>
+      <pubDate>Sun, 28 Mar 2021 03:58:53 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</description>
-        
+      <description>Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).</description>
       
       
       
