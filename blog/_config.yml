@@ -9,7 +9,7 @@ description: '这一路收获的不只是美丽的风景, 还有一份厚重充�
 keywords:
 author: HQ
 language: zh-CN
-timezone: ''
+timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
