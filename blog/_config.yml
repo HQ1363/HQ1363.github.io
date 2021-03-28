@@ -4,8 +4,8 @@
 
 # Site
 title: 春暖花开
-subtitle: ''
-description: '我并不比别人聪明，但我决定用恒心超越别人！！！'
+subtitle: '春风正暖, 朝阳正好'
+description: '这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情'
 keywords:
 author: HQ
 language: zh-CN
@@ -95,7 +95,21 @@ exclude:
 ignore:
 
 # Extensions
+# RSS订阅
+feed:
+  type: rss2
+  path: rss2.xml
+  limit: 10
+  hub:
+  content: 'true'
+# 搜索
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
 ## Plugins: https://hexo.io/plugins/
+plugins: hexo-generate-feed
 ## Themes: https://hexo.io/themes/
 ## theme: landscape
 theme: next
