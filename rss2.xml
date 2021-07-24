@@ -9,32 +9,36 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Mon, 29 Mar 2021 09:26:24 GMT</pubDate>
+    <pubDate>Sat, 24 Jul 2021 06:06:56 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title>Hello World</title>
-      <link>http://hq1363.github.io/2021/03/29/hello-world/</link>
-      <guid>http://hq1363.github.io/2021/03/29/hello-world/</guid>
-      <pubDate>Mon, 29 Mar 2021 09:26:24 GMT</pubDate>
+      <title>go 一百问</title>
+      <link>http://hq1363.github.io/2021/04/01/go-hundred-questions/</link>
+      <guid>http://hq1363.github.io/2021/04/01/go-hundred-questions/</guid>
+      <pubDate>Thu, 01 Apr 2021 08:02:13 GMT</pubDate>
       
-      <description>Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).</description>
-      
-      
-      
-      <content:encoded><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content:encoded>
+      <description>好的编码风格，能够让你的代码更优雅、更简洁，还能避免很多坑.</description>
       
       
       
+      <content:encoded><![CDATA[<h2 id="Go基础"><a href="#Go基础" class="headerlink" title="Go基础"></a>Go基础</h2><h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1 为啥需要私有goproxy？"></a>Q1 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote><p>我们知道在大陆的网络环境是无法访问到<code>http://golang.org</code>等<code>google</code>的网站的。但在开发日常中使用的很多依赖包或系统包依赖都是在<code>google</code>的服务器上。为了解决无法加载依赖的问题，国内也有很多种解决方案。一种是使用<code>http://goproxy.io</code>或七牛主导的<code>http://goproxy.cn</code>。<br>在企业里，有很多情况是生产网络或测试网络环境是无法正常访问外网的，为了解决这个问题可能需要自己搭建一个<code>proxy</code>来管理依赖包。</p></blockquote><h4 id="可选配置"><a href="#可选配置" class="headerlink" title="可选配置"></a>可选配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPROXY=https://mirrors.aliyun.com/goproxy/</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://proxy.golang.org,direct</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gonexus.dev</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://athens.azurefd.net</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gocenter.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure><h3 id="Q2-Make和New的异同？"><a href="#Q2-Make和New的异同？" class="headerlink" title="Q2 Make和New的异同？"></a>Q2 <code>Make</code>和<code>New</code>的异同？</h3>]]></content:encoded>
       
-      <comments>http://hq1363.github.io/2021/03/29/hello-world/#disqus_thread</comments>
+      
+      <category domain="http://HQ1363.github.io/categories/Python/">Python</category>
+      
+      
+      <category domain="http://HQ1363.github.io/tags/go/">go</category>
+      
+      
+      <comments>http://hq1363.github.io/2021/04/01/go-hundred-questions/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>DevOps面试题</title>
-      <link>http://hq1363.github.io/2021/03/29/devops/interview/</link>
-      <guid>http://hq1363.github.io/2021/03/29/devops/interview/</guid>
+      <link>http://hq1363.github.io/2021/03/29/interview/</link>
+      <guid>http://hq1363.github.io/2021/03/29/interview/</guid>
       <pubDate>Mon, 29 Mar 2021 01:58:00 GMT</pubDate>
       
       <description>最近公司在招人，面了挺多人，这里总结下招人的心得和常见问题.</description>
@@ -54,7 +58,7 @@
       <category domain="http://HQ1363.github.io/tags/%E9%9D%A2%E8%AF%95/">面试</category>
       
       
-      <comments>http://hq1363.github.io/2021/03/29/devops/interview/#disqus_thread</comments>
+      <comments>http://hq1363.github.io/2021/03/29/interview/#disqus_thread</comments>
       
     </item>
     

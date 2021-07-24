@@ -24,20 +24,21 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"hq1363.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="Welcome to [Hexo](https:&#x2F;&#x2F;hexo.io&#x2F;)! This is your very first post. Check [documentation](https:&#x2F;&#x2F;hexo.io&#x2F;docs&#x2F;) for more info. If you get any problems when using Hexo, you can find the answer in [trou">
+<meta name="description" content="好的编码风格，能够让你的代码更优雅、更简洁，还能避免很多坑.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://hq1363.github.io/2021/03/29/hello-world/index.html">
+<meta property="og:title" content="go 一百问">
+<meta property="og:url" content="http://hq1363.github.io/2021/04/01/go-hundred-questions/index.html">
 <meta property="og:site_name" content="春暖花开">
-<meta property="og:description" content="Welcome to [Hexo](https:&#x2F;&#x2F;hexo.io&#x2F;)! This is your very first post. Check [documentation](https:&#x2F;&#x2F;hexo.io&#x2F;docs&#x2F;) for more info. If you get any problems when using Hexo, you can find the answer in [trou">
+<meta property="og:description" content="好的编码风格，能够让你的代码更优雅、更简洁，还能避免很多坑.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-03-29T09:26:24.877Z">
-<meta property="article:modified_time" content="2021-03-29T09:26:24.877Z">
+<meta property="article:published_time" content="2021-04-01T08:02:13.000Z">
+<meta property="article:modified_time" content="2021-07-24T06:06:56.560Z">
 <meta property="article:author" content="HQ">
+<meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://hq1363.github.io/2021/03/29/hello-world/">
+<link rel="canonical" href="http://hq1363.github.io/2021/04/01/go-hundred-questions/">
 
 
 <script class="page-configurations">
@@ -49,7 +50,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>Hello World | 春暖花开</title>
+<title>go 一百问 | 春暖花开</title>
   
 
 
@@ -189,7 +190,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">Go基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-%E4%B8%BA%E5%95%A5%E9%9C%80%E8%A6%81%E7%A7%81%E6%9C%89goproxy%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">Q1 为啥需要私有goproxy？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">1.1.1.</span> <span class="nav-text">上下文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">可选配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-Make%E5%92%8CNew%E7%9A%84%E5%BC%82%E5%90%8C%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">Q2 Make和New的异同？</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -218,7 +219,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -281,7 +282,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://hq1363.github.io/2021/03/29/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://hq1363.github.io/2021/04/01/go-hundred-questions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -294,7 +295,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          go 一百问
         </h1>
 
         <div class="post-meta-container">
@@ -305,7 +306,23 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-29 17:26:24" itemprop="dateCreated datePublished" datetime="2021-03-29T17:26:24+08:00">2021-03-29</time>
+      <time title="创建时间：2021-04-01 16:02:13" itemprop="dateCreated datePublished" datetime="2021-04-01T16:02:13+08:00">2021-04-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-24 14:06:56" itemprop="dateModified" datetime="2021-07-24T14:06:56+08:00">2021-07-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
     </span>
 
   
@@ -323,7 +340,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>367</span>
+      <span>530</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -341,20 +358,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+        <h2 id="Go基础"><a href="#Go基础" class="headerlink" title="Go基础"></a>Go基础</h2><h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1 为啥需要私有goproxy？"></a>Q1 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote>
+<p>我们知道在大陆的网络环境是无法访问到<code>http://golang.org</code>等<code>google</code>的网站的。但在开发日常中使用的很多依赖包或系统包依赖都是在<code>google</code>的服务器上。为了解决无法加载依赖的问题，国内也有很多种解决方案。一种是使用<code>http://goproxy.io</code>或七牛主导的<code>http://goproxy.cn</code>。<br>在企业里，有很多情况是生产网络或测试网络环境是无法正常访问外网的，为了解决这个问题可能需要自己搭建一个<code>proxy</code>来管理依赖包。</p>
+</blockquote>
+<h4 id="可选配置"><a href="#可选配置" class="headerlink" title="可选配置"></a>可选配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPROXY=https://mirrors.aliyun.com/goproxy/</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://proxy.golang.org,direct</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gonexus.dev</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://athens.azurefd.net</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gocenter.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
+<h3 id="Q2-Make和New的异同？"><a href="#Q2-Make和New的异同？" class="headerlink" title="Q2 Make和New的异同？"></a>Q2 <code>Make</code>和<code>New</code>的异同？</h3>
     </div>
 
     
@@ -385,7 +393,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://hq1363.github.io/2021/03/29/hello-world/" title="Hello World">http://hq1363.github.io/2021/03/29/hello-world/</a>
+      <a href="http://hq1363.github.io/2021/04/01/go-hundred-questions/" title="go 一百问">http://hq1363.github.io/2021/04/01/go-hundred-questions/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -420,12 +428,15 @@
   </div>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i> go</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/03/29/devops/interview/" rel="prev" title="DevOps面试题">
+                <a href="/2021/03/29/interview/" rel="prev" title="DevOps面试题">
                   <i class="fa fa-chevron-left"></i> DevOps面试题
                 </a>
             </div>
@@ -552,7 +563,7 @@ NexT.utils.loadComments('.gitalk-container', () => {
       repo        : 'HQ1363.github.io',
       owner       : 'HQ1363',
       admin       : ['HQ1363'],
-      id          : 'b5893d05bef330047f074abd82a8119c',
+      id          : 'd62dcadc1c254dfb8f3735288cb9007a',
       proxy       : 'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',
         language: 'zh-CN',
       distractionFreeMode: true
