@@ -32,7 +32,7 @@
 <meta property="og:description" content="好的编码风格，能够让你的代码更优雅、更简洁，还能避免很多坑.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-01T08:02:13.000Z">
-<meta property="article:modified_time" content="2021-07-24T06:06:56.560Z">
+<meta property="article:modified_time" content="2021-07-28T15:18:49.385Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary">
@@ -190,7 +190,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">Go基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-%E4%B8%BA%E5%95%A5%E9%9C%80%E8%A6%81%E7%A7%81%E6%9C%89goproxy%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">Q1 为啥需要私有goproxy？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">1.1.1.</span> <span class="nav-text">上下文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">可选配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-Make%E5%92%8CNew%E7%9A%84%E5%BC%82%E5%90%8C%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">Q2 Make和New的异同？</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">Go基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-%E4%B8%BA%E5%95%A5%E9%9C%80%E8%A6%81%E7%A7%81%E6%9C%89goproxy%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">Q1: 为啥需要私有goproxy？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">1.1.1.</span> <span class="nav-text">上下文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">可选配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-Make%E5%92%8CNew%E7%9A%84%E5%BC%82%E5%90%8C%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">Q2: Make和New的异同？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q3-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%E9%99%B7%E9%98%B1"><span class="nav-number">1.3.</span> <span class="nav-text">Q3: 数组和切片陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%B7%E9%98%B1%E4%B8%80"><span class="nav-number">1.3.1.</span> <span class="nav-text">陷阱一</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q4-for-vs-for%E2%80%A6range%E7%9A%84%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.</span> <span class="nav-text">Q4: for vs for…range的性能问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%B7%E9%98%B1%E4%B8%80-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">陷阱一</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q5-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%AB%98%E6%95%88%E6%8B%BC%E6%8E%A5"><span class="nav-number">1.5.</span> <span class="nav-text">Q5: 字符串如何实现高效拼接?</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -313,7 +313,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-24 14:06:56" itemprop="dateModified" datetime="2021-07-24T14:06:56+08:00">2021-07-24</time>
+        <time title="修改时间：2021-07-28 23:18:49" itemprop="dateModified" datetime="2021-07-28T23:18:49+08:00">2021-07-28</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -340,14 +340,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>530</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -358,11 +358,40 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="Go基础"><a href="#Go基础" class="headerlink" title="Go基础"></a>Go基础</h2><h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1 为啥需要私有goproxy？"></a>Q1 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote>
+        <h2 id="Go基础"><a href="#Go基础" class="headerlink" title="Go基础"></a>Go基础</h2><h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1: 为啥需要私有goproxy？"></a>Q1: 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote>
 <p>我们知道在大陆的网络环境是无法访问到<code>http://golang.org</code>等<code>google</code>的网站的。但在开发日常中使用的很多依赖包或系统包依赖都是在<code>google</code>的服务器上。为了解决无法加载依赖的问题，国内也有很多种解决方案。一种是使用<code>http://goproxy.io</code>或七牛主导的<code>http://goproxy.cn</code>。<br>在企业里，有很多情况是生产网络或测试网络环境是无法正常访问外网的，为了解决这个问题可能需要自己搭建一个<code>proxy</code>来管理依赖包。</p>
 </blockquote>
 <h4 id="可选配置"><a href="#可选配置" class="headerlink" title="可选配置"></a>可选配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPROXY=https://mirrors.aliyun.com/goproxy/</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://proxy.golang.org,direct</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gonexus.dev</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://athens.azurefd.net</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gocenter.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
-<h3 id="Q2-Make和New的异同？"><a href="#Q2-Make和New的异同？" class="headerlink" title="Q2 Make和New的异同？"></a>Q2 <code>Make</code>和<code>New</code>的异同？</h3>
+<h3 id="Q2-Make和New的异同？"><a href="#Q2-Make和New的异同？" class="headerlink" title="Q2: Make和New的异同？"></a>Q2: <code>Make</code>和<code>New</code>的异同？</h3><h3 id="Q3-数组和切片陷阱"><a href="#Q3-数组和切片陷阱" class="headerlink" title="Q3: 数组和切片陷阱"></a>Q3: 数组和切片陷阱</h3><h4 id="陷阱一"><a href="#陷阱一" class="headerlink" title="陷阱一"></a>陷阱一</h4><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a [2]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">2</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func foo(a *[2]int) &#123;</span><br><span class="line">	(*a)[0] = 200</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	a := [2]int&#123;1, 2&#125;</span><br><span class="line">	foo(&amp;a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func foo(a []int) &#123;</span><br><span class="line">	a[0] = 200</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	a := []int&#123;1, 2&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>陷阱二</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func foo(a []int) &#123;</span><br><span class="line">	a = append(a, 1, 2, 3, 4, 5, 6, 7, 8)</span><br><span class="line">	a[0] = 200</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	a := []int&#123;1, 2&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func foo(a []int) []int &#123;</span><br><span class="line">	a = append(a, 1, 2, 3, 4, 5, 6, 7, 8)</span><br><span class="line">	a[0] = 200</span><br><span class="line">	return a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	a := []int&#123;1, 2&#125;</span><br><span class="line">	a = foo(a)   // 可读性更好</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func foo(a *[]int) &#123;</span><br><span class="line">	*a = append(*a, 1, 2, 3, 4, 5, 6, 7, 8)</span><br><span class="line">	(*a)[0] = 200</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	a := []int&#123;1, 2&#125;</span><br><span class="line">	foo(&amp;a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Q4-for-vs-for…range的性能问题"><a href="#Q4-for-vs-for…range的性能问题" class="headerlink" title="Q4: for vs for…range的性能问题"></a>Q4: for vs for…range的性能问题</h3><blockquote>
+<p>与 for 不同的是，range 对每个迭代值都创建了一个拷贝。因此如果每次迭代的值内存占用很小的情况下，for 和 range 的性能几乎没有差异，但是如果每个迭代值内存占用很大，两者的差距就很明显了.</p>
+</blockquote>
+<h4 id="陷阱一-1"><a href="#陷阱一-1" class="headerlink" title="陷阱一"></a>陷阱一</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// for 语句中的迭代变量在每次迭代中都会重用, 即 for 中创建的闭包函数接收到的参数始终是同一个变量, 在`goroutine`开始执行时都会得到同一个迭代值</span><br><span class="line">func main() &#123;</span><br><span class="line">    data := []string&#123;&quot;one&quot;, &quot;two&quot;, &quot;three&quot;&#125;</span><br><span class="line"></span><br><span class="line">    for _, v := range data &#123;</span><br><span class="line">        go func() &#123;</span><br><span class="line">            fmt.Println(v)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(3 * time.Second)</span><br><span class="line">    // 输出 three three three</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    data := []string&#123;&quot;one&quot;, &quot;two&quot;, &quot;three&quot;&#125;</span><br><span class="line"></span><br><span class="line">    for _, v := range data &#123;</span><br><span class="line">        vCopy := v</span><br><span class="line">        go func() &#123;</span><br><span class="line">            fmt.Println(vCopy)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(3 * time.Second)</span><br><span class="line">    // 输出 one two three</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    data := []string&#123;&quot;one&quot;, &quot;two&quot;, &quot;three&quot;&#125;</span><br><span class="line"></span><br><span class="line">    for _, v := range data &#123;</span><br><span class="line">        go func(in string) &#123;</span><br><span class="line">            fmt.Println(in)</span><br><span class="line">        &#125;(v)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(3 * time.Second)</span><br><span class="line">    // 输出 one two three</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Q5-字符串如何实现高效拼接"><a href="#Q5-字符串如何实现高效拼接" class="headerlink" title="Q5: 字符串如何实现高效拼接?"></a>Q5: 字符串如何实现高效拼接?</h3><blockquote>
+<p>一般我们拼接字符串时，会使用如下几种方式：</p>
+<ul>
+<li>使用操作符<code>+</code>，此方式最差</li>
+<li>使用<code>fmt.Sprintf</code></li>
+<li>使用<code>strings.Builder</code>，此方式最佳</li>
+<li>使用<code>bytes.Buffer</code></li>
+<li>使用<code>[]byte</code><br>感兴趣的朋友，可以使用<code>benchmark</code>做下测试</li>
+</ul>
+</blockquote>
+
     </div>
 
     
@@ -495,13 +524,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">12k</span>
+    <span title="站点总字数">14k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11 分钟</span>
+    <span title="站点阅读时长">12 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
