@@ -633,9 +633,9 @@ hexo-word-counter@^0.0.3:
   dependencies:
     hexo-util "2.4.0"
 
-hexo@^5.0.0:
+hexo@^5.4.0:
   version "5.4.0"
-  resolved "https://registry.npmjs.org/hexo/-/hexo-5.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/hexo/-/hexo-5.4.0.tgz#77d57fa1c29f3ab05964fe4ebd9c44e23df51b37"
   integrity sha512-4vMDle5GjpMeOVrx0NKoTZCqrmpJVg3wNiNNUVjcoFfcpYcMzQUCZHBtQqLl7BzjJ8x2gs002VQ5yv0ZKtj8Jg==
   dependencies:
     abbrev "^1.1.1"
@@ -1157,9 +1157,9 @@ strip-indent@^3.0.0:
     min-indent "^1.0.0"
 
 striptags@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/striptags/-/striptags-3.1.1.tgz"
-  integrity sha1-yMPn/db7S7OjKjt1LltePjgJPr0=
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/striptags/-/striptags-3.2.0.tgz#cc74a137db2de8b0b9a370006334161f7dd67052"
+  integrity sha512-g45ZOGzHDMe2bdYMdIvdAfCQkCTDMGBazSw1ypMowwGIee7ZQ5dU0rBJ8Jqgl+jAKIv4dbeE1jscZq9wid1Tkw==
 
 stylus@0.54.5:
   version "0.54.5"
