@@ -23,7 +23,9 @@ export GOPROXY=https://gocenter.io
 export GOPROXY=https://goproxy.cn
 ```
 ### Q2: `Make`和`New`的异同？
-
+- slice、map和channel，使用make
+- array、struct和所有的值类型，使用new
+> 内置函数 new 计算类型的⼤小，为其分配零值内存，返回指针。⽽ make 会被编译器翻译成具体的创建函数，由其分配内存和初始化成员结构，返回对象⽽⾮指针。new和make都是在堆上分配内存，只是行为有所不同。new分配完后会返回指向其的内存地址(指针)，make是返回整个数值/对象。
 
 ### Q3: 数组和切片陷阱
 #### 陷阱一
@@ -220,3 +222,90 @@ func (mc *MyChannel) SafeClose() {
 	})
 }
 ```
+
+### Q10: 请列举一些你所知道的内置函数?
+- len、cap
+- close、copy、append
+- panic、recover
+- new、make
+
+### Q11: Go语言的执行过程是?
+![go_import](../images/go_import.png)
+
+### Q12: map如何顺序读取?
+_map是无序的，不能顺序读取，要想顺序读取，第一个要解决的问题就是，把ｋｅｙ变得有序，然后通过key取值。_
+
+### Q13: 说出一个context包的用途
+- 避免`Goroutine`内存泄漏
+```go
+func main() {
+    ctx, cancel := context.WithCancel(context.Background())
+
+    ch := func(ctx context.Context) <-chan int {
+        ch := make(chan int)
+        go func() {
+            for i := 0; ; i++ {
+                select {
+                case <- ctx.Done():
+                    return
+                case ch <- i:
+                }
+            }
+        } ()
+        return ch
+    }(ctx)
+
+    for v := range ch {
+        fmt.Println(v)
+        if v == 5 {
+            cancel()
+            break
+        }
+    }
+}
+```
+_下面的 for 循环停止取数据时，就用 cancel 函数，让另一个协程停止写数据。如果下面 for 已停止读取数据，上面 for 循环还在写入，就会造成内存泄漏。_
+
+### Q14: 如何跳出for select循环?
+_通常在for循环中，使用break可以跳出循环，但是注意在go语言中，for select配合时，break 并不能跳出循环_
+```go
+func ForSelectLoop(ch chan bool){
+ EXIT:
+    for  {
+        select {
+        case v, ok := <-ch:
+            if !ok {
+                fmt.Println("close channel", v)
+                break EXIT   //goto EXIT2
+            }
+
+            fmt.Println("ch val =", v)
+        }
+    }
+    //EXIT2:
+    fmt.Println("exit ForSelectLoop")
+}
+```
+
+### Q15: 哪些情况，会导致go触发异常?
+- NPE，空指针异常，对空指针做了解析引用
+- 索引溢出/下标越界
+- 除数为0
+- 调用panic函数
+
+### Q16: Slice的原理是啥?
+> 切片是基于数组实现的，它的底层是数组，它自己本身非常小，是只有3个字段的struct类型：
+>
+> - 指向底层数据的指针
+> - 切片的长度
+> - 切片的容量
+
+### Q17: Map的底层实现是基于什么数据结构?
+`散列表`
+
+### Q18: 多个defer函数同时存在时，程序会如何处理?
+`先进后出，后进先出的栈处理方式`
+
+### Q19: 空Select有什么用，如何避免死锁?
+- 阻塞主协程
+- 主线程内，存在其他运行的协程即可
