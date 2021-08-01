@@ -3,7 +3,7 @@ title: go 一百问
 date: 2021-04-01 16:02:13   
 comments: true   
 tags: go   
-categories: Python   
+categories: Go基础   
 excerpt: 好的编码风格，能够让你的代码更优雅、更简洁，还能避免很多坑.
 ---
 
