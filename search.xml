@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>聊聊持续集成</title>
+    <url>/2021/07/31/continuous-integration/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>CI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>go 一百问</title>
-    <url>/2021/04/01/go-hundred-questions/</url>
+    <url>/2021/04/01/go_hundred_questions/</url>
     <content><![CDATA[<h2 id="Go基础"><a href="#Go基础" class="headerlink" title="Go基础"></a>Go基础</h2><h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1: 为啥需要私有goproxy？"></a>Q1: 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote>
 <p>我们知道在大陆的网络环境是无法访问到<code>http://golang.org</code>等<code>google</code>的网站的。但在开发日常中使用的很多依赖包或系统包依赖都是在<code>google</code>的服务器上。为了解决无法加载依赖的问题，国内也有很多种解决方案。一种是使用<code>http://goproxy.io</code>或七牛主导的<code>http://goproxy.cn</code>。<br>在企业里，有很多情况是生产网络或测试网络环境是无法正常访问外网的，为了解决这个问题可能需要自己搭建一个<code>proxy</code>来管理依赖包。</p>
 </blockquote>
@@ -55,7 +63,60 @@
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> MyChannel <span class="keyword">struct</span> &#123;</span><br><span class="line">	C    <span class="keyword">chan</span> T</span><br><span class="line">	once sync.Once</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMyChannel</span><span class="params">()</span> *<span class="title">MyChannel</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;MyChannel&#123;C: <span class="built_in">make</span>(<span class="keyword">chan</span> T)&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mc *MyChannel)</span> <span class="title">SafeClose</span><span class="params">()</span></span> &#123;</span><br><span class="line">	mc.once.Do(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="built_in">close</span>(mc.C)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Python</category>
+        <category>Go基础</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go的依赖包管理</title>
+    <url>/2021/04/01/go_package_management/</url>
+    <content><![CDATA[<blockquote>
+<p>Go的依赖包管理方式有很多，一般是大厂开源出来的解决方案，例如：<a href="https://github.com/golang/dep">Dep</a>、<a href="https://github.com/tools/godep">GoDep</a>、<a href="https://github.com/kardianos/govendor">GoVendor</a>、GoModule等；目前市面上用的比较多的还是GoVendor+GoModule相结合的方式，具体我们来看看是如何使用的吧.</p>
+</blockquote>
+<h2 id="Dep方式"><a href="#Dep方式" class="headerlink" title="Dep方式"></a>Dep方式</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> go get -u github.com/golang/dep/cmd/dep</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install dep  <span class="comment"># macOS</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew upgrade dep  <span class="comment"># macOS</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dep init</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">Gopkg.toml Gopkg.lock vendor/</span><br></pre></td></tr></table></figure>
+
+<h3 id="日常操作"><a href="#日常操作" class="headerlink" title="日常操作"></a>日常操作</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">dep ensure -add github.com/pkg/errors</span><br><span class="line">dep ensure -update github.com/foo/bar</span><br><span class="line">dep ensure -update                          # update all dependencies</span><br><span class="line">dep status                                  # 用于查看当前项目依赖了哪些包，以及包的版本号</span><br></pre></td></tr></table></figure>
+
+<h2 id="GoDep方式"><a href="#GoDep方式" class="headerlink" title="GoDep方式"></a>GoDep方式</h2><h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go get github.com/tools/godep</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">godep save</span><br></pre></td></tr></table></figure>
+<p><em>该命令会在根目录下自动生成一个Godeps和vendor目录，并将项目所依赖的第三方包信息写入Godeps/Godeps.json，同时复制包源码到vendor目录。注意：godep save并不会自动从远程下载依赖包，需要我们通过go get或godep get手动下载，godep save只是将下载的包源码复制到vendor目录</em></p>
+<h3 id="日常操作-1"><a href="#日常操作-1" class="headerlink" title="日常操作"></a>日常操作</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go get -v -u github.com/gin-gonic/gin # 下载</span><br><span class="line">godep update github.com/gin-gonic/gin</span><br><span class="line">gedep get github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure>
+
+<h2 id="GoVendor方式"><a href="#GoVendor方式" class="headerlink" title="GoVendor方式"></a>GoVendor方式</h2><h3 id="为什么用vendor目录"><a href="#为什么用vendor目录" class="headerlink" title="为什么用vendor目录?"></a>为什么用vendor目录?</h3><p><em>不使用vendor目录的时候，我们代码库的所有依赖包都是安装到GoPath目录下的，也就是说，所有的代码库共用同一个依赖包库，然而实际上，每个代码库很可能依赖的包版本是不一样的；使用vendor目录的话，便可以很好地做到项目的隔离，它允许不同的代码库拥有自己的依赖包.</em></p>
+<h3 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go get -u -v github.com/kardianos/govendor</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-2"><a href="#初始化-2" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor init</span><br></pre></td></tr></table></figure>
+<p>命令执行完后，在我们的服务目录下，便会多出一个vendor目录，里面包含了服务所有依赖的包，与此同时，vendor目录下还有个vendor.json文件，它描述了各个依赖包的版本信息</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li>将已被引用且在 $GOPATH 下的所有包复制到 vendor 目录<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor add +external</span><br></pre></td></tr></table></figure></li>
+<li>仅从 $GOPATH 中复制指定包<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor add github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure></li>
+<li>列出代码中所有被引用到的包及其状态<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor list</span><br><span class="line">govendor list -v fmt  // 显示fmt包被哪些包引用</span><br></pre></td></tr></table></figure></li>
+<li>从远程仓库添加或更新某个包(如果不在 $GOPATH 下，也会存一份)<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor fetch github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure></li>
+<li>根据vendor.json拉取并更新包<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor sync</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="GoModule方式"><a href="#GoModule方式" class="headerlink" title="GoModule方式"></a>GoModule方式</h2><blockquote>
+<p>从 Go 1.11 版本开始，官方已内置了更为强大的 Go modules 来一统多年来 Go 包依赖管理混乱的局面(Go 官方之前推出的 dep 工具也几乎胎死腹中)，并且将在 1.12 版本中正式默认开启。此方式受到社区的看好和强烈推荐，建议新项目采用 Go modules</p>
+</blockquote>
+<h3 id="开启"><a href="#开启" class="headerlink" title="开启"></a>开启</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-3"><a href="#初始化-3" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod init &lt;module-name&gt; # 模块名可选，默认和目录名保持一致</span><br></pre></td></tr></table></figure>
+
+<h3 id="检测-amp-安装"><a href="#检测-amp-安装" class="headerlink" title="检测&amp;安装"></a>检测&amp;安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod tidy</span><br></pre></td></tr></table></figure>
+<p><em>tidy会检测该文件夹目录下所有引入的依赖，写入go.mod文件；届时会发现go.mod文件发生改变</em></p>
+<h3 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod init &lt;module-name&gt; # 初始化go.mod</span><br><span class="line">go mod tidy  # 更新依赖文件</span><br><span class="line">go mod download  # 下载依赖文件</span><br><span class="line">go mod vendor  # 将依赖转移至本地的vendor文件</span><br><span class="line">go mod edit  # 手动修改依赖文件</span><br><span class="line">go mod graph  # 打印依赖图</span><br><span class="line">go mod verify  # 校验依赖</span><br><span class="line">go build -mod=vendor # 编译时使用 vendor 目录</span><br></pre></td></tr></table></figure>
+
+<h3 id="go-mod文件"><a href="#go-mod文件" class="headerlink" title="go.mod文件"></a>go.mod文件</h3><blockquote>
+<p>经常使用GoModule方式管理项目依赖的朋友，应该有注意到go mod文件的配置项都有如下这些：</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">module &lt;module-name&gt; 指明项目的模块名</span><br><span class="line">require ( <span class="comment">//指定的依赖项模块,可选；如果只有单个，括号可省略，和go里面var/const声明多个变量是一样的</span></span><br><span class="line">  github.com/BurntSushi/toml v0<span class="number">.3</span><span class="number">.1</span>   <span class="comment">//配置依赖模块地址和版本，多个配置多行</span></span><br><span class="line">  github.com/DataDog/zstd v1<span class="number">.3</span><span class="number">.5</span></span><br><span class="line">)</span><br><span class="line">replace ( <span class="comment">//替换依赖项模块,可选；如果只有单个，括号可省略，和go里面var/const声明多个变量是一样的</span></span><br><span class="line">)</span><br><span class="line">exclude ( <span class="comment">//忽略依赖项模块，可选；如果只有单个，括号可省略，和go里面var/const声明多个变量是一样的</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Go基础</category>
       </categories>
       <tags>
         <tag>go</tag>
@@ -315,7 +376,7 @@
   </entry>
   <entry>
     <title>真的理解同步和异步了吗?</title>
-    <url>/2021/03/28/sync-and-async/</url>
+    <url>/2021/03/28/sync_and_sync/</url>
     <content><![CDATA[<html>
   <body>
     <div>

@@ -24,22 +24,18 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"hq1363.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="老实说，玩电脑也玩了好几年了；印象中看到&quot; 同步和异步&quot; 关键字的次数已经记不清了，总感觉自己知道点什么，但却又说不出来什么东西，这是为啥？ ——   因为没有深入理解，没有总结；也应了那句古话：纸上学来终觉浅，绝知此事要躬行。   不卖关子了，开始进入正题。.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="真的理解同步和异步了吗?">
-<meta property="og:url" content="http://hq1363.github.io/2021/03/28/sync-and-async/index.html">
+<meta name="description" content="这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情">
+<meta property="og:type" content="website">
+<meta property="og:title" content="春暖花开">
+<meta property="og:url" content="http://hq1363.github.io/tags/CI/index.html">
 <meta property="og:site_name" content="春暖花开">
-<meta property="og:description" content="老实说，玩电脑也玩了好几年了；印象中看到&quot; 同步和异步&quot; 关键字的次数已经记不清了，总感觉自己知道点什么，但却又说不出来什么东西，这是为啥？ ——   因为没有深入理解，没有总结；也应了那句古话：纸上学来终觉浅，绝知此事要躬行。   不卖关子了，开始进入正题。.">
+<meta property="og:description" content="这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-03-28T07:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-31T04:02:31.709Z">
 <meta property="article:author" content="HQ">
-<meta property="article:tag" content="同步">
-<meta property="article:tag" content="异步">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://hq1363.github.io/2021/03/28/sync-and-async/">
+<link rel="canonical" href="http://hq1363.github.io/tags/CI/">
 
 
 <script class="page-configurations">
@@ -47,11 +43,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
-<title>真的理解同步和异步了吗? | 春暖花开</title>
+<title>标签: CI | 春暖花开</title>
   
 
 
@@ -206,20 +202,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -271,228 +267,51 @@
 </noscript>
 
 
-    <div class="main-inner post posts-expand">
+    <div class="main-inner tag posts-collapse">
 
 
   
-
-
-<div class="post-block">
   
   
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://hq1363.github.io/2021/03/28/sync-and-async/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="HQ">
-      <meta itemprop="description" content="这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="春暖花开">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          真的理解同步和异步了吗?
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-28 15:00:00" itemprop="dateCreated datePublished" datetime="2021-03-28T15:00:00+08:00">2021-03-28</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-31 12:02:31" itemprop="dateModified" datetime="2021-07-31T12:02:31+08:00">2021-07-31</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span id="busuanzi_value_page_pv"></span>
-    </span>
+  <div class="post-block">
+    <div class="post-content">
+      <div class="collection-title">
+        <h2 class="collection-header">CI
+          <small>标签</small>
+        </h2>
       </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
 
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-        <html>
-  <body>
-    <div>
-      <p style="text-align: left; color: #1f7199; font-style: italic">
-        老实说，玩电脑也玩了好几年了；印象中看到" 同步和异步" 关键字的次数已经记不清了，总感觉自己知道点什么，但却又说不出来什么东西，这是为啥？ ——   因为没有深入理解，没有总结；也应了那句古话：纸上学来终觉浅，绝知此事要躬行。   不卖关子了，开始进入正题。
-      </p>
-    </div>
-  </body>
-</html>
-
-<ul>
-<li><code>同步</code></li>
-<li><code>异步</code></li>
-</ul>
-<blockquote>
-<p><code>同步</code>就好比：你去外地上学(人生地不熟)，突然生活费不够了；此时你决定打电话回家，通知家里转生活费过来，可是当你拨出电话时，对方一直处于待接听状态(即：打不通，联系不上)，为了拿到生活费，你就不停的 oncall 、等待，最终可能不能及时要到生活费，导致你今天要做的事都没有完成，而白白花掉了时间。   </p>
-</blockquote>
-<blockquote>
-<p><code>异步</code>就是：在你打完电话发现没人接听时，猜想：对方可能在忙，暂时无法接听电话，所以你发了一条短信(或者语音留言，亦或是其他的方式)通知对方后便忙其他要紧的事了；这时你就不需要持续不断的拨打电话，还可以做其他事情；待一定时间后，对方看到你的留言便回复响应你，当然对方可能转钱也可能不转钱。但是整个一天下来，你还做了很多事情。   或者说你找室友临时借了一笔钱，又开始 happy 的上学时光了。</p>
-</blockquote>
-<blockquote>
-<p><code>简而言之，言而总之</code>：同步就是我强依赖你(对方)，我必须等到你的回复，才能做出下一步响应。即我的操作(行程)是顺序执行的，中间少了哪一步都不可以，或者说中间哪一步出错都不可以，类似于编程中程序被解释器顺序执行一样；同时如果我没有收到你的回复，我就一直处于等待、也就是阻塞的状态。   异步则相反，我并不强依赖你，我对你响应的时间也不敏感，无论你返回还是不返回，我都能继续运行；你响应并返回了，我就继续做之前的事情，你没有响应，我就做其他的事情。也就是说我不存在等待对方的概念，我就是非阻塞的。</p>
-</blockquote>
-<html>
-  <body>
-    <div>
-      <p style="text-align: left; color: #1f7199; font-style: italic">
-        这么看来，同步似乎等价于阻塞，异步则等价于非阻塞。其实有些狭义，但不可否认的是，在一定情况下，确实可以这么认为；因为同步一定存在着阻塞状态，而异步一定不存在非阻塞的状态。 但是不是就是说 同步调用 == 阻塞调用呢？我们接着往下看.
-      </p>
-    </div>
-  </body>
-</html>
-
-<ul>
-<li><code>同步 &amp; 异步</code></li>
-<li><code>阻塞 &amp; 非阻塞</code></li>
-</ul>
-<blockquote>
-<p><code>同步 &amp; 异步</code>：同步和异步强调的是消息通信机制 (<code>synchronous communication</code> / <code>asynchronous communication</code>)。所谓同步，就是在发出一个”调用”时，在没有得到结果之前，该“调用”就不返回。但是一旦调用返回，就得到返回值了。换句话说，就是由“调用者”主动等待这个“调用”的结果。而异步则是相反，”调用”在发出之后，这个调用就直接返回了，所以没有返回结果。换句话说，当一个异步过程调用发出后，调用者不会立刻得到结果。而是在”调用”发出后，”被调用者”通过状态、通知来通知调用者，或通过回调函数处理这个调用。</p>
-</blockquote>
-<blockquote>
-<p><code>阻塞 &amp; 非阻塞</code>：阻塞和非阻塞强调的是程序在等待调用结果（消息，返回值）时的状态.  阻塞调用是指调用结果返回之前，当前线程会被挂起。调用线程只有在得到结果之后才会返回。非阻塞调用指在不能立刻得到结果之前，该调用不会阻塞当前线程。 对于同步调用来说，很多时候当前线程还是激活的状态，只是从逻辑上当前函数没有返回而已，即同步等待时什么都不干，白白占用着资源。</p>
-</blockquote>
-
+      
+    <div class="collection-year">
+      <span class="collection-header">2021</span>
     </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-          <div class="reward-container">
-  <div>Buy me a coffee</div>
-  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
-    赞赏
-  </button>
-  <div class="post-reward">
-      <div>
-        <img src="/images/alipay.jpg" alt="HQ 支付宝">
-        <span>支付宝</span>
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2021-08-01T00:02:15+08:00"
+              content="2021-08-01">
+          08-01
+        </time>
       </div>
 
-  </div>
-</div>
-
-          
-
-<div class="post-copyright">
-<ul>
-  <li class="post-copyright-author">
-      <strong>本文作者： </strong>HQ
-  </li>
-  <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="http://hq1363.github.io/2021/03/28/sync-and-async/" title="真的理解同步和异步了吗?">http://hq1363.github.io/2021/03/28/sync-and-async/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-          <div class="followme">
-  <span>欢迎关注我的其它发布渠道</span>
-
-  <div class="social-list">
-
-      <div class="social-item">
-        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
-          <span class="icon">
-            <i class="fab fa-weixin"></i>
-          </span>
-
-          <span class="label">WeChat</span>
-        </a>
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/07/31/continuous-integration/" itemprop="url">
+            <span itemprop="name">聊聊持续集成</span>
+          </a>
       </div>
 
-      <div class="social-item">
-        <a target="_blank" class="social-link" href="/atom.xml">
-          <span class="icon">
-            <i class="fa fa-rss"></i>
-          </span>
-
-          <span class="label">RSS</span>
-        </a>
-      </div>
-  </div>
-</div>
-
-          <div class="post-tags">
-              <a href="/tags/%E5%90%8C%E6%AD%A5/" rel="tag"><i class="fa fa-tag"></i> 同步</a>
-              <a href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag"><i class="fa fa-tag"></i> 异步</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-            </div>
-            <div class="post-nav-item">
-                <a href="/2021/03/28/pythonic/" rel="next" title="Python编码规范">
-                  Python编码规范 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
+      
+    </header>
   </article>
-</div>
 
+    </div>
+  </div>
+  
+  
+  
 
-
-
-
-
-    <div class="comments gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -535,13 +354,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">15k</span>
+    <span title="站点总字数">17k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">13 分钟</span>
+    <span title="站点阅读时长">15 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -592,26 +411,6 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
-
-<script>
-NexT.utils.loadComments('.gitalk-container', () => {
-  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID    : '92c3b22149916841d16f',
-      clientSecret: '8a3bfb3dbd9f0805f3659886b1becccc96b5a991',
-      repo        : 'HQ1363.github.io',
-      owner       : 'HQ1363',
-      admin       : ['HQ1363'],
-      id          : 'f0122138a147f67d35c5a95163f58455',
-      proxy       : 'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',
-        language: 'zh-CN',
-      distractionFreeMode: true
-    });
-    gitalk.render(document.querySelector('.gitalk-container'));
-  }, window.Gitalk);
-});
-</script>
 
 </body>
 </html>
