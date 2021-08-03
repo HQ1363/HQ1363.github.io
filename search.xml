@@ -9,8 +9,24 @@
       </tags>
   </entry>
   <entry>
+    <title>git操作指南</title>
+    <url>/2021/08/02/git-ops/</url>
+    <content><![CDATA[<h2 id="Git-SubModule"><a href="#Git-SubModule" class="headerlink" title="Git SubModule"></a>Git SubModule</h2><h3 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git submodule init &amp;&amp; git submodule update   # 将子模块下载到本地</span><br><span class="line">git clone https://github.com/xx/xx.git --recursive  # 此命令可一次性下载好主库和子库</span><br><span class="line">git submodule sync  # 修改.gitmodule文件后，用此命令同步子模块信息</span><br><span class="line">git submodule add https://github.com/xxxx/xxxxx.git  # 添加submodule</span><br></pre></td></tr></table></figure>
+
+<h3 id="批量操作submodule"><a href="#批量操作submodule" class="headerlink" title="批量操作submodule"></a>批量操作submodule</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git submodule foreach &lt;command&gt;</span><br><span class="line">比如:</span><br><span class="line">git submodule foreach git checkout master</span><br><span class="line">git submodule foreach git submodule update</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除git-submodule"><a href="#删除git-submodule" class="headerlink" title="删除git submodule"></a>删除git submodule</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">【1】git add .gitmodules</span><br><span class="line">【2】git rm --cached submodule_name</span><br><span class="line">【3】rm -rf submodule_name   # 删除submodule目录</span><br><span class="line">【4】编辑.gitmodules文件, 移除对应的submodule信息</span><br><span class="line">【5】编辑.git/modules文件, 移除对应的submodule信息</span><br><span class="line">【6】编辑.git/config 移除对应的submodule信息</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】git submodule deinit &lt;submodule-name&gt; # 新版git</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】git rm &lt;submodule-name&gt; # 旧版git</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>go 一百问</title>
-    <url>/2021/04/01/go_hundred_questions/</url>
+    <url>/2021/04/01/go-hundred-questions/</url>
     <content><![CDATA[<h2 id="Go基础"><a href="#Go基础" class="headerlink" title="Go基础"></a>Go基础</h2><h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1: 为啥需要私有goproxy？"></a>Q1: 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote>
 <p>我们知道在大陆的网络环境是无法访问到<code>http://golang.org</code>等<code>google</code>的网站的。但在开发日常中使用的很多依赖包或系统包依赖都是在<code>google</code>的服务器上。为了解决无法加载依赖的问题，国内也有很多种解决方案。一种是使用<code>http://goproxy.io</code>或七牛主导的<code>http://goproxy.cn</code>。<br>在企业里，有很多情况是生产网络或测试网络环境是无法正常访问外网的，为了解决这个问题可能需要自己搭建一个<code>proxy</code>来管理依赖包。</p>
 </blockquote>
@@ -114,7 +130,7 @@
   </entry>
   <entry>
     <title>go的依赖包管理</title>
-    <url>/2021/04/01/go_package_management/</url>
+    <url>/2021/04/01/go-package-management/</url>
     <content><![CDATA[<blockquote>
 <p>Go的依赖包管理方式有很多，一般是大厂开源出来的解决方案，例如：<a href="https://github.com/golang/dep">Dep</a>、<a href="https://github.com/tools/godep">GoDep</a>、<a href="https://github.com/kardianos/govendor">GoVendor</a>、GoModule等；目前市面上用的比较多的还是GoVendor+GoModule相结合的方式，具体我们来看看是如何使用的吧.</p>
 </blockquote>
@@ -145,8 +161,12 @@
 <h2 id="GoModule方式"><a href="#GoModule方式" class="headerlink" title="GoModule方式"></a>GoModule方式</h2><blockquote>
 <p>从 Go 1.11 版本开始，官方已内置了更为强大的 Go modules 来一统多年来 Go 包依赖管理混乱的局面(Go 官方之前推出的 dep 工具也几乎胎死腹中)，并且将在 1.12 版本中正式默认开启。此方式受到社区的看好和强烈推荐，建议新项目采用 Go modules</p>
 </blockquote>
-<h3 id="开启"><a href="#开启" class="headerlink" title="开启"></a>开启</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on</span><br></pre></td></tr></table></figure>
-
+<h3 id="开启"><a href="#开启" class="headerlink" title="开启"></a>开启</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on   # 有三个值：on、off、auto，默认值为auto</span><br></pre></td></tr></table></figure>
+<ul>
+<li>off: 关闭模式，GOPATH mode，表示查找vendor和GOPATH目录,使用$GOPATH方式管理依赖</li>
+<li>on：启动模式，module-aware mode，使用 go module模式，忽略GOPATH目录，依赖包下载到$GOPATH/pkg/mod</li>
+<li>auto：自动模式，项目在$GOPATH/src之外则使用go.mod方式，项目在$GOPATH/src目录下则使用旧方式</li>
+</ul>
 <h3 id="初始化-3"><a href="#初始化-3" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod init &lt;module-name&gt; # 模块名可选，默认和目录名保持一致</span><br></pre></td></tr></table></figure>
 
 <h3 id="检测-amp-安装"><a href="#检测-amp-安装" class="headerlink" title="检测&amp;安装"></a>检测&amp;安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod tidy</span><br></pre></td></tr></table></figure>
