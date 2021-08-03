@@ -9,7 +9,7 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Tue, 03 Aug 2021 02:45:07 GMT</pubDate>
+    <pubDate>Tue, 03 Aug 2021 02:51:15 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -18,17 +18,14 @@
       <guid>http://hq1363.github.io/2021/08/02/git-ops/</guid>
       <pubDate>Mon, 02 Aug 2021 06:36:50 GMT</pubDate>
       
-        
-        
-      <description>&lt;h2 id=&quot;Git-SubModule&quot;&gt;&lt;a href=&quot;#Git-SubModule&quot; class=&quot;headerlink&quot; title=&quot;Git SubModule&quot;&gt;&lt;/a&gt;Git SubModule&lt;/h2&gt;&lt;h3 id=&quot;常见操作&quot;&gt;&lt;a href=&quot;#常见操作&quot;</description>
-        
+      <description>git已然成为开发的必备技能了，来看看有哪些相见恨晚的小技巧吧，可别说我没告诉你哦.</description>
       
       
       
       <content:encoded><![CDATA[<h2 id="Git-SubModule"><a href="#Git-SubModule" class="headerlink" title="Git SubModule"></a>Git SubModule</h2><h3 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git submodule init &amp;&amp; git submodule update   # 将子模块下载到本地</span><br><span class="line">git clone https://github.com/xx/xx.git --recursive  # 此命令可一次性下载好主库和子库</span><br><span class="line">git submodule sync  # 修改.gitmodule文件后，用此命令同步子模块信息</span><br><span class="line">git submodule add https://github.com/xxxx/xxxxx.git  # 添加submodule</span><br></pre></td></tr></table></figure><h3 id="批量操作submodule"><a href="#批量操作submodule" class="headerlink" title="批量操作submodule"></a>批量操作submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git submodule foreach &lt;command&gt;</span><br><span class="line">比如:</span><br><span class="line">git submodule foreach git checkout master</span><br><span class="line">git submodule foreach git submodule update</span><br></pre></td></tr></table></figure><h3 id="删除git-submodule"><a href="#删除git-submodule" class="headerlink" title="删除git submodule"></a>删除git submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">【1】git add .gitmodules</span><br><span class="line">【2】git rm --cached submodule_name</span><br><span class="line">【3】rm -rf submodule_name   # 删除submodule目录</span><br><span class="line">【4】编辑.gitmodules文件, 移除对应的submodule信息</span><br><span class="line">【5】编辑.git/modules文件, 移除对应的submodule信息</span><br><span class="line">【6】编辑.git/config 移除对应的submodule信息</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】git submodule deinit &lt;submodule-name&gt; # 新版git</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】git rm &lt;submodule-name&gt; # 旧版git</span><br></pre></td></tr></table></figure>]]></content:encoded>
       
       
-      <category domain="http://HQ1363.github.io/categories/git/">git</category>
+      <category domain="http://HQ1363.github.io/categories/Git/">Git</category>
       
       
       <category domain="http://HQ1363.github.io/tags/git/">git</category>

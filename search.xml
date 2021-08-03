@@ -18,7 +18,7 @@
 <h3 id="删除git-submodule"><a href="#删除git-submodule" class="headerlink" title="删除git submodule"></a>删除git submodule</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">【1】git add .gitmodules</span><br><span class="line">【2】git rm --cached submodule_name</span><br><span class="line">【3】rm -rf submodule_name   # 删除submodule目录</span><br><span class="line">【4】编辑.gitmodules文件, 移除对应的submodule信息</span><br><span class="line">【5】编辑.git/modules文件, 移除对应的submodule信息</span><br><span class="line">【6】编辑.git/config 移除对应的submodule信息</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】git submodule deinit &lt;submodule-name&gt; # 新版git</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】git rm &lt;submodule-name&gt; # 旧版git</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>git</category>
+        <category>Git</category>
       </categories>
       <tags>
         <tag>git</tag>
