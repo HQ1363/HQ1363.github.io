@@ -98,8 +98,11 @@ govendor sync
 
 ### 开启
 ```shell script
-export GO111MODULE=on
+export GO111MODULE=on   # 有三个值：on、off、auto，默认值为auto
 ```
+- off: 关闭模式，GOPATH mode，表示查找vendor和GOPATH目录,使用$GOPATH方式管理依赖
+- on：启动模式，module-aware mode，使用 go module模式，忽略GOPATH目录，依赖包下载到$GOPATH/pkg/mod
+- auto：自动模式，项目在$GOPATH/src之外则使用go.mod方式，项目在$GOPATH/src目录下则使用旧方式
 
 ### 初始化
 ```shell script
