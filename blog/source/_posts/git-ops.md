@@ -2,7 +2,8 @@
 title: git操作指南   
 date: 2021-08-02 14:36:50   
 tags: git   
-categories: git
+categories: Git   
+excerpt: git已然成为开发的必备技能了，来看看有哪些相见恨晚的小技巧吧，可别说我没告诉你哦.
 ---
 
 ## Git SubModule
