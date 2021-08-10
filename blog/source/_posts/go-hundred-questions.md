@@ -368,9 +368,14 @@ func main() {
 }
 >```
 foo() 函数中，如果 v 分配在栈上，foo 函数返回时，&v 就不存在了，但是这段函数是能够正常运行的。Go 编译器发现 v 的引用脱离了 foo 的作用域，会将其分配在堆上。因此，main 函数中仍能够正常访问该值。
+```shell
+$ go run -gcflags -m main.go   # 通过执行该命令，对程序做内存逃逸分析
+```
 
 ### Q26: 请列举一些channel操作会导致panic的情况
 - channel一旦关闭，就只能读，不能再写了，否则panic
+- channel一旦关闭了，就不能关闭第二次，如何保证channel只被close一次呢？sync.Once可以
+- 因channel缺少接收者和发送者，导致死锁，程序出现panic(导致panic不是必然现象，视情况而定)
 
 ### Q27: 什么是协程泄露，常见导致协程泄露的场景有哪些?
 - channel缺少接收器，导致发送阻塞，协程始终无法退出；类似的还有：缺少发送器，导致接收阻塞，接收和发送总是互斥，相互等待
@@ -380,5 +385,131 @@ foo() 函数中，如果 v 分配在栈上，foo 函数返回时，&v 就不存�
 ### Q28: 如何防止Struct用纯值方式初始化变量? 而不指定变量名
 > 可以在struct中，添加_ struct {}字段，这个没什么好说的，特殊用法，记住就好
 
-### Q29: 结构体之间是可以比较的吗?
+### Q29: 回顾下channel的基本操作
+```go
+ch := make(chan int) // 不带缓冲区
+ch := make(chan int, 10) // 带缓冲区，缓冲区满之前，即使没有接收方，发送方不阻塞
+close(ch)  // 关闭channel
+ch <- v  // 向通道发送值v
+<-ch // 忽略接收值
+v := <-ch // 接收值并赋值给变量 v
+v, beforeClosed := <-ch  // 接收操作可以有 2 个返回值
+len(ch)  // channel长度
+cap(ch)  // channel容量
+```
+> beforeClosed 代表 v 是否是信道关闭前发送的。true 代表是信道关闭前发送的，false 代表信道已经关闭。如果一个信道已经关闭，<-ch 将永远不会发生阻塞，但是我们可以通过第二个返回值 beforeClosed 得知信道已经关闭，作出相应的处理。
 
+### Q30: 优雅的Go开发
+```go
+1、定义时间变量
+// BAD
+delay := time.Second * 60 * 24 * 60
+// VERY BAD
+delay := 60 * time.Second * 60 * 24
+// GOOD -- 30 * time.Second 比 time.Duration(30) * time.Second 更好
+delay := 24 * 60 * 60 * time.Second
+// BAD
+var delayMillis int64 = 15000
+// GOOD  -- 用 time.Duration 代替 int64 + 变量名
+var delay time.Duration = 15 * time.Second
+2、忽略返回值
+_ = f() 比 f() 更好
+3、信息打印
+用 %+v 来打印数据的比较全的信息
+4、不要在循环中使用 defer，否则会导致内存泄露：因为这些 defer 会不断地填满你的栈（内存）
+5、不要忘记停止 ticker, 除非你需要泄露 channel
+ticker := time.NewTicker(1 * time.Second)
+defer ticker.Stop()
+6、结构体的初始化，不要用new
+sval := T{Name: "foo"}
+sptr := &T{Name: "bar"}
+```
+
+### Q31: 结构体之间是可以比较的吗?
+> 只有当结构体的所有字段均为可比较类型时，结构体的对象之间，才是可以比较的。以下类型均为不可比较类型：
+>
+> - `func() bool`   // 函数类型，不可比较
+> - `map[string]string`    // map类型不可比较
+> - `[]byte`        // 数组成员只有在数组元素可比较时才算可比较
+
+### Q32: Go的runtime包有用过吗，有过哪些使用场景?
+- runtime.GOMAXPROCS(4)    // 多核模式
+- runtime.NumCPU()    // 获取逻辑cpu的数量
+- runtime/debug      // 打印panic时的stack overflow信息
+- runtime.Gosched()  // 让出时间片，先让别的协程执行，它执行完，再回来执行此协程
+- runtime.GOROOT()    // 获取goroot目录
+- runtime.GOOS       // 获取操作系统
+- runtime.Goexit()   //终止所在的协程
+
+### Q33: 如何更改一个字符串? - 陷阱提问
+> 字符串是不可变类型，是不能直接修改的；如果需要更改，就必须更改为byte类型或rune类型的数组或切片，然后再转为字符串类型。
+```go
+for 循环遍历字符串时，也有 byte 和 rune 两种⽅式
+func main() {
+ s := "abc汉字"
+ for i := 0; i < len(s); i++ { // byte
+    fmt.Printf("%c,", s[i])
+ }
+ fmt.Println()
+ for _, r := range s { // rune
+    fmt.Printf("%c,", r)
+ }
+}
+```
+
+### Q34: 有主动关闭过http连接吗，为啥要这样做?
+> 有关闭，因为不关闭可能会导致程序消耗完 socket 描述符。可选的关闭方式有：
+>
+> - 直接设置请求变量的 Close 字段值为 true，每次请求结束后就会主动关闭连接。设置 Header 请求头部选项 Connection: close，然后服务器返回的响应头部也会有这个选项，此时 HTTP 标准库会主动断开连接
+> ```go
+> req, err := http.NewRequest("GET", "https://github.com", nil)
+> req.Close = true  // 或者是 req.Header.Add("Connection", "close")
+>```
+> - 创建一个自定义配置的 HTTP transport 客户端，用来取消 HTTP 全局的复用连接
+> ```go
+> ts := http.Transport{DisableKeepAlives: true}
+> client := http.Client{Transport: &ts}
+> client.Get("https://github.com")
+>```
+
+### Q35: interface之间是可以相互比较的吗?
+我们知道，在Go语言中，interface的内部实现包含了两个字段，类型T和值V，interface之间是可以使用 == 或 != 进行比较的。而两个interface相等有以下两种情况：
+- 两个`interface`均等于`nil`(此时`V`和`T`都处于`unset`状态)
+- 类型`T`相同，且对应的值`V`相等。
+```go
+type Person struct {
+	Name string
+}
+
+type Human interface{}
+
+func main() {
+	var per1, per2 Human = &Person{"John"}, &Person{"John"}
+	var per3, per4 Human = Person{"John"}, Person{"John"}
+	fmt.Println(per1 == per2) // false
+	fmt.Println(per3 == per4) // true
+}
+```
+per1 和 per2 对应的类型是`*Person`，值是`Person`结构体的地址，两个地址不同，因此结果为`false`
+per3 和 per4 对应的类型是`Person`，值是`Person`结构体，且各字段相等，因此结果为`true`
+> 从这里，我们也能发现：两个接口值比较时，会先比较T，再比较V；那么interface和非interface之间要如何比较呢?
+```go
+func main() {
+	var p *int = nil
+	var i interface{} = p
+	fmt.Println(i == p) // true  - ①
+	fmt.Println(p == nil) // true  - ②
+	fmt.Println(i == nil) // false   - ③
+}  // 接口值与非接口值比较时，会先将非接口值尝试转换为接口值，再比较
+/*
+   ①中，i被p赋值后，其内部字段为(T=*int, V=nil)；p转换为接口也是(T=*int, V=nil)
+   ②中，p与nil直接比较值，都是nil，所以相等
+   ③中的nil转换为接口 (T=nil, V=nil)，与i (T=*int, V=nil) 不相等
+*/
+```
+
+### Q36: go语言中的引用类型包含哪些?
+- slice
+- map
+- channel
+- interface
