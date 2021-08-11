@@ -24,15 +24,15 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"hq1363.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情">
+<meta name="description" content="持续集成，简称CI，也不是一个新概念了；早在极限编程(XP)中，便作为12种实践之一被提出。最近三四年，随着DevOps概念逐渐被重视，CI&#x2F;CD也成了市面上津津乐道的一个东西；然而也就是这么一个东西，即使每个公司都有着自己的实践方案，也仍然被其内部员工不停吐槽，这其中有很多原因，本文将会提到一部分；同时本文也将从多个角度，反复推敲CI，欢迎大佬们驻足留言，谢谢～  暖场热身Q1：你知道什么是C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="聊聊持续集成">
 <meta property="og:url" content="http://hq1363.github.io/2021/07/31/continuous-integration/index.html">
 <meta property="og:site_name" content="春暖花开">
-<meta property="og:description" content="这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情">
+<meta property="og:description" content="持续集成，简称CI，也不是一个新概念了；早在极限编程(XP)中，便作为12种实践之一被提出。最近三四年，随着DevOps概念逐渐被重视，CI&#x2F;CD也成了市面上津津乐道的一个东西；然而也就是这么一个东西，即使每个公司都有着自己的实践方案，也仍然被其内部员工不停吐槽，这其中有很多原因，本文将会提到一部分；同时本文也将从多个角度，反复推敲CI，欢迎大佬们驻足留言，谢谢～  暖场热身Q1：你知道什么是C">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-31T16:02:15.000Z">
-<meta property="article:modified_time" content="2021-08-10T16:30:40.969Z">
+<meta property="article:modified_time" content="2021-08-11T06:16:44.332Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="CI">
 <meta name="twitter:card" content="summary">
@@ -177,7 +177,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -190,6 +190,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%96%E5%9C%BA%E7%83%AD%E8%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">暖场热身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90"><span class="nav-number">2.1.</span> <span class="nav-text">持续集成</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -312,7 +313,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-11 00:30:40" itemprop="dateModified" datetime="2021-08-11T00:30:40+08:00">2021-08-11</time>
+        <time title="修改时间：2021-08-11 14:16:44" itemprop="dateModified" datetime="2021-08-11T14:16:44+08:00">2021-08-11</time>
       </span>
 
   
@@ -330,7 +331,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
+      <span>1.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -348,7 +349,26 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <blockquote>
+<p>持续集成，简称<code>CI</code>，也不是一个新概念了；早在极限编程(XP)中，便作为12种实践之一被提出。最近三四年，随着<code>DevOps</code>概念逐渐被重视，<code>CI/CD</code>也成了市面上津津乐道的一个东西；然而也就是这么一个东西，即使每个公司都有着自己的实践方案，也仍然被其内部员工不停吐槽，这其中有很多原因，本文将会提到一部分；同时本文也将从多个角度，反复推敲<code>CI</code>，欢迎大佬们驻足留言，谢谢～</p>
+</blockquote>
+<h2 id="暖场热身"><a href="#暖场热身" class="headerlink" title="暖场热身"></a>暖场热身</h2><p><strong>Q1：你知道什么是<code>CI</code>吗？</strong><br><em>我相信很多人都听过CI，当我问出这个问题的时候，估计有人就会说了，这谁不知道啊，不就是<code>Continuous integration</code>嘛，整的好像谁不知道似的；紧接着，我要问了，那什么是<code>Continuous integration</code>呢。曾经我问过好几个开发朋友，他们也表示只知道字面意思，平时的工作”好像”也和CI没什么关系，应该指的就是打包、构建吧！！！</em></p>
+<p><strong>Q2: 你知道为啥需要<code>CI</code>吗？</strong><br><em>可能有的开发会说，我不需要，这东西浪费我开发时间，我只想专心写代码，现在整的一堆麻烦事，严重影响我的开发效率，真的是搞事情！！！</em></p>
+<p><strong>Q3: 你知道作为一名<code>Dev/Qa</code>，需要关注<code>CI</code>的哪些东西呢？</strong><br><em>只知道死干活的人，可能根本就不会去思考这类问题；说来也奇怪，往往是那些喜欢偷懒的人，懂得变通，可以想尽一切办法去偷懒。</em></p>
+<p><strong>Q4: 你知道大厂的CI都是怎么玩的吗？</strong><br><em>诚然，即便在业界已经有众多开源解决方案的今天，当结合到每家公司的不同场景下，往往会呈现出不同的效应；每家公司的发展阶段和侧重点是不一样的，其所需要落地的目标也是不尽相同的；特别是在一家快速发展的公司，你会发现其<code>CI</code>流程也是在逐渐变化，不停发展演进的。这也就意味着，在设计<code>CI</code>的时候，你需要充分考虑后期的可扩展性、可维护性、以及健壮性；以避免后期出现大规模的改动。</em></p>
+<p><strong>Q5: 倘若让你去设计CI流程，你会如何设计？</strong><br><em>一个好的CI流程，将会让开发团队极大受益，不仅能尽早地发现问题，还能维持高效、稳定、安全的业务迭代速度。</em></p>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><ul>
+<li>集成：将一些孤立的事物或者元素通过某种方式集中在一起，产生联系，从而构成一个有机整体的过程</li>
+<li>持续：意为长期、频繁不断地</li>
+</ul>
+<h3 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h3><ul>
+<li>是一种通过在应用开发阶段引入自动化来频繁向客户交付应用的方法   </li>
+<li>可以帮助开发人员更加频繁地（有时甚至每天）将代码变更合并到共享分支或“主干”中   </li>
+<li>希望通过更快的反馈机制来提升团队的敏捷性   </li>
+<li>可以提高软件开发和交付过程的透明度和洞察力   </li>
+<li>一种软件开发实践，在实践中项目成员频繁地进行集成，通常每个成员每天都会做集成工作，如此，每天整个项目将会有多次集成。每次集成后都会通过自动化构建（包括测试）来尽快发现其中的错误。许多团队都发现这种方法大大地减少了集成问题并且能够快速地开发出高内聚性的软件   </li>
+</ul>
+
     </div>
 
     
@@ -484,13 +504,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">24k</span>
+    <span title="站点总字数">25k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">22 分钟</span>
+    <span title="站点阅读时长">23 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
