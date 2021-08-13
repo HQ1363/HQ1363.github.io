@@ -32,7 +32,7 @@
 <meta property="og:description" content="git已然成为开发的必备技能了，来看看有哪些相见恨晚的小技巧吧，可别说我没告诉你哦.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-02T06:36:50.000Z">
-<meta property="article:modified_time" content="2021-08-11T07:02:11.877Z">
+<meta property="article:modified_time" content="2021-08-13T02:40:20.712Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
@@ -190,7 +190,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-SubModule"><span class="nav-number">1.</span> <span class="nav-text">Git SubModule</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.</span> <span class="nav-text">常见操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E6%93%8D%E4%BD%9Csubmodule"><span class="nav-number">1.2.</span> <span class="nav-text">批量操作submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4git-submodule"><span class="nav-number">1.3.</span> <span class="nav-text">删除git submodule</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-SubModule"><span class="nav-number">1.</span> <span class="nav-text">Git SubModule</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.</span> <span class="nav-text">常见操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E6%93%8D%E4%BD%9Csubmodule"><span class="nav-number">1.2.</span> <span class="nav-text">批量操作submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4git-submodule"><span class="nav-number">1.3.</span> <span class="nav-text">删除git submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E4%BB%93%E5%A6%82%E4%BD%95%E4%B8%8E%E8%BF%9C%E7%AB%AF%E4%BF%9D%E6%8C%81%E5%90%8C%E6%AD%A5"><span class="nav-number">1.4.</span> <span class="nav-text">子仓如何与远端保持同步</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -313,7 +313,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-11 15:02:11" itemprop="dateModified" datetime="2021-08-11T15:02:11+08:00">2021-08-11</time>
+        <time title="修改时间：2021-08-13 10:40:20" itemprop="dateModified" datetime="2021-08-13T10:40:20+08:00">2021-08-13</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -340,7 +340,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>713</span>
+      <span>870</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -362,7 +362,9 @@
 
 <h3 id="批量操作submodule"><a href="#批量操作submodule" class="headerlink" title="批量操作submodule"></a>批量操作submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git submodule foreach &lt;<span class="built_in">command</span>&gt;</span></span><br><span class="line">比如:</span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule foreach git checkout master</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule foreach git submodule update</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="删除git-submodule"><a href="#删除git-submodule" class="headerlink" title="删除git submodule"></a>删除git submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">【1】$ git add .gitmodules</span><br><span class="line">【2】$ git rm --cached submodule_name</span><br><span class="line">【3】$ rm -rf submodule_name   # 删除submodule目录</span><br><span class="line">【4】编辑.gitmodules文件, 移除对应的submodule信息</span><br><span class="line">【5】编辑.git/modules文件, 移除对应的submodule信息</span><br><span class="line">【6】编辑.git/config 移除对应的submodule信息</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】$ git submodule deinit &lt;submodule-name&gt; # 新版git</span><br><span class="line">===== 上述方式不行，可尝试下述</span><br><span class="line">【1】$ git rm &lt;submodule-name&gt; # 旧版git</span><br></pre></td></tr></table></figure>
+<h3 id="删除git-submodule"><a href="#删除git-submodule" class="headerlink" title="删除git submodule"></a>删除git submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git add .gitmodules        <span class="comment"># 第一步</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git rm --cached submodule_name    <span class="comment"># 第二步</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> rm -rf submodule_name   <span class="comment"># 第三步：删除submodule目录</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 第四步：编辑.gitmodules文件, 移除对应的submodule信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 第五步：编辑.git/modules文件, 移除对应的submodule信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 第六步：编辑.git/config 移除对应的submodule信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ===== 上述方式不行，可尝试下述</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule deinit &lt;submodule-name&gt; <span class="comment"># 新版git</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ===== 上述方式不行，可尝试下述</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git rm &lt;submodule-name&gt; <span class="comment"># 旧版git</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="子仓如何与远端保持同步"><a href="#子仓如何与远端保持同步" class="headerlink" title="子仓如何与远端保持同步"></a>子仓如何与远端保持同步</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 子仓的更新，是单独的，需要进入子仓目录，手动与远端同步，例如：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> sub-dir &amp;&amp; git fetch origin master &amp;&amp; git rebase origin/master</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 完成同步后，需要在主仓下提交子仓的改动，以保存主仓对子仓的最新引用</span></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -496,7 +498,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">25k</span>
+    <span title="站点总字数">26k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
