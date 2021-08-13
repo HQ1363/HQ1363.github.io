@@ -26,14 +26,21 @@ $ git submodule foreach git submodule update
 
 ### 删除git submodule
 ```shell
-【1】$ git add .gitmodules
-【2】$ git rm --cached submodule_name
-【3】$ rm -rf submodule_name   # 删除submodule目录
-【4】编辑.gitmodules文件, 移除对应的submodule信息
-【5】编辑.git/modules文件, 移除对应的submodule信息
-【6】编辑.git/config 移除对应的submodule信息
-===== 上述方式不行，可尝试下述
-【1】$ git submodule deinit <submodule-name> # 新版git
-===== 上述方式不行，可尝试下述
-【1】$ git rm <submodule-name> # 旧版git
+$ git add .gitmodules        # 第一步
+$ git rm --cached submodule_name    # 第二步
+$ rm -rf submodule_name   # 第三步：删除submodule目录
+# 第四步：编辑.gitmodules文件, 移除对应的submodule信息
+# 第五步：编辑.git/modules文件, 移除对应的submodule信息
+# 第六步：编辑.git/config 移除对应的submodule信息
+# ===== 上述方式不行，可尝试下述
+$ git submodule deinit <submodule-name> # 新版git
+# ===== 上述方式不行，可尝试下述
+$ git rm <submodule-name> # 旧版git
+```
+
+### 子仓如何与远端保持同步
+```shell
+# 子仓的更新，是单独的，需要进入子仓目录，手动与远端同步，例如：
+$ cd sub-dir && git fetch origin master && git rebase origin/master
+# 完成同步后，需要在主仓下提交子仓的改动，以保存主仓对子仓的最新引用
 ```
