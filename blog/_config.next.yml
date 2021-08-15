@@ -103,7 +103,7 @@ menu_settings:
 sidebar:
   # Sidebar Position.
   # position: left
-  position: right
+  position: left
 
   # Manual define the sidebar width. If commented, will be default for:
   # Muse | Mist: 320
@@ -164,6 +164,7 @@ links_settings:
 
 links:
   CSDN: https://blog.csdn.net/huangqiang1363
+  GitHub: https://github.com/HQ1363
 
 # Table of Contents in the Sidebar
 # Front-matter variable (unsupport wrap expand_all).
@@ -844,7 +845,7 @@ nprogress:
 # Canvas ribbon
 # For more information: https://github.com/hustcc/ribbon.js
 canvas_ribbon:
-  enable: true
+  enable: false
   size: 300 # The width of the ribbon
   alpha: 0.6 # The transparency of the ribbon
   zIndex: -1 # The display level of the ribbon

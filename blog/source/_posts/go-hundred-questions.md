@@ -229,7 +229,7 @@ func (mc *MyChannel) SafeClose() {
 - new、make
 
 ### Q11: Go语言的执行过程是? 或者说init函数的执行时机是?
-![go_import](../images/go_import.png)
+![go_import](go_import.png)   
 _init函数是Go程序初始化的一部分，而Go程序的初始化先于main函数；runtime会在运行时解析包依赖关系，依次完成初始化，执行顺序如下：_
 ```shell script
 $ import –> const –> var –> init() –> main()
