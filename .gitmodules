@@ -1,6 +1,6 @@
 [submodule "blog/themes/next"]
 	path = blog/themes/next
-	url = https://github.com/next-theme/hexo-theme-next.git
+	url = http://github.com/next-theme/hexo-theme-next.git
 [submodule "blog/themes/kaze"]
 	path = blog/themes/kaze
-	url = https://github.com/theme-kaze/hexo-theme-kaze.git
+	url = http://github.com/theme-kaze/hexo-theme-kaze.git

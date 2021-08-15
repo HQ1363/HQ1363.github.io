@@ -124,4 +124,6 @@ _一个好的CI流程，将会让开发团队极大受益，不仅能尽早地�
 ![典型场景](classic_case.png)
 ### 微服务场景
 ![微服务场景](microservice_case.png)
+### [Cloud Native](https://github.com/kubernetes/test-infra/tree/master/prow)
+![云原生](cloud_native.png)
 其实总的来说，也就那么两条路子，要么自研、要么使用开源版；有能力和时间的公司，往往会选择自研，毕竟开源版，很多功能都是受限的，也无法很好地融入到企业技术栈，需要深度定制；所以你会发现，基于开源版二次开发，往往是大部分公司的路子。
