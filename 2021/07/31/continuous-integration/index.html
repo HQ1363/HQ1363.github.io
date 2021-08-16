@@ -35,8 +35,13 @@
 <meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/classic_case.png">
 <meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/microservice_case.png">
 <meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/cloud_native.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/eless_v1.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/eless_v2.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/waimai_branch.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/ali_cloud.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/tencent_coding.png">
 <meta property="article:published_time" content="2021-07-31T16:02:15.000Z">
-<meta property="article:modified_time" content="2021-08-15T16:51:56.188Z">
+<meta property="article:modified_time" content="2021-08-16T11:31:54.220Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="CI">
 <meta name="twitter:card" content="summary">
@@ -195,7 +200,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%96%E5%9C%BA%E7%83%AD%E8%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">暖场热身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-number">2.4.</span> <span class="nav-text">目的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E6%88%90%E6%A8%A1%E5%9D%97"><span class="nav-number">3.</span> <span class="nav-text">组成模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E7%AE%A1%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">仓库管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">代码质量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">设计实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="nav-number">4.1.</span> <span class="nav-text">典型场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">4.2.</span> <span class="nav-text">微服务场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cloud-Native"><span class="nav-number">4.3.</span> <span class="nav-text">Cloud Native</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%96%E5%9C%BA%E7%83%AD%E8%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">暖场热身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-number">2.4.</span> <span class="nav-text">目的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E6%88%90%E6%A8%A1%E5%9D%97"><span class="nav-number">3.</span> <span class="nav-text">组成模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E7%AE%A1%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">仓库管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">代码质量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">设计实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="nav-number">4.1.</span> <span class="nav-text">典型场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">4.2.</span> <span class="nav-text">微服务场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cloud-Native"><span class="nav-number">4.3.</span> <span class="nav-text">Cloud Native</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%A1%88%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">参考案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%A1%E5%B8%AE"><span class="nav-number">5.1.</span> <span class="nav-text">满帮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A5%BF%E4%BA%86%E4%B9%88"><span class="nav-number">5.2.</span> <span class="nav-text">饿了么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%88%92%E5%88%86"><span class="nav-number">5.2.1.</span> <span class="nav-text">环境划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AD%96%E7%95%A5"><span class="nav-number">5.2.2.</span> <span class="nav-text">分支策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9"><span class="nav-number">5.3.</span> <span class="nav-text">哔哩哔哩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4"><span class="nav-number">5.4.</span> <span class="nav-text">阿里巴巴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%85%BE%E8%AE%AFCoding"><span class="nav-number">5.5.</span> <span class="nav-text">腾讯Coding</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -321,7 +326,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-16 00:51:56" itemprop="dateModified" datetime="2021-08-16T00:51:56+08:00">2021-08-16</time>
+        <time title="修改时间：2021-08-16 19:31:54" itemprop="dateModified" datetime="2021-08-16T19:31:54+08:00">2021-08-16</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -348,14 +353,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.5k</span>
+      <span>5.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -419,7 +424,7 @@
 <p>一个好的仓库管理方式，在很多程度上，决定了研发之间的沟通协作方式；虽然是老生常谈的话题，但这个环节确实有必要拿出来捋一捋。到底是选择<code>mono repo</code>还是<code>multi repo</code>呢？我们来看看这其中的优缺点：</p>
 </blockquote>
 <ul>
-<li><code>mono repo</code><br>也就是常说的<strong>单体仓库</strong>，它是将所有的服务，全部放到一个代码库，包含了每个业务的服务代码和公共的<code>Lib</code>库、<code>Tools</code>集合；既然代码都放到一起，也就很好管理了，带来的好处也不少，比如：<ul>
+<li><code>mono repo</code><br>也就是常说的<strong>单体仓库</strong>（大仓模式），它是将所有的服务，全部放到一个代码库，包含了每个业务的服务代码和公共的<code>Lib</code>库、<code>Tools</code>集合；既然代码都放到一起，也就很好管理了，带来的好处也不少，比如：<ul>
 <li>易于开发者测试</li>
 <li>易于标准化代码</li>
 <li>易于开展Code Review</li>
@@ -427,7 +432,7 @@
 <li>易于重构</li>
 </ul>
 </li>
-<li><code>multi repo</code><br>和单体仓库相反，为<strong>多仓库</strong>方式；每个服务代码单独成库，各自为营，彼此之间，井水不犯河水，做了很好的隔离。也就说多仓库具备如下特点：<ul>
+<li><code>multi repo</code><br>和单体仓库相反，为<strong>多仓库</strong>方式（小仓模式）；每个服务代码单独成库，各自为营，彼此之间，井水不犯河水，做了很好的隔离。也就说多仓库具备如下特点：<ul>
 <li>服务之间职责划分清晰</li>
 <li>易于扩展，服务之间的解耦</li>
 <li>限制clone范围，避免代码库完全泄漏</li>
@@ -470,6 +475,34 @@
 <h3 id="典型场景"><a href="#典型场景" class="headerlink" title="典型场景"></a>典型场景</h3><p><img data-src="classic_case.png" alt="典型场景"></p>
 <h3 id="微服务场景"><a href="#微服务场景" class="headerlink" title="微服务场景"></a>微服务场景</h3><p><img data-src="microservice_case.png" alt="微服务场景"></p>
 <h3 id="Cloud-Native"><a href="#Cloud-Native" class="headerlink" title="Cloud Native"></a><a target="_blank" rel="noopener" href="https://github.com/kubernetes/test-infra/tree/master/prow">Cloud Native</a></h3><p><img data-src="cloud_native.png" alt="云原生"><br>其实总的来说，也就那么两条路子，要么自研、要么使用开源版；有能力和时间的公司，往往会选择自研，毕竟开源版，很多功能都是受限的，也无法很好地融入到企业技术栈，需要深度定制；所以你会发现，基于开源版二次开发，往往是大部分公司的路子。</p>
+<h2 id="参考案例"><a href="#参考案例" class="headerlink" title="参考案例"></a>参考案例</h2><h3 id="满帮"><a href="#满帮" class="headerlink" title="满帮"></a>满帮</h3><blockquote>
+<p>满帮由运满满+货车帮合并而来，技术栈也是融合了1-2年，CI/CD一块最终沿用了运满满的一套体系，而运满满的体系源自早期滴滴的一套体系。</p>
+</blockquote>
+<p>满帮的<code>CI</code>是测试团队负责的，每次打包构建都是用户手动触发的，可以节省资源，降低成本，避免无用的构建任务；<u>测试会在<code>Jenkins</code>构建的生命周期上做自己的逻辑，一旦构建过程中，发现问题，会去统计，并反馈到各个研发团队</u>。研发团队用的也是小仓文化，采用的分支比较简单，feature分支+master分支，无论哪一个分支，都需要在qa环境（等价于ppe/pre预发环境）部署测试通过，然后由测试老师进行线上的部署动作。环境的划分是dev/qa/prod，每个环境下，又会有不同的机房、不同的k8s甬道，研发通常会在dev的不同甬道下做自己的业务测试。</p>
+<h3 id="饿了么"><a href="#饿了么" class="headerlink" title="饿了么"></a>饿了么</h3><blockquote>
+<p>如果你对饿了么有一定了解，想必你也知道，饿了么的业务线（外卖、物流、商户、新零售、开放平台等）非常多，光<span style="color: orange">AppID</span>（应用服务标示）就多达上千（小仓模式），而这些业务往往需要快速迭代，很多时候的需求都是倒排期，各种CR需求也是常有的事情，加班也是出了名的；可想而知，饿了么每天的持续集成任务量，得有多大，不禁让人好奇饿了么的<strong>持续集成</strong>是如何设计实现的。</p>
+</blockquote>
+<p>饿了么的持续集成，经历了三代的发展（<span style="color: orange">Eless</span> -&gt; <span style="color: orange">ElessV2/APPOS</span> -&gt; <span style="color: orange">AONE</span>）；<span style="color: orange">AONE</span>是饿了么融入阿里体系后，使用的方案，这个没办法，集团内技术栈打通并统一是肯定的趋势。每个版本的UI我也记得不是很清楚了，下面的图仅为作者印象还原样子，不喜勿喷！！！<br><img data-src="eless_v1.png" alt="ELESS初代目"><div style="color: blue">初代目是基于Jenkins玩的，根据每个仓库的语言类别，执行Jenkins上对应的Job任务(例如：ci-python-job/ci-java-job)，每个Job任务，会根据仓库根目录下的CI YAML(类同gitlab-ci.yaml/travis-ci.yaml)完成编译构建之外的CI环节。</div></p>
+<p><img data-src="eless_v2.png" alt="ELESS二代目"><div style="color: blue">二代目去掉了Jenkins，因为Jenkins很容易出现任务堆积；虽说饿了么当时的Jenkins集群，node节点有十几台，但也还是会出现堆积等待的情况，成本也是一个问题，索性自研实现了jenkins环节。但无论是一代目还是二代目，只要有新的commit触发，便会触发新的构建任务，环境划分也是一致的。二代目，不过是在一代目的基础上，做了改进和优化，整个CI没有太大的变化。</div></p>
+<h4 id="环境划分"><a href="#环境划分" class="headerlink" title="环境划分"></a>环境划分</h4><ul>
+<li>alpha环境：开发自测环境</li>
+<li>beta环境：qa测试环境</li>
+<li>ppe/vip环境：预发环境，几乎等同于线上，仅允许办公网用户测试</li>
+<li>prod环境</li>
+</ul>
+<p>不过当时的环境存在很严重的资源互斥使用问题，多个研发的需求，没办法同时测试；A开发将自己的代码发布到alpha环境后，B开发如果也想在alpha环境测试，就只能把A开发的代码覆盖掉，这个是有问题的，整个请求链路无法自由调整。虽然每个服务所在的集群有自己的SOA Cluster名，可以在服务注册中心中，修改上游服务调用的Cluster名，做到测试的目的，但依旧不能同时测试多人的开发需求。其实完全，可以根据前端传入不同Header、或者动态域名来做请求链路区分的。</p>
+<h4 id="分支策略"><a href="#分支策略" class="headerlink" title="分支策略"></a>分支策略</h4><p><span style="color: orange">Eless</span>在分支上并未做特殊的限制，整体上和git flow是一致的，发布的时候，也没有锁分支（仅限<code>release</code>分支），也就是说，任何一个分支都可以发布到线上，只不过每一个分支下的<code>commit</code>，必须是上一个环境发布测试通过后，手动点击<code>test pass</code>，才可以发到下一个环境；当准备<code>ppe</code> -&gt; <code>prod</code>时，需要测试负责人点通过，才可以发布<code>prod</code>。使用<span style="color: orange">AONE</span>后，可以做集成测试，多个开发分支，会合并到一个集成测试分支下，用作多需求同时测试，这个过程会遭遇频繁地解决冲突，用起来也是够呛（😓）；不过冲突只是提早被发现了，这个过程无法避免。AoneFlow只有feature、release、master三类分支，但你却能看到其他分支模式的影子；它基本上兼顾了 TrunkBased 的“易于持续集成”和 GitFlow 的“易于管理需求”特点，同时规避掉 GitFlow 的那些繁文缛节。不过AONE平台集成了<u>在线解决冲突</u>、<u>在线Code Review</u>、<u>发布完毕自动合并release分支到master分支</u>的优点，可以保证线上的包都经过了所有环境的验证。<br><img data-src="waimai_branch.png" alt="Eless分支策略"></p>
+<blockquote>
+<p>不同研发团队，可能会有所差别，具体看团队怎么玩。</p>
+</blockquote>
+<h3 id="哔哩哔哩"><a href="#哔哩哔哩" class="headerlink" title="哔哩哔哩"></a>哔哩哔哩</h3><blockquote>
+<p>无论是饿了么，还是满帮，CI过程都脱离了<span style="color: orange">研发场景</span>，或者说比较简单；<u>B站的CI和研发绑定的尤为密切，整个CI过程，围绕PR的生命周期来，只要CI（各种各样的Lint检测任务）不通过，就不让合入代码</u>。不过有一点确实挺好奇，B站后端的CI和CD是完全割裂的，没有串起来，形成流水线。</p>
+</blockquote>
+<p>B站的研发测试环境，主要依赖于服务节点染色的概念，和k8s甬道（给pod打标签）的方式是类似的，不过B站每个染色节点都是单独可测的，上下游请求链路完全打通，也就是说：它满足了多需求可以同时测试。</p>
+<p>细心的朋友，可能会发现，上述的三个案例，正好是「第四点」说的三种设计实现方式。</p>
+<h3 id="阿里巴巴"><a href="#阿里巴巴" class="headerlink" title="阿里巴巴"></a>阿里巴巴</h3><p><img data-src="ali_cloud.png" alt="阿里云效"></p>
+<h3 id="腾讯Coding"><a href="#腾讯Coding" class="headerlink" title="腾讯Coding"></a>腾讯Coding</h3><p><img data-src="tencent_coding.png" alt="腾讯Coding"></p>
+<p>不难发现，无论是阿里、腾讯，还是百度，他们的CI设计都是和CD完全串起来的，而且没有脱离研发场景。但是也不难发现，这三家公司的设计，大体都长一个样子，你懂我的意思吧（😂）。</p>
 
     </div>
 
@@ -606,13 +639,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">28k</span>
+    <span title="站点总字数">30k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">25 分钟</span>
+    <span title="站点阅读时长">27 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
