@@ -512,3 +512,11 @@ func main() {
 - map
 - channel
 - interface
+
+### Q37: 高并发编程里，可以有哪些思路?
+- 基于sync包的WaitGroup，但主协程只是傻傻地等待子协程退出，并不能主动通知子协程退出
+- 基于for + select + channel的组合方式，子协程for+select等待主协程通过channel传递过来的退出信号，当子协程很多时，显得比较难以控制
+- 基于context通知子协程适时退出，可以同时控制多个子协程
+  * 手动通过取消的方式控制（`context.WithCancel`），如果需要往子协程传递参数，还可以使用`context.WithValue`
+  * 超时自动退出（`context.WithTimeout`）
+  * 到某个截止时间（时刻点）自动退出`context.WithDeadline`
