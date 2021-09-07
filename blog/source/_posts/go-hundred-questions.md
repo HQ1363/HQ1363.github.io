@@ -520,3 +520,8 @@ func main() {
   * 手动通过取消的方式控制（`context.WithCancel`），如果需要往子协程传递参数，还可以使用`context.WithValue`
   * 超时自动退出（`context.WithTimeout`）
   * 到某个截止时间（时刻点）自动退出`context.WithDeadline`
+
+### Q38: go程序中，内存泄漏可能会是什么原因导致的?
+- `goroutine`不释放，始终无法退出
+- 堆栈溢出，递归到`stack`满
+- 使用内存作为本地缓存，且持续增加，没有释放的阶段
