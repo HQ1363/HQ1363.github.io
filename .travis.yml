@@ -17,14 +17,14 @@ before_install:
 install:
     - yarn install --ignore-engines  # 安装依赖
     - mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
-    - curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b ~/bin
+#    - curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b ~/bin
 
 branches:
   only:
     - master # build master branch only
 
 script:
-  - reviewdog -conf=.reviewdog.yml -reporter=github-pr-check
+#  - reviewdog -conf=.reviewdog.yml -reporter=github-pr-check
   - yarn clean # 清除
   - yarn build # generate static files
 
