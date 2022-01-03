@@ -44,3 +44,39 @@ $ git rm <submodule-name> # 旧版git
 $ cd sub-dir && git fetch origin master && git rebase origin/master
 # 完成同步后，需要在主仓下提交子仓的改动，以保存主仓对子仓的最新引用
 ```
+
+## Git Ops
+
+### 查看last commitId
+```shell
+$ git log -1 --pretty=format:%H # 完整的
+# 输出 7b6b2803d2b7135b239d062847816e55a810371e
+$ git log -1 --pretty=format:%h # 前7位
+# 输出 7b6b280
+```
+
+### 查看某次commit的内容
+```shell
+$ git show commitId
+```
+
+### 查看目录的diff信息
+```shell
+$ git diff <dir-name>
+```
+
+### 查看分支合并图
+```shell
+$ git log --graph
+```
+
+### 查看标签信息
+```shell
+$ git show <tag-name>
+```
+
+### 查看git命令操作历史
+```shell
+$ git reflog
+```
+
