@@ -65,6 +65,11 @@ $ git show commitId
 $ git diff <dir-name>
 ```
 
+### 查看diff的其他信息
+```shell
+git --no-pager log -2 --author="HQ" --pretty=format:"%h"
+```
+
 ### 查看分支合并图
 ```shell
 $ git log --graph
@@ -79,4 +84,3 @@ $ git show <tag-name>
 ```shell
 $ git reflog
 ```
-
