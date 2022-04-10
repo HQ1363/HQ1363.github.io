@@ -65,7 +65,15 @@ $ git show commitId
 $ git diff <dir-name>
 ```
 
-### 查看diff的其他信息
+### diff迁移
+```shell script
+$ git diff > diff.patch
+$ git apply --stat diff.patch
+$ git apply --check diff.patch
+$ git apply diff.patch
+```
+
+### 查看log的其他信息
 ```shell
 git --no-pager log -2 --author="HQ" --pretty=format:"%h"
 ```
