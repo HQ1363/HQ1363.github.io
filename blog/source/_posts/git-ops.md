@@ -104,5 +104,6 @@ $ git rebase --continue # 手动处理冲突的文件：执行git add .，再 gi
 ### 删除本地认证
 ```shell
 $ git config --global --unset credential.helper
-$ git config credential.helper store  # window的可能需要手动找到git的凭证删掉
+$ git config credential.helper store  # window的可能需要手动找到git的凭证删掉，见下图
 ```
+![](git_identity.png)
