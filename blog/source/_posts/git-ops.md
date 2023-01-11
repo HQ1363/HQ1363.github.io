@@ -100,3 +100,9 @@ $ git rebase --abort # 终止此次 rebase 操作
 $ git rebase --continue # 手动处理冲突的文件：执行git add .，再 git rebase --continue，反复操作直到解决完所有冲突，并合并到分支上。
 # 切记，整个rebase解决冲突的过程中，都不需要自己去单独执行commit动作
 ```
+
+### 删除本地认证
+```shell
+$ git config --global --unset credential.helper
+$ git config credential.helper store  # window的可能需要
+```
