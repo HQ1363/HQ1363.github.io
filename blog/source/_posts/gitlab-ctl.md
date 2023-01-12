@@ -25,13 +25,28 @@ $ sudo rm -rf /opt/gitlab
 `gitlab-ctl reconfigure`
 
 ### 启动所有 gitlab 组件
-`gitlab-ctl start`
+```shell
+$ gitlab-ctl start         # 启动所有服务
+$ gitlab-ctl start unicorn # 启动单个服务
+```
 
 ### 停止所有 gitlab 组件
-`gitlab-ctl stop`
+```shell
+$ gitlab-ctl stop          # 停止所有服务
+$ gitlab-ctl stop unicorn  # 停止单个服务
+```
 
 ### 重启所有 gitlab 组件
-`gitlab-ctl restart`
+```shell
+$ gitlab-ctl restart         # 重启所有服务
+$ gitlab-ctl restart unicorn # 重启单个服务
+```
+
+### 查看服务的活动日志
+```shell
+$ gitlab-ctl tail         # 查看所有服务的活动日志
+$ gitlab-ctl tail unicorn # 查看单个服务的活动日志
+```
 
 ### 查看服务状态
 `gitlab-ctl status`
