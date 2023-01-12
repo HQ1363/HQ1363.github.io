@@ -110,4 +110,8 @@ $ docker rm $(docker ps -aq)
  
 # 停用和删除所有容器：
 $ docker stop $(docker ps -q) & docker rm $(docker ps -aq)
+
+# 镜像改名，便于本地镜像推到远端
+$ docker tag [镜像id] [远程ip:端口/自定义路径/*]:[版本号]
+$ docker push [远程ip:端口/自定义路径/*]:[版本号]
 ```
