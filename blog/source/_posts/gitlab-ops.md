@@ -22,7 +22,9 @@ $ sudo rm -rf /opt/gitlab
 ```
 
 ### 重载配置文件
-`gitlab-ctl reconfigure`
+```shell
+$ gitlab-ctl reconfigure
+```
 
 ### 启动所有 gitlab 组件
 ```shell
@@ -49,4 +51,14 @@ $ gitlab-ctl tail unicorn # 查看单个服务的活动日志
 ```
 
 ### 查看服务状态
-`gitlab-ctl status`
+```shell
+$ gitlab-ctl status
+```
+
+### 登录gitlab交互式命令行
+```shell
+$ gitlab-rails console
+$ user = User.find_by_email('admin@xxxx.com')
+$ user.state = 'active'   # 激活用户，阻塞用户时，可赋值：blocked
+$ user.save
+```
