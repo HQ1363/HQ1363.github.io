@@ -107,3 +107,15 @@ $ git config --global --unset credential.helper
 $ git config credential.helper store  # window的可能需要手动找到git的凭证删掉，见下图
 ```
 ![](git_identity.png)
+
+### git修改分支名
+```shell
+# 修改本地分支名称
+git branch -m oldBranchName newBranchName
+
+# 将本地分支的远程分支删除
+git push --delete origin oldBranchName
+
+# 将改名后的本地分支推送到远程，并将本地分支与之关联
+git push --set-upstream origin newBranchName
+```
