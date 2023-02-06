@@ -10,5 +10,5 @@
 
 ### 本地启动
 ```shell
-npm run server
+npm run server 
 ```
