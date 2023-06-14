@@ -49,7 +49,7 @@ jobs:
         run: cd blog && pnpm i hexo-cli -g
 
       - name: Install dependencies
-        run: cd blog && pnpm i --frozen-lockfile && mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
+        run: cd blog && pnpm i && mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
       - name: Build docs
         run: cd blog && pnpm run build
