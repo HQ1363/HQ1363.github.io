@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 10
 
       - name: Install Hexo-Cli
         run: cd blog && npm i hexo-cli -g
@@ -42,5 +42,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: ./blog/public
-          cname: hq1363.github.io
+          publish_dir: blog/public
