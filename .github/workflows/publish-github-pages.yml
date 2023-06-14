@@ -26,38 +26,22 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install pnpm
-        id: pnpm-install
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-          run_install: false
-
-      - name: Get pnpm store
-        id: pnpm-store
-        shell: bash
-        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-store
-
       - name: Install Hexo-Cli
-        run: cd blog && pnpm i hexo-cli -g
+        run: cd blog && npm i hexo-cli -g
+
+      - name: Install Yarn
+        run: cd blog && npm i yarn -g
 
       - name: Install dependencies
-        run: cd blog && pnpm i --no-frozen-lockfile && mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
+        run: cd blog && yarn install --ignore-engines && mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
       - name: Build docs
-        run: cd blog && pnpm run build && pwd
+        run: cd blog && yarn run build
 
       - name: Deploy docs
         if: ${{ github.event_name == 'push' || inputs.deploy }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: ./public
+          publish_dir: blog/public
           cname: hq1363.github.io
