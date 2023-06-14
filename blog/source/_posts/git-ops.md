@@ -107,3 +107,8 @@ $ git config --global --unset credential.helper
 $ git config credential.helper store  # window的可能需要手动找到git的凭证删掉，见下图
 ```
 ![](git_identity.png)
+
+### 测试
+```shell
+$ bash aa.sh
+```
