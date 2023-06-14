@@ -52,12 +52,12 @@ jobs:
         run: cd blog && pnpm i --no-frozen-lockfile && mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
       - name: Build docs
-        run: cd blog && pnpm run build
+        run: cd blog && pnpm run build && pwd
 
       - name: Deploy docs
         if: ${{ github.event_name == 'push' || inputs.deploy }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: blog/dist
+          publish_dir: dist
           cname: hq1363.github.io
