@@ -39,9 +39,8 @@ jobs:
         run: cd blog && yarn run build
 
       - name: Deploy docs
-        if: ${{ github.event_name == 'push' || inputs.deploy }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: blog/public
+          publish_dir: ./blog/public
           cname: hq1363.github.io
