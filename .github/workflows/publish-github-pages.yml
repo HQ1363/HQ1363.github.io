@@ -36,7 +36,7 @@ jobs:
         run: cd blog && yarn install --ignore-engines && mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
       - name: Build docs
-        run: cd blog && yarn run build
+        run: cd blog && yarn run build && yarn run deploy
 
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3
