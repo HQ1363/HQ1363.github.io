@@ -35,7 +35,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 10
+          node-version: 16
 
       - name: Install Hexo-Cli
         run: cd blog && npm i hexo-cli -g
@@ -51,10 +51,10 @@ jobs:
 
       # Deploy hexo blog website.
       - name: Deploy
-        uses: sma11black/hexo-action@v1.0.4
+        uses: sma11black/hexo-action@v1.0.3
         with:
           deploy_key: ${{ secrets.GH_TOKEN }}
           user_name: HQ1363  # (or delete this input setting to use bot account)
           user_email: huangqiang1363@outlook.com  # (or delete this input setting to use bot account)
           commit_msg: ${{ github.event.head_commit.message }}  # (or delete this input setting to use hexo default settings)
-          PUBLISH_DIR: ./blog/public
+          publish_dir: blog/public
