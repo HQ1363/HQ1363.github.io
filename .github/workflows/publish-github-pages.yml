@@ -21,6 +21,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Cache node modules
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -38,8 +47,12 @@ jobs:
       - name: Build docs
         run: cd blog && yarn run build && yarn run deploy
 
-      - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@v3
+      # Deploy hexo blog website.
+      - name: Deploy
+        id: deploy
+        uses: sma11black/hexo-action@v1.0.3
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: blog/public
+          deploy_key: ${{ secrets.GH_TOKEN }}
+          user_name: HQ1363  # (or delete this input setting to use bot account)
+          user_email: huangqiang1363@outlook.com  # (or delete this input setting to use bot account)
+          commit_msg: ${{ github.event.head_commit.message }}  # (or delete this input setting to use hexo default settings)
