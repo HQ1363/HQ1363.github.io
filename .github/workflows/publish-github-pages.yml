@@ -23,38 +23,37 @@ jobs:
         with:
           submodules: true
 
-      - name: Cache node modules
-        uses: actions/cache@v1
-        id: cache
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 14
 
       - name: Install Hexo-Cli
-        run: cd blog && npm i hexo-cli -g
+        run: |
+          cd blog
+          npm i hexo-cli -g
 
       - name: Install Yarn
-        run: cd blog && npm i yarn -g
+        run: |
+          cd blog
+          npm i yarn -g
 
       - name: Install dependencies
-        run: cd blog && yarn install --ignore-engines && mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
+        run: |
+          cd blog
+          yarn install
+          mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
       - name: Build docs
-        run: cd blog && yarn run build && yarn run deploy
+        run: |
+          cd blog
+          yarn run clean
+          yarn run build
 
       # Deploy hexo blog website.
-      - name: Deploy
-        uses: sma11black/hexo-action@v1.0.3
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          deploy_key: ${{ secrets.GH_TOKEN }}
-          user_name: HQ1363  # (or delete this input setting to use bot account)
-          user_email: huangqiang1363@outlook.com  # (or delete this input setting to use bot account)
-          commit_msg: ${{ github.event.head_commit.message }}  # (or delete this input setting to use hexo default settings)
-          publish_dir: blog/public
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: blog/public
