@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Cache node modules
         uses: actions/cache@v1
@@ -49,10 +51,10 @@ jobs:
 
       # Deploy hexo blog website.
       - name: Deploy
-        id: deploy
-        uses: sma11black/hexo-action@v1.0.3
+        uses: sma11black/hexo-action@v1.0.4
         with:
           deploy_key: ${{ secrets.GH_TOKEN }}
           user_name: HQ1363  # (or delete this input setting to use bot account)
           user_email: huangqiang1363@outlook.com  # (or delete this input setting to use bot account)
           commit_msg: ${{ github.event.head_commit.message }}  # (or delete this input setting to use hexo default settings)
+          PUBLISH_DIR: ./blog/public
