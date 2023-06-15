@@ -1,0 +1,1152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>聊聊持续集成</title>
+    <url>/2021/07/31/continuous-integration/</url>
+    <content><![CDATA[<blockquote>
+<p>持续集成，简称<code>CI</code>，也不是一个新概念了；早在极限编程(XP)中，便作为12种实践之一被提出。最近三四年，随着<code>DevOps</code>概念逐渐被重视，<code>CI/CD</code>也成了市面上津津乐道的一个东西；然而也就是这么一个东西，即使每个公司都有着自己的实践方案，也仍然被其内部员工不停吐槽，这其中有很多原因，本文将会提到一部分；同时本文也将从多个角度，反复推敲<code>CI</code>，欢迎大佬们驻足留言，谢谢～</p>
+</blockquote>
+<h2 id="暖场热身"><a href="#暖场热身" class="headerlink" title="暖场热身"></a>暖场热身</h2><p><strong><span style="color: blue">Q1</span>：你知道什么是<code>CI</code>吗？</strong><br><em>我相信很多人都听过CI，当我问出这个问题的时候，估计有人就会说了，这谁不知道啊，不就是<code>Continuous integration</code>嘛，整的好像谁不知道似的；紧接着，我要问了，那什么是<code>Continuous integration</code>呢。曾经我问过好几个开发朋友，他们也表示只知道字面意思，平时的工作”好像”也和CI没什么关系，应该指的就是打包、构建吧！！！</em></p>
+<p><strong><span style="color: blue">Q2</span>: 你知道为啥需要<code>CI</code>吗？</strong><br><em>可能有的开发会说，我不需要，这东西浪费我开发时间，我只想专心写代码，现在整的一堆麻烦事，严重影响我的开发效率，真的是搞事情！！！</em></p>
+<p><strong><span style="color: blue">Q3</span>: 你知道作为一名<code>Dev/Qa</code>，需要关注<code>CI</code>的哪些东西呢？</strong><br><em>只知道死干活的人，可能根本就不会去思考这类问题；说来也奇怪，往往是那些喜欢偷懒的人，懂得变通，可以想尽一切办法去偷懒。</em></p>
+<p><strong><span style="color: blue">Q4</span>: 你知道大厂的CI都是怎么玩的吗？</strong><br><em>诚然，即便在业界已经有众多开源解决方案的今天，当结合到每家公司的不同场景下，往往会呈现出不同的效应；每家公司的发展阶段和侧重点是不一样的，其所需要落地的目标也是不尽相同的；特别是在一家快速发展的公司，你会发现其<code>CI</code>流程也是在逐渐变化，不停发展演进的。这也就意味着，在设计<code>CI</code>的时候，你需要充分考虑后期的可扩展性、可维护性、以及健壮性；以避免后期出现大规模的改动。</em></p>
+<p><strong><span style="color: blue">Q5</span>: 倘若让你去设计CI流程，你会如何设计？</strong><br><em>一个好的CI流程，将会让开发团队极大受益，不仅能尽早地发现问题，还能维持高效、稳定、安全的业务迭代速度。</em></p>
+<hr>
+<p>在介绍持续集成之前，我想先介绍下传统的开发过程下的坑：</p>
+<ul>
+<li>BUG总是很晚才被发现，并且难以修复</li>
+<li>研发交付质量无法得到保障</li>
+<li>变更频繁，研发效率低下</li>
+<li>重复性劳动，无效等待过多，用户满意度低</li>
+</ul>
+<p>如果你经历过或正在经历传统开发模式的伤与痛，你是否用过/想过：</p>
+<ul>
+<li>什么时候可以不用再为开发/测试环境而苦恼</li>
+<li>什么时候可以不用再麻烦运维帮忙调试环境</li>
+<li>什么时候可以不用手动测试，自动帮我测试</li>
+<li>什么时候可以只专注于代码的开发</li>
+</ul>
+<blockquote>
+<p>既然如此，我们话不多说，一起来了解一下<code>CI</code>吧；当然了，如果是大佬，我这就班门弄斧了，还望大佬们批评指正。</p>
+</blockquote>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><ul>
+<li>持续：意为长期、频繁不断地</li>
+<li>集成：将一些孤立的事物或者元素通过某种方式联系在一起，从而构成一个有机整体的过程</li>
+</ul>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>是一种通过在应用开发阶段引入自动化来频繁向客户交付应用的方法</li>
+<li>是一种软件开发实践，项目成员能够频繁地进行集成，并通过自动化方式来尽快发现问题</li>
+</ul>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>需要有代码托管工具支持，如：<a href="https://github.com/">github</a>、<a href="https://gitee.com/">gitee</a></li>
+<li>需要有专门的集成服务器来执行集成构建，如：<a href="https://www.jenkins.io/zh/">Jenkins</a>、<a href="https://circleci.com/">CircleCI</a>、<a href="https://travis-ci.com/">TravisCI</a></li>
+<li>它是一个自动化的周期性集成测试过程，从检出代码、编译构建、运行测试、结果记录、测试统计等都是自动完成的，无需人工干预</li>
+</ul>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>可以提高软件开发和交付过程的透明度和洞察力</li>
+<li>有效减少重复过程，节省时间、成本和工作量，完全自动化，利于尽早发现问题</li>
+<li>可以帮助开发人员更加频繁地（有时甚至每天）将代码变更合并到共享分支或“主干”中</li>
+</ul>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><ul>
+<li>就是让产品可以快速迭代，同时还能保持高质量；即：高效率、高质量、高产出。</li>
+</ul>
+<p>以上仅代表个人对<code>CI</code>的理解，关于基础概念这一块，可详细读一读<a href="https://www.cnblogs.com/davenkin/archive/2012/02/25/continuous-integration-from-martin-fowler.html">「Martin Fowler的持续集成」</a></p>
+<hr>
+<h2 id="组成模块"><a href="#组成模块" class="headerlink" title="组成模块"></a>组成模块</h2><h3 id="仓库管理"><a href="#仓库管理" class="headerlink" title="仓库管理"></a>仓库管理</h3><blockquote>
+<p>一个好的仓库管理方式，在很多程度上，决定了研发之间的沟通协作方式；虽然是老生常谈的话题，但这个环节确实有必要拿出来捋一捋。到底是选择<code>mono repo</code>还是<code>multi repo</code>呢？我们来看看这其中的优缺点：</p>
+</blockquote>
+<ul>
+<li><code>mono repo</code><br>也就是常说的<strong>单体仓库</strong>（大仓模式），它是将所有的服务，全部放到一个代码库，包含了每个业务的服务代码和公共的<code>Lib</code>库、<code>Tools</code>集合；既然代码都放到一起，也就很好管理了，带来的好处也不少，比如：<ul>
+<li>易于开发者测试</li>
+<li>易于标准化代码</li>
+<li>易于开展Code Review</li>
+<li>易于共享公共组件，避免重复造轮子</li>
+<li>易于重构</li>
+</ul>
+</li>
+<li><code>multi repo</code><br>和单体仓库相反，为<strong>多仓库</strong>方式（小仓模式）；每个服务代码单独成库，各自为营，彼此之间，井水不犯河水，做了很好的隔离。也就说多仓库具备如下特点：<ul>
+<li>服务之间职责划分清晰</li>
+<li>易于扩展，服务之间的解耦</li>
+<li>限制clone范围，避免代码库完全泄漏</li>
+</ul>
+</li>
+</ul>
+<p>可以发现，<code>mono repo</code>的优点恰恰是<code>multi repo</code>的缺点，两者之间是互斥的关系；中小型的企业，一般用的是单体仓库，大型企业往往是多仓库；如果单论优点的个数，貌似mono repo确实更好一些，但其实也有一些大公司，用的是单体仓库，如：<code>Google</code>、<code>Facebook</code>、<code>Salesforce</code>.</p>
+<h3 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h3><blockquote>
+<p>但凡提交过代码，就一定会涉及到分支，至少也会有一个<code>master</code>默认分支；如果你是一个优秀的<strong style="color: orange">Coder</strong>，在分支使用上，必然有一定的讲究，比如<u>分支的命名、分支的存活周期</u>上。业内有很多的分支管理方法，包括著名的<strong style="color: blue">GitFlow</strong>、<strong style="color: blue">TBD</strong>以及从他们衍生出来的版本。</p>
+</blockquote>
+<p><img data-src="git_flow.png" alt="git_flow.png"></p>
+<ul>
+<li><code>feature</code>分支：具体要开发的功能的分支，完成后合并到develop</li>
+<li><code>develop</code>分支：开发的主分支，feature和release分支会基于此分支</li>
+<li><code>release</code>分支：用于发布新版本的分支，完成后合并到develop和master</li>
+<li><code>hotfix</code>分支：用于紧急修复已发布的产品问题的分支，完成后合并到develop和master</li>
+<li><code>master</code>分支：与产品环境代码保持一致的分支，也就是每次发布完成之后发布的功能分支就要合并于此，以保持master更新</li>
+</ul>
+<p><strong>持续集成</strong>往往会基于分支做逻辑，不同的分支往往代表了研发的不同阶段；<u>合并分支的过程，其实就是一次代码集成的过程</u>；一个好的分支策略，不仅能使研发养成良好的开发习惯，还能加大持续集成发现问题的可能性。</p>
+<h3 id="代码质量"><a href="#代码质量" class="headerlink" title="代码质量"></a>代码质量</h3><blockquote>
+<p>当然了，持续集成，最关心的当属<strong style="color: orange">代码质量</strong>这一块了；而在代码质量评估这个环节，可以做的事情很多，但却很难发现所有的问题，只能说尽可能地、尽快地去发现问题。<span style="color: blue">Martin Fowler</span>曾说过，”<u>持续集成并不能消除Bug，而是让它们非常容易发现和改正</u>“。</p>
+</blockquote>
+<ul>
+<li><p><code>编译构建</code><br>这个是肯定的，提交的代码如果编译都没法完成，下面的几步，根本没必要进行。有些公司，可能还会包含打包构建出产物的环节，但这属于持续交付，不应纳入持续集成环节。</p>
+</li>
+<li><p><code>代码评审</code><br>很多时候，我们会「因时间不够，需要急着上线」抑或是「代码太多，看不过来，也不想看」等原因不去<code>Code Review</code>。然而实际上，编写可维护代码的秘诀之一便是<code>Code Review</code>。这绝对不是一件易事，即便是Google，也花了很大的篇幅才说清楚他们在这一块的实践，感兴趣的朋友，可以来<a href="https://github.com/google/eng-practices/blob/master/review/reviewer/index.md"><span style="color: orange">这里</span></a>看看。很多代码管理平台，都自带了<code>code review</code>的特性，如<code>github</code>/<code>gitlab</code>/<code>gitee</code>等，也有对这一块做补充的Gerrit工具；前段时间，在<code>github</code>上看到了一个叫<code>ReviewDog</code>的产品，可以做到一些简单的自动化<code>review</code>工作，真感觉是个神器啊，必须respect一把。</p>
+</li>
+<li><p><code>持续测试</code><br>做到快速重复自动的测试，持续评估代码质量；这个过程主要是为了发现bug，确保主逻辑能走通；能做的测试很多，例如：</p>
+<ul>
+<li>单元测试：依赖于研发和QA及时编写和更新测试用例</li>
+<li>集成测试：多feature同时上线时的多功能测试阶段</li>
+<li>性能测试：服务接口上线前的压力测试</li>
+</ul>
+</li>
+<li><p><code>代码分析</code><br>可以做的<strong>lint</strong>检测很多，市面上也有很多工具平台，包括但不限于<u><span style="color: orange">SonarQube</span></u>、<u><span style="color: orange">TeskLink</span></u>、<u><span style="color: orange">FindBugs</span></u>、<u><span style="color: orange">CheckStyles</span></u>等。除了这些，我们可能还会做安全漏洞扫描，以及自定义的lint检测任务。</p>
+</li>
+</ul>
+<hr>
+<h2 id="设计实现"><a href="#设计实现" class="headerlink" title="设计实现"></a>设计实现</h2><p>终于来到了，大伙儿最关心的设计实现环节；其实，实现持续集成的过程，就是将上述组成模块拼接到一块，形成自动化的流水线；而一套<code>CI</code>的设计与实现，往往跟一家公司的规模、发展阶段、以及所使用的技术栈紧密相关，当然也可能包含有很重的历史包袱，这里给出几个范例，具体还需要大伙儿结合自身场景出发。</p>
+<h3 id="典型场景"><a href="#典型场景" class="headerlink" title="典型场景"></a>典型场景</h3><p><img data-src="classic_case.png" alt="典型场景"></p>
+<h3 id="微服务场景"><a href="#微服务场景" class="headerlink" title="微服务场景"></a>微服务场景</h3><p><img data-src="microservice_case.png" alt="微服务场景"></p>
+<h3 id="Cloud-Native"><a href="#Cloud-Native" class="headerlink" title="Cloud Native"></a><a href="https://github.com/kubernetes/test-infra/tree/master/prow">Cloud Native</a></h3><p><img data-src="cloud_native.png" alt="云原生"><br>其实总的来说，也就那么两条路子，要么自研、要么使用开源版；有能力和时间的公司，往往会选择自研，毕竟开源版，很多功能都是受限的，也无法很好地融入到企业技术栈，需要深度定制；所以你会发现，基于开源版二次开发，往往是大部分公司的路子。</p>
+<h2 id="参考案例"><a href="#参考案例" class="headerlink" title="参考案例"></a>参考案例</h2><h3 id="满帮"><a href="#满帮" class="headerlink" title="满帮"></a>满帮</h3><blockquote>
+<p>满帮由运满满+货车帮合并而来，技术栈也是融合了1-2年，CI/CD一块最终沿用了运满满的一套体系，而运满满的体系源自早期滴滴的一套体系。</p>
+</blockquote>
+<p>满帮的<code>CI</code>是测试团队负责的，每次打包构建都是用户手动触发的，可以节省资源，降低成本，避免无用的构建任务；<u>测试会在<code>Jenkins</code>构建的生命周期上做自己的逻辑，一旦构建过程中，发现问题，会去统计，并反馈到各个研发团队</u>。研发团队用的也是小仓文化，采用的分支比较简单，feature分支+master分支，无论哪一个分支，都需要在qa环境（等价于ppe/pre预发环境）部署测试通过，然后由测试老师进行线上的部署动作。环境的划分是dev/qa/prod，每个环境下，又会有不同的机房、不同的k8s甬道，研发通常会在dev的不同甬道下做自己的业务测试。</p>
+<h3 id="饿了么"><a href="#饿了么" class="headerlink" title="饿了么"></a>饿了么</h3><blockquote>
+<p>如果你对饿了么有一定了解，想必你也知道，饿了么的业务线（外卖、物流、商户、新零售、开放平台等）非常多，光<span style="color: orange">AppID</span>（应用服务标示）就多达上千（小仓模式），而这些业务往往需要快速迭代，很多时候的需求都是倒排期，各种CR需求也是常有的事情，加班也是出了名的；可想而知，饿了么每天的持续集成任务量，得有多大，不禁让人好奇饿了么的<strong>持续集成</strong>是如何设计实现的。</p>
+</blockquote>
+<p>饿了么的持续集成，经历了三代的发展（<span style="color: orange">Eless</span> -&gt; <span style="color: orange">ElessV2/APPOS</span> -&gt; <span style="color: orange">AONE</span>）；<span style="color: orange">AONE</span>是饿了么融入阿里体系后，使用的方案，这个没办法，集团内技术栈打通并统一是肯定的趋势。每个版本的UI我也记得不是很清楚了，下面的图仅为作者印象还原样子，不喜勿喷！！！<br><img data-src="eless_v1.png" alt="ELESS初代目"><div style="color: blue">初代目是基于Jenkins玩的，根据每个仓库的语言类别，执行Jenkins上对应的Job任务(例如：ci-python-job/ci-java-job)，每个Job任务，会根据仓库根目录下的CI YAML(类同gitlab-ci.yaml/travis-ci.yaml)完成编译构建之外的CI环节。</div></p>
+<p><img data-src="eless_v2.png" alt="ELESS二代目"><div style="color: blue">二代目去掉了Jenkins，因为Jenkins很容易出现任务堆积；虽说饿了么当时的Jenkins集群，node节点有十几台，但也还是会出现堆积等待的情况，成本也是一个问题，索性自研实现了jenkins环节。但无论是一代目还是二代目，只要有新的commit触发，便会触发新的构建任务，环境划分也是一致的。二代目，不过是在一代目的基础上，做了改进和优化，整个CI没有太大的变化。</div></p>
+<h4 id="环境划分"><a href="#环境划分" class="headerlink" title="环境划分"></a>环境划分</h4><ul>
+<li>alpha环境：开发自测环境</li>
+<li>beta环境：qa测试环境</li>
+<li>ppe/vip环境：预发环境，几乎等同于线上，仅允许办公网用户测试</li>
+<li>prod环境</li>
+</ul>
+<p>不过当时的环境存在很严重的资源互斥使用问题，多个研发的需求，没办法同时测试；A开发将自己的代码发布到alpha环境后，B开发如果也想在alpha环境测试，就只能把A开发的代码覆盖掉，这个是有问题的，整个请求链路无法自由调整。虽然每个服务所在的集群有自己的SOA Cluster名，可以在服务注册中心中，修改上游服务调用的Cluster名，做到测试的目的，但依旧不能同时测试多人的开发需求。其实完全，可以根据前端传入不同Header、或者动态域名来做请求链路区分的。</p>
+<h4 id="分支策略"><a href="#分支策略" class="headerlink" title="分支策略"></a>分支策略</h4><p><span style="color: orange">Eless</span>在分支上并未做特殊的限制，整体上和git flow是一致的，发布的时候，也没有锁分支（仅限<code>release</code>分支），也就是说，任何一个分支都可以发布到线上，只不过每一个分支下的<code>commit</code>，必须是上一个环境发布测试通过后，手动点击<code>test pass</code>，才可以发到下一个环境；当准备<code>ppe</code> -&gt; <code>prod</code>时，需要测试负责人点通过，才可以发布<code>prod</code>。使用<span style="color: orange">AONE</span>后，可以做集成测试，多个开发分支，会合并到一个集成测试分支下，用作多需求同时测试，这个过程会遭遇频繁地解决冲突，用起来也是够呛（😓）；不过冲突只是提早被发现了，这个过程无法避免。AoneFlow只有feature、release、master三类分支，但你却能看到其他分支模式的影子；它基本上兼顾了 TrunkBased 的“易于持续集成”和 GitFlow 的“易于管理需求”特点，同时规避掉 GitFlow 的那些繁文缛节。不过AONE平台集成了<u>在线解决冲突</u>、<u>在线Code Review</u>、<u>发布完毕自动合并release分支到master分支</u>的优点，可以保证线上的包都经过了所有环境的验证。<br><img data-src="waimai_branch.png" alt="Eless分支策略"></p>
+<blockquote>
+<p>不同研发团队，可能会有所差别，具体看团队怎么玩。</p>
+</blockquote>
+<h3 id="哔哩哔哩"><a href="#哔哩哔哩" class="headerlink" title="哔哩哔哩"></a>哔哩哔哩</h3><blockquote>
+<p>无论是饿了么，还是满帮，CI过程都脱离了<span style="color: orange">研发场景</span>，或者说比较简单；<u>B站的CI和研发绑定的尤为密切，整个CI过程，围绕PR的生命周期来，只要CI（各种各样的Lint检测任务）不通过，就不让合入代码</u>。不过有一点确实挺好奇，B站后端的CI和CD是完全割裂的，没有串起来，形成流水线。</p>
+</blockquote>
+<p>B站的研发测试环境，主要依赖于服务节点染色的概念，和k8s甬道（给pod打标签）的方式是类似的，不过B站每个染色节点都是单独可测的，上下游请求链路完全打通，也就是说：它满足了多需求可以同时测试。</p>
+<p>细心的朋友，可能会发现，上述的三个案例，正好是「第四点」说的三种设计实现方式。</p>
+<h3 id="阿里巴巴"><a href="#阿里巴巴" class="headerlink" title="阿里巴巴"></a>阿里巴巴</h3><p><img data-src="ali_cloud.png" alt="阿里云效"></p>
+<h3 id="腾讯Coding"><a href="#腾讯Coding" class="headerlink" title="腾讯Coding"></a>腾讯Coding</h3><p><img data-src="tencent_coding.png" alt="腾讯Coding"></p>
+<p>不难发现，无论是阿里、腾讯，还是百度，他们的CI设计都是和CD完全串起来的，而且没有脱离研发场景。但是也不难发现，这三家公司的设计，大体都长一个样子，你懂我的意思吧（😂）。</p>
+]]></content>
+      <categories>
+        <category>CI</category>
+      </categories>
+      <tags>
+        <tag>CI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端常见面试题</title>
+    <url>/2021/09/27/frontend-interview/</url>
+    <content><![CDATA[<h2 id="前端工程师"><a href="#前端工程师" class="headerlink" title="前端工程师"></a>前端工程师</h2><h3 id="技能要求"><a href="#技能要求" class="headerlink" title="技能要求"></a>技能要求</h3><ul>
+<li>熟悉<code>Vue</code>/<code>React</code>其中一种</li>
+<li>熟悉<code>Webpack</code>配置</li>
+<li>精通<code>Html5</code>、<code>Javascript</code>，熟练掌握主流<code>mvc</code>、<code>mvvm</code>前端框架</li>
+<li>具备良好的数据结构和算法知识</li>
+<li>对前端有浓厚的兴趣，具有快速学习能力，乐于探索，并有良好的编码习惯</li>
+</ul>
+<h3 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h3><ul>
+<li>vue指令，v-show指令和v-if指令的区别是什么？</li>
+<li>data为什么是一个函数而不是对象</li>
+<li>vue常用指令<ul>
+<li>v-model 多用于表单元素实现双向数据绑定（同angular中的ng-model）</li>
+<li>v-bind 动态绑定 作用： 及时对页面的数据进行更改</li>
+<li>v-on:click 给标签绑定函数，可以缩写为@，例如绑定一个点击函数 函数必须写在methods里面</li>
+<li>v-for 格式： v-for=”字段名 in(of) 数组json” 循环数组或json(同angular中的ng-repeat)</li>
+<li>v-show 显示内容 （同angular中的ng-show）</li>
+<li>v-hide 隐藏内容（同angular中的ng-hide）</li>
+<li>v-if 显示与隐藏 （dom元素的删除添加 同angular中的ng-if 默认值为false）</li>
+<li>v-else-if 必须和v-if连用</li>
+<li>v-else 必须和v-if连用 不能单独使用 否则报错 模板编译错误</li>
+<li>v-text 解析文本</li>
+<li>v-html 解析html标签</li>
+<li>v-bind:class 三种绑定方法 1、对象型 ‘{red:isred}’ 2、三元型 ‘isred?”red”:”blue”‘ 3、数组型 ‘[{red:”isred”},{blue:”isblue”}]’</li>
+<li>v-once 进入页面时 只渲染一次 不在进行渲染</li>
+<li>v-cloak 防止闪烁</li>
+<li>v-pre 把标签内部的元素原位输出</li>
+</ul>
+</li>
+<li>组件传值方式有哪些，父子之间的数据如果需要相互访问，可以有哪些方式？<ul>
+<li>父传子：子组件通过props[‘xx’] 来接收父组件传递的属性 xx 的值</li>
+<li>子传父：子组件通过 this.$emit(‘fnName’,value) 来传递,父组件通过接收 fnName 事件方法来接收回调</li>
+<li>使用Vuex</li>
+</ul>
+</li>
+<li>vuex的核心概念<ul>
+<li>state =&gt; 基本数据</li>
+<li>getters =&gt; 从基本数据派生的数据</li>
+<li>mutations =&gt; 修改数据，同步</li>
+<li>actions =&gt; 修改数据，异步 (Action 提交的是 mutation，而不是直接变更状态)</li>
+<li>modules =&gt; 模块化Vuex</li>
+</ul>
+</li>
+<li>目前的前端开发架子，是？<ul>
+<li>路由是用哪个库？</li>
+<li>UI组件是哪个？</li>
+<li>css解析是哪个？</li>
+<li>ajax异步接口请求，用的是哪个库？</li>
+<li>图表类库，都用过哪些</li>
+<li>全局状态维护，用的是哪个库？</li>
+</ul>
+</li>
+<li>css如何只在当前组件起作用？</li>
+<li>vue实现数据双向绑定的原理</li>
+<li>vue的生命周期函数，都有哪些？</li>
+<li>css的选择器，都有哪些？</li>
+<li>cookie和session的区别</li>
+<li>localStorage和SessionStorage的区别</li>
+<li>get和post的区别</li>
+<li>说一说http的缓存</li>
+<li>常见状态码的含义和产生原因</li>
+<li>从浏览器输入url后都经历了什么</li>
+</ul>
+]]></content>
+      <categories>
+        <category>vue</category>
+        <category>javascript</category>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>javascript</tag>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git操作指南</title>
+    <url>/2021/08/02/git-ops/</url>
+    <content><![CDATA[<h2 id="Git-SubModule"><a href="#Git-SubModule" class="headerlink" title="Git SubModule"></a>Git SubModule</h2><h3 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git submodule init &amp;&amp; git submodule update   <span class="comment"># 将子模块下载到本地</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/xx/xx.git --recursive  <span class="comment"># 此命令可一次性下载好主库和子库</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule sync  <span class="comment"># 修改.gitmodule文件后，用此命令同步子模块信息</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule add https://github.com/xxxx/xxxxx.git  <span class="comment"># 添加submodule</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="批量操作submodule"><a href="#批量操作submodule" class="headerlink" title="批量操作submodule"></a>批量操作submodule</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git submodule foreach &lt;<span class="built_in">command</span>&gt;</span></span><br><span class="line">比如:</span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule foreach git checkout master</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule foreach git submodule update</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="删除git-submodule"><a href="#删除git-submodule" class="headerlink" title="删除git submodule"></a>删除git submodule</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git add .gitmodules        <span class="comment"># 第一步</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git rm --cached submodule_name    <span class="comment"># 第二步</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> rm -rf submodule_name   <span class="comment"># 第三步：删除submodule目录</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 第四步：编辑.gitmodules文件, 移除对应的submodule信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 第五步：编辑.git/modules文件, 移除对应的submodule信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 第六步：编辑.git/config 移除对应的submodule信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ===== 上述方式不行，可尝试下述</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule deinit &lt;submodule-name&gt; <span class="comment"># 新版git</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ===== 上述方式不行，可尝试下述</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git rm &lt;submodule-name&gt; <span class="comment"># 旧版git</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="子仓如何与远端保持同步"><a href="#子仓如何与远端保持同步" class="headerlink" title="子仓如何与远端保持同步"></a>子仓如何与远端保持同步</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 子仓的更新，是单独的，需要进入子仓目录，手动与远端同步，例如：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> sub-dir &amp;&amp; git fetch origin master &amp;&amp; git rebase origin/master</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 完成同步后，需要在主仓下提交子仓的改动，以保存主仓对子仓的最新引用</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Git-Ops"><a href="#Git-Ops" class="headerlink" title="Git Ops"></a>Git Ops</h2><h3 id="查看last-commitId"><a href="#查看last-commitId" class="headerlink" title="查看last commitId"></a>查看last commitId</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> -1 --pretty=format:%H <span class="comment"># 完整的</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出 7b6b2803d2b7135b239d062847816e55a810371e</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> -1 --pretty=format:%h <span class="comment"># 前7位</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出 7b6b280</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看某次commit的内容"><a href="#查看某次commit的内容" class="headerlink" title="查看某次commit的内容"></a>查看某次commit的内容</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git show commitId</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看目录的diff信息"><a href="#查看目录的diff信息" class="headerlink" title="查看目录的diff信息"></a>查看目录的diff信息</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git diff &lt;dir-name&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="diff迁移"><a href="#diff迁移" class="headerlink" title="diff迁移"></a>diff迁移</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git diff &gt; diff.patch</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git apply --<span class="built_in">stat</span> diff.patch</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git apply --check diff.patch</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git apply diff.patch</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看log的其他信息"><a href="#查看log的其他信息" class="headerlink" title="查看log的其他信息"></a>查看log的其他信息</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git --no-pager log -2 --author=&quot;HQ&quot; --pretty=format:&quot;%h&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看分支合并图"><a href="#查看分支合并图" class="headerlink" title="查看分支合并图"></a>查看分支合并图</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> --graph</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看标签信息"><a href="#查看标签信息" class="headerlink" title="查看标签信息"></a>查看标签信息</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git show &lt;tag-name&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看git命令操作历史"><a href="#查看git命令操作历史" class="headerlink" title="查看git命令操作历史"></a>查看git命令操作历史</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git reflog</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="git-rebase发生冲突怎么办"><a href="#git-rebase发生冲突怎么办" class="headerlink" title="git rebase发生冲突怎么办"></a>git rebase发生冲突怎么办</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git rebase --skip  <span class="comment"># 抛弃本地的 commit，采用远程的 commit。慎用：因为你本地的修改都会失去</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git rebase --abort <span class="comment"># 终止此次 rebase 操作</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git rebase --<span class="built_in">continue</span> <span class="comment"># 手动处理冲突的文件：执行git add .，再 git rebase --continue，反复操作直到解决完所有冲突，并合并到分支上。</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 切记，整个rebase解决冲突的过程中，都不需要自己去单独执行commit动作</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="删除本地认证"><a href="#删除本地认证" class="headerlink" title="删除本地认证"></a>删除本地认证</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git config --global --<span class="built_in">unset</span> credential.helper</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config credential.helper store  <span class="comment"># window的可能需要手动找到git的凭证删掉，见下图</span></span></span><br></pre></td></tr></table></figure>
+<p><img data-src="git_identity.png"></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bash a1112aa1.sh</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gitlab维护指南</title>
+    <url>/2021/08/02/gitlab-ctl/</url>
+    <content><![CDATA[<h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><h3 id="彻底卸载gitlab"><a href="#彻底卸载gitlab" class="headerlink" title="彻底卸载gitlab"></a>彻底卸载gitlab</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl stop</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl uninstall</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl cleanse</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo rm -rf /opt/gitlab</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可通过`sudo gitlab-ctl <span class="built_in">help</span>`来获取相关命令</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo gitlab-ctl uninstall，关于其的说明是</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Kill all processes and uninstall the process supervisor (data will be preserved).</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 但在实际操作中，只通过uninstall无法彻底卸载gitlab</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo gitlab-ctl reconfigure</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="重载配置文件"><a href="#重载配置文件" class="headerlink" title="重载配置文件"></a>重载配置文件</h3><p><code>gitlab-ctl reconfigure</code></p>
+<h3 id="启动所有-gitlab-组件"><a href="#启动所有-gitlab-组件" class="headerlink" title="启动所有 gitlab 组件"></a>启动所有 gitlab 组件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl start         <span class="comment"># 启动所有服务</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl start unicorn <span class="comment"># 启动单个服务</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="停止所有-gitlab-组件"><a href="#停止所有-gitlab-组件" class="headerlink" title="停止所有 gitlab 组件"></a>停止所有 gitlab 组件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl stop          <span class="comment"># 停止所有服务</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl stop unicorn  <span class="comment"># 停止单个服务</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="重启所有-gitlab-组件"><a href="#重启所有-gitlab-组件" class="headerlink" title="重启所有 gitlab 组件"></a>重启所有 gitlab 组件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl restart         <span class="comment"># 重启所有服务</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl restart unicorn <span class="comment"># 重启单个服务</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看服务的活动日志"><a href="#查看服务的活动日志" class="headerlink" title="查看服务的活动日志"></a>查看服务的活动日志</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl tail         <span class="comment"># 查看所有服务的活动日志</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl tail unicorn <span class="comment"># 查看单个服务的活动日志</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><p><code>gitlab-ctl status</code></p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gorm血泪史</title>
+    <url>/2021/09/10/go-gorm-blood-tears/</url>
+    <content><![CDATA[<h3 id="Rows没有Close"><a href="#Rows没有Close" class="headerlink" title="Rows没有Close"></a>Rows没有Close</h3><blockquote>
+<p><strong>上下文</strong>：有个实习生，写了一个需求，结果for循环到第十次的时候，一直卡死，没有任何响应，最终请求超时；不仅如此，后续的接口请求，都是没有处理的，整个程序仿佛处于假死状态。这让当时的我感到十分诧异，我的第一个感觉是存在死循环，为了证实猜想，开始对整个for循环体做单步调试，结果发现，并不存在死循环，程序卡在某个SQL执行处；于是我就想，难道是慢SQL，导致一直从DB拿不到返回结果，但很快我就排除了这种可能性，毕竟问题是发生第十次，而不是第一次；在问题稳定复现后，我开始总结规律，问题复现一定是在for循环执行到第十次的时候，就有这么巧吗，回回都是第十次，也太邪乎了。</p>
+</blockquote>
+<p><u>针对上述的问题，毫无疑问，肯定是出了DB上的问题，然后又是第十次稳定复现，我开始怀疑DB连接的问题，比如连接被吃满，不够用</u>；于是乎，我开始检查程序连接DB的配置，发现active激活连接数，配置的最大值就是10个，这不刚好就是10嘛，<span style="color:orange">这不是巧了嘛！这不是巧了嘛！</span>那就调大嘛，结果然并软，反而换了一个报错<u>（MySQL error code 1135 (ER_CANT_CREATE_THREAD): Can’t create a new thread (errno %d); if you are not out of available memory, you can consult the manual for a possible OS-dependent bug）</u>，这又是什么鬼啊，why！！！<br><img data-src="question.jpeg">哼，不陪你玩了，哪儿凉快哪儿呆着去吧；哈哈，回到正题，不然要被你们打😄</p>
+<p><strong style="font-size:20px;color:blue">难道不是连接的问题吗，我开始更换思路</strong>；我的SQL请求到底有没有打到MySQL服务器呢，我开始求助DBA，希望帮捞下，第十次的SQL执行日志，得到的反馈是一切正常。what，不对啊；因为程序DB操作，用的是Gorm，我开始查阅官方文档，搜索github上的issue，并为找到任何有用的消息。对新出现的error信息，同向DBA老师求证后，排除了，没办法，我只能把连接配置，改回去，继续排查问题。然后一步步的检查代码，发现DB操作，<u style="color:red">少了一个释放连接的动作</u>，于是我加上，赶紧验证了一下，好在问题得到解决了。<br><img data-src="good.jpeg">我们来看看代码：</p>
+<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原生 SQL</span></span><br><span class="line">rows, err := db.Raw(<span class="string">&quot;select name, age, email from users where name = ?&quot;</span>, <span class="string">&quot;jinzhu&quot;</span>).Rows()</span><br><span class="line"><span class="keyword">defer</span> rows.Close()   <span class="comment">// 就是这行代码少了，导致的</span></span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">  rows.Scan(&amp;name, &amp;age, &amp;email)</span><br><span class="line">  <span class="comment">// 业务逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查阅资料后，大胆猜测：<u>有可能是mysql每次去查询的时候，获取一个连接，没有空闲的连接，则创建一个新的，查询完成后释放连接到连接池，以便下一个请求使用，而由于没有调用rows.Close()，导致拿了连接之后，没有再放回连接池复用；而我的连接配置最大就是10，所以在第十次执行完后，第十一次，已经无法分配新的连接去执行SQL，最终一直等待，拿不到结果。</u><a href="https://segmentfault.com/a/1190000021493463" target="_blank">感兴趣的朋友，可以看看这篇文章，基于gorm源码解释了问题原因</a>；未执行rows.Close()还可能导致内存泄漏、启动一堆的goroutine不退出等问题。</p>
+]]></content>
+      <categories>
+        <category>gorm</category>
+      </categories>
+      <tags>
+        <tag>gorm</tag>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go 一百问</title>
+    <url>/2021/04/01/go-hundred-questions/</url>
+    <content><![CDATA[<h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1: 为啥需要私有goproxy？"></a>Q1: 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote>
+<p>我们知道在大陆的网络环境是无法访问到<code>http://golang.org</code>等<code>google</code>的网站的。但在开发日常中使用的很多依赖包或系统包依赖都是在<code>google</code>的服务器上。为了解决无法加载依赖的问题，国内也有很多种解决方案。一种是使用<code>http://goproxy.io</code>或七牛主导的<code>http://goproxy.cn</code>。<br>在企业里，有很多情况是生产网络或测试网络环境是无法正常访问外网的，为了解决这个问题可能需要自己搭建一个<code>proxy</code>来管理依赖包。</p>
+</blockquote>
+<h4 id="可选配置"><a href="#可选配置" class="headerlink" title="可选配置"></a>可选配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPROXY=https://mirrors.aliyun.com/goproxy/</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://proxy.golang.org,direct</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gonexus.dev</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://athens.azurefd.net</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gocenter.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
+<h3 id="Q2-Make和New的异同？"><a href="#Q2-Make和New的异同？" class="headerlink" title="Q2: Make和New的异同？"></a>Q2: <code>Make</code>和<code>New</code>的异同？</h3><ul>
+<li>slice、map和channel，使用make</li>
+<li>array、struct和所有的值类型，使用new<blockquote>
+<p>内置函数 new 计算类型的⼤小，为其分配零值内存，返回指针。⽽ make 会被编译器翻译成具体的创建函数，由其分配内存和初始化成员结构，返回对象⽽⾮指针。new和make都是在堆上分配内存，只是行为有所不同。new分配完后会返回指向其的内存地址(指针)，make是返回整个数值/对象。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Q3-数组和切片陷阱"><a href="#Q3-数组和切片陷阱" class="headerlink" title="Q3: 数组和切片陷阱"></a>Q3: 数组和切片陷阱</h3><h4 id="陷阱一"><a href="#陷阱一" class="headerlink" title="陷阱一"></a>陷阱一</h4><figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a [2]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">2</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a *[2]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	(*a)[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">2</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(&amp;a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="陷阱二"><a href="#陷阱二" class="headerlink" title="陷阱二"></a>陷阱二</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a = <span class="built_in">append</span>(a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a []<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">	a = <span class="built_in">append</span>(a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">	<span class="keyword">return</span> a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	a = foo(a)   <span class="comment">// 可读性更好</span></span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a *[]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	*a = <span class="built_in">append</span>(*a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line">	(*a)[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(&amp;a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Q4-for-vs-for…range的性能问题"><a href="#Q4-for-vs-for…range的性能问题" class="headerlink" title="Q4: for vs for…range的性能问题"></a>Q4: for vs for…range的性能问题</h3><blockquote>
+<p>与 for 不同的是，range 对每个迭代值都创建了一个拷贝。因此如果每次迭代的值内存占用很小的情况下，for 和 range 的性能几乎没有差异，但是如果每个迭代值内存占用很大，两者的差距就很明显了.</p>
+</blockquote>
+<h4 id="陷阱一-1"><a href="#陷阱一-1" class="headerlink" title="陷阱一"></a>陷阱一</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// for 语句中的迭代变量在每次迭代中都会重用, 即 for 中创建的闭包函数接收到的参数始终是同一个变量, 在`goroutine`开始执行时都会得到同一个迭代值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    data := []<span class="keyword">string</span>&#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> data &#123;</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            fmt.Println(v)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">    <span class="comment">// 输出 three three three</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    data := []<span class="keyword">string</span>&#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> data &#123;</span><br><span class="line">        vCopy := v</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            fmt.Println(vCopy)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">    <span class="comment">// 输出 one two three</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    data := []<span class="keyword">string</span>&#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> data &#123;</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(in <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">            fmt.Println(in)</span><br><span class="line">        &#125;(v)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">    <span class="comment">// 输出 one two three</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Q5-字符串如何实现高效拼接"><a href="#Q5-字符串如何实现高效拼接" class="headerlink" title="Q5: 字符串如何实现高效拼接?"></a>Q5: 字符串如何实现高效拼接?</h3><blockquote>
+<p>一般我们拼接字符串时，会使用如下几种方式：</p>
+<ul>
+<li>使用操作符<code>+</code>，此方式最差</li>
+<li>使用<code>fmt.Sprintf</code></li>
+<li>使用<code>strings.Builder</code>，此方式最佳</li>
+<li>使用<code>bytes.Buffer</code></li>
+<li>使用<code>[]byte</code><br>感兴趣的朋友，可以使用<code>benchmark</code>做下测试</li>
+</ul>
+</blockquote>
+<h3 id="Q6-常见导致Go程序OOM的情况"><a href="#Q6-常见导致Go程序OOM的情况" class="headerlink" title="Q6: 常见导致Go程序OOM的情况"></a>Q6: 常见导致<code>Go</code>程序<code>OOM</code>的情况</h3><ul>
+<li>递归调用函数导致栈溢出</li>
+<li><code>Goroutine</code>永久不退出，单个协程一般占4k，若堆积，就会导致<code>OOM</code></li>
+</ul>
+<h3 id="Q7-如何退出协程"><a href="#Q7-如何退出协程" class="headerlink" title="Q7: 如何退出协程?"></a>Q7: 如何退出协程?</h3><blockquote>
+<p>超时陷阱</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doBadthing</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">	done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeout</span><span class="params">(f <span class="keyword">func</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span>) <span class="title">error</span></span> &#123;</span><br><span class="line">	done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line">	<span class="keyword">go</span> f(done)</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-done:</span><br><span class="line">		fmt.Println(<span class="string">&quot;done&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	<span class="keyword">case</span> &lt;-time.After(time.Millisecond):</span><br><span class="line">		<span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;timeout&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">timeout(doBadthing)</span><br></pre></td></tr></table></figure>
+<p><em>上述<code>doBadthing</code>协程，永久不会退出，会死锁的，针对上述问题，可以有哪些解决办法?</em></p>
+<ul>
+<li>思路一：保证协程能够执行完毕，不至于一直阻塞，可以给<code>channel</code>设置缓冲区<br>eg: <code>done := make(chan bool, 1)</code></li>
+<li>思路二：仿照主函数<code>timeout</code>，也利用<code>select</code>来尝试发送，发送失败也能理解返回<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doGoodthing</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> done &lt;- <span class="literal">true</span>:</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Q8-可以强制kill掉goroutine吗"><a href="#Q8-可以强制kill掉goroutine吗" class="headerlink" title="Q8: 可以强制kill掉goroutine吗?"></a>Q8: 可以强制<code>kill</code>掉<code>goroutine</code>吗?</h3><p><em>答案是不能，<code>goroutine</code>只能自己退出，而不能被其他<code>goroutine</code>强制关闭或者杀死</em></p>
+<h3 id="Q9-如何优雅正确的关闭通道"><a href="#Q9-如何优雅正确的关闭通道" class="headerlink" title="Q9: 如何优雅正确的关闭通道?"></a>Q9: 如何优雅正确的关闭通道?</h3><blockquote>
+<p>我们知道一个已经关闭的channel，如果尝试再次close，会导致panic，虽然可以通过recover使程序恢复正常，但很粗鲁；作为文明人，自然要礼貌.</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> MyChannel <span class="keyword">struct</span> &#123;</span><br><span class="line">	C    <span class="keyword">chan</span> T</span><br><span class="line">	once sync.Once</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMyChannel</span><span class="params">()</span> *<span class="title">MyChannel</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;MyChannel&#123;C: <span class="built_in">make</span>(<span class="keyword">chan</span> T)&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mc *MyChannel)</span> <span class="title">SafeClose</span><span class="params">()</span></span> &#123;</span><br><span class="line">	mc.once.Do(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="built_in">close</span>(mc.C)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q10-请列举一些你所知道的内置函数"><a href="#Q10-请列举一些你所知道的内置函数" class="headerlink" title="Q10: 请列举一些你所知道的内置函数?"></a>Q10: 请列举一些你所知道的内置函数?</h3><ul>
+<li>len、cap</li>
+<li>close、copy、append</li>
+<li>panic、recover</li>
+<li>new、make</li>
+</ul>
+<h3 id="Q11-Go语言的执行过程是-或者说init函数的执行时机是"><a href="#Q11-Go语言的执行过程是-或者说init函数的执行时机是" class="headerlink" title="Q11: Go语言的执行过程是? 或者说init函数的执行时机是?"></a>Q11: Go语言的执行过程是? 或者说init函数的执行时机是?</h3><p><img data-src="go_import.png" alt="go_import"><br><em>init函数是Go程序初始化的一部分，而Go程序的初始化先于main函数；runtime会在运行时解析包依赖关系，依次完成初始化，执行顺序如下：</em></p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> import –&gt; const –&gt; var –&gt; init() –&gt; main()</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 每个包首先初始化包作用域的常量和变量（常量优先于变量），然后执行包的 init() 函数。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 同一个包，甚至是同一个源文件可以有多个 init() 函数。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> init() 函数没有入参和返回值，不能被其他函数调用，同一个包内多个 init() 函数的执行顺序不作保证</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Q12-map如何顺序读取"><a href="#Q12-map如何顺序读取" class="headerlink" title="Q12: map如何顺序读取?"></a>Q12: map如何顺序读取?</h3><p><em>map是无序的，不能顺序读取，要想顺序读取，第一个要解决的问题就是，把ｋｅｙ变得有序，然后通过key取值。</em></p>
+<h3 id="Q13-说出一个context包的用途"><a href="#Q13-说出一个context包的用途" class="headerlink" title="Q13: 说出一个context包的用途"></a>Q13: 说出一个context包的用途</h3><ul>
+<li>避免<code>Goroutine</code>内存泄漏<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line"></span><br><span class="line">    ch := <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span> &lt;-<span class="title">chan</span> <span class="title">int</span></span> &#123;</span><br><span class="line">        ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; ; i++ &#123;</span><br><span class="line">                <span class="keyword">select</span> &#123;</span><br><span class="line">                <span class="keyword">case</span> &lt;- ctx.Done():</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                <span class="keyword">case</span> ch &lt;- i:</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; ()</span><br><span class="line">        <span class="keyword">return</span> ch</span><br><span class="line">    &#125;(ctx)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> ch &#123;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">        <span class="keyword">if</span> v == <span class="number">5</span> &#123;</span><br><span class="line">            cancel()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<em>下面的 for 循环停止取数据时，就用 cancel 函数，让另一个协程停止写数据。如果下面 for 已停止读取数据，上面 for 循环还在写入，就会造成内存泄漏。</em></li>
+</ul>
+<h3 id="Q14-如何跳出for-select循环"><a href="#Q14-如何跳出for-select循环" class="headerlink" title="Q14: 如何跳出for select循环?"></a>Q14: 如何跳出for select循环?</h3><p><em>通常在for循环中，使用break可以跳出循环，但是注意在go语言中，for select配合时，break 并不能跳出循环</em></p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ForSelectLoop</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span>&#123;</span><br><span class="line"> EXIT:</span><br><span class="line">    <span class="keyword">for</span>  &#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> v, ok := &lt;-ch:</span><br><span class="line">            <span class="keyword">if</span> !ok &#123;</span><br><span class="line">                fmt.Println(<span class="string">&quot;close channel&quot;</span>, v)</span><br><span class="line">                <span class="keyword">break</span> EXIT   <span class="comment">//goto EXIT2</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            fmt.Println(<span class="string">&quot;ch val =&quot;</span>, v)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//EXIT2:</span></span><br><span class="line">    fmt.Println(<span class="string">&quot;exit ForSelectLoop&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q15-哪些情况，会导致go触发异常"><a href="#Q15-哪些情况，会导致go触发异常" class="headerlink" title="Q15: 哪些情况，会导致go触发异常?"></a>Q15: 哪些情况，会导致go触发异常?</h3><ul>
+<li>NPE，空指针异常，对空指针做了解析引用</li>
+<li>索引溢出/下标越界</li>
+<li>除数为0</li>
+<li>调用panic函数</li>
+</ul>
+<h3 id="Q16-Slice的原理是啥"><a href="#Q16-Slice的原理是啥" class="headerlink" title="Q16: Slice的原理是啥?"></a>Q16: Slice的原理是啥?</h3><blockquote>
+<p>切片是基于数组实现的，它的底层是数组，它自己本身非常小，是只有3个字段的struct类型：</p>
+<ul>
+<li>指向底层数据的指针</li>
+<li>切片的长度</li>
+<li>切片的容量</li>
+</ul>
+</blockquote>
+<h3 id="Q17-Map的底层实现是基于什么数据结构"><a href="#Q17-Map的底层实现是基于什么数据结构" class="headerlink" title="Q17: Map的底层实现是基于什么数据结构?"></a>Q17: Map的底层实现是基于什么数据结构?</h3><p><code>散列表</code></p>
+<h3 id="Q18-多个defer函数同时存在时，程序会如何处理"><a href="#Q18-多个defer函数同时存在时，程序会如何处理" class="headerlink" title="Q18: 多个defer函数同时存在时，程序会如何处理?"></a>Q18: 多个defer函数同时存在时，程序会如何处理?</h3><ul>
+<li><code>先进后出，后进先出的栈处理方式</code></li>
+<li><code>defer</code>在<code>return</code>语句之后执行，但在函数退出之前，<code>defer</code>可以修改返回值</li>
+</ul>
+<h3 id="Q19-空Select有什么用，如何避免死锁"><a href="#Q19-空Select有什么用，如何避免死锁" class="headerlink" title="Q19: 空Select有什么用，如何避免死锁?"></a>Q19: 空Select有什么用，如何避免死锁?</h3><ul>
+<li>阻塞主协程</li>
+<li>主线程内，存在其他运行的协程即可</li>
+</ul>
+<h3 id="Q20-空结构体struct-占内存空间吗，可以在哪些场景下使用"><a href="#Q20-空结构体struct-占内存空间吗，可以在哪些场景下使用" class="headerlink" title="Q20: 空结构体struct{}占内存空间吗，可以在哪些场景下使用"></a>Q20: 空结构体struct{}占内存空间吗，可以在哪些场景下使用</h3><ul>
+<li><code>struct&#123;&#125;</code>不占用内存空间，<code>unsafe.Sizeof</code>可说明</li>
+</ul>
+<p>实用场景</p>
+<ul>
+<li>基于map实现set，对于集合来说，只需要map的键，而不需要值</li>
+<li>不发送任何数据的信道，只用来通知子协程(goroutine)执行任务，或只用来控制协程并发度</li>
+<li>仅包含方法的结构体，虽说可以为任意数据结构绑定方法，但其他类型都需要占用额外的内存空间</li>
+</ul>
+<h3 id="Q21-Go里面，有异常类型的概念吗？"><a href="#Q21-Go里面，有异常类型的概念吗？" class="headerlink" title="Q21: Go里面，有异常类型的概念吗？"></a>Q21: Go里面，有异常类型的概念吗？</h3><blockquote>
+<p>Go 没有异常类型，只有错误类型（Error），通常使用返回值来表示异常状态</p>
+</blockquote>
+<h3 id="Q22-什么是-rune-类型"><a href="#Q22-什么是-rune-类型" class="headerlink" title="Q22: 什么是 rune 类型?"></a>Q22: 什么是 rune 类型?</h3><blockquote>
+<p>正常ASCII码的所有值，只需要7bit就能全部表示，但只能表示英文字母在内的128个字符；为了统一世界上所有的语言，引入了Unicode编码，它是ASCII的超集；<br>它能表示所有字符，而Go里面，unicode称之为rune，是int32类型的别名；在Go语言中，字符串的底层表示是byte(8bit)序列，而非rune(32 bit)序列。<br>Go的默认字符串编码方式是UTF8，一个汉字占3个字节。下面的输出，你看懂了吗?</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">fmt.Println(<span class="built_in">len</span>(<span class="string">&quot;Go一百问&quot;</span>)) <span class="comment">// 11</span></span><br><span class="line">fmt.Println(<span class="built_in">len</span>([]<span class="keyword">rune</span>(<span class="string">&quot;Go一百问&quot;</span>))) <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Q23-字符串打印时，-v和-v的区别"><a href="#Q23-字符串打印时，-v和-v的区别" class="headerlink" title="Q23: 字符串打印时，%v和%+v的区别"></a>Q23: 字符串打印时，<code>%v</code>和<code>%+v</code>的区别</h3><p><em>%v 和 %+v 都可以用来打印 struct 的值，但%v 仅打印各个字段的值，%+v 还会打印各个字段的名称</em></p>
+<h3 id="Q24-Go中如何定义enum枚举值"><a href="#Q24-Go中如何定义enum枚举值" class="headerlink" title="Q24: Go中如何定义enum枚举值"></a>Q24: Go中如何定义enum枚举值</h3><p><em>使用常量(const)来表示枚举值</em></p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> EnumType <span class="keyword">int32</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	XXXXX EnumType = <span class="literal">iota</span></span><br><span class="line">	YYYYY</span><br><span class="line">	ZZZZZ</span><br><span class="line">	DDDDD</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q25-Go语言的局部变量是分配在栈上，还是堆上"><a href="#Q25-Go语言的局部变量是分配在栈上，还是堆上" class="headerlink" title="Q25: Go语言的局部变量是分配在栈上，还是堆上?"></a>Q25: Go语言的局部变量是分配在栈上，还是堆上?</h3><blockquote>
+<p>这个由编译器决定，当Go编译器检测到变量逃出其作用域(内存逃逸)时，就会将其分配到堆上，防止因函数调用结束，其对应的资源被释放，而出现变量无法被问题的问题<br>通常当变量的作用域没有超出函数范围时，变量就可以被分配到栈上，反之必须分配到堆上.</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">()</span> *<span class="title">int</span></span> &#123;</span><br><span class="line">	v := <span class="number">11</span></span><br><span class="line">	<span class="keyword">return</span> &amp;v</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	m := foo()</span><br><span class="line">	<span class="built_in">println</span>(*m) <span class="comment">// 11</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>foo() 函数中，如果 v 分配在栈上，foo 函数返回时，&amp;v 就不存在了，但是这段函数是能够正常运行的。Go 编译器发现 v 的引用脱离了 foo 的作用域，会将其分配在堆上。因此，main 函数中仍能够正常访问该值。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go run -gcflags -m main.go   <span class="comment"># 通过执行该命令，对程序做内存逃逸分析</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Q26-请列举一些channel操作会导致panic的情况"><a href="#Q26-请列举一些channel操作会导致panic的情况" class="headerlink" title="Q26: 请列举一些channel操作会导致panic的情况"></a>Q26: 请列举一些channel操作会导致panic的情况</h3><ul>
+<li>channel一旦关闭，就只能读，不能再写了，否则panic</li>
+<li>channel一旦关闭了，就不能关闭第二次，如何保证channel只被close一次呢？sync.Once可以</li>
+<li>因channel缺少接收者和发送者，导致死锁，程序出现panic(导致panic不是必然现象，视情况而定)</li>
+</ul>
+<h3 id="Q27-什么是协程泄露，常见导致协程泄露的场景有哪些"><a href="#Q27-什么是协程泄露，常见导致协程泄露的场景有哪些" class="headerlink" title="Q27: 什么是协程泄露，常见导致协程泄露的场景有哪些?"></a>Q27: 什么是协程泄露，常见导致协程泄露的场景有哪些?</h3><ul>
+<li>channel缺少接收器，导致发送阻塞，协程始终无法退出；类似的还有：缺少发送器，导致接收阻塞，接收和发送总是互斥，相互等待</li>
+<li>多个协程之间，存在资源竞争，出现死锁，相互等待，永远不退出</li>
+<li>死循环，没有退出条件导致，或者退出条件始终得不到满足</li>
+</ul>
+<h3 id="Q28-如何防止Struct用纯值方式初始化变量-而不指定变量名"><a href="#Q28-如何防止Struct用纯值方式初始化变量-而不指定变量名" class="headerlink" title="Q28: 如何防止Struct用纯值方式初始化变量? 而不指定变量名"></a>Q28: 如何防止Struct用纯值方式初始化变量? 而不指定变量名</h3><blockquote>
+<p>可以在struct中，添加_ struct {}字段，这个没什么好说的，特殊用法，记住就好</p>
+</blockquote>
+<h3 id="Q29-回顾下channel的基本操作"><a href="#Q29-回顾下channel的基本操作" class="headerlink" title="Q29: 回顾下channel的基本操作"></a>Q29: 回顾下channel的基本操作</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>) <span class="comment">// 不带缓冲区</span></span><br><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>) <span class="comment">// 带缓冲区，缓冲区满之前，即使没有接收方，发送方不阻塞</span></span><br><span class="line"><span class="built_in">close</span>(ch)  <span class="comment">// 关闭channel</span></span><br><span class="line">ch &lt;- v  <span class="comment">// 向通道发送值v</span></span><br><span class="line">&lt;-ch <span class="comment">// 忽略接收值</span></span><br><span class="line">v := &lt;-ch <span class="comment">// 接收值并赋值给变量 v</span></span><br><span class="line">v, beforeClosed := &lt;-ch  <span class="comment">// 接收操作可以有 2 个返回值</span></span><br><span class="line"><span class="built_in">len</span>(ch)  <span class="comment">// channel长度</span></span><br><span class="line"><span class="built_in">cap</span>(ch)  <span class="comment">// channel容量</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>beforeClosed 代表 v 是否是信道关闭前发送的。true 代表是信道关闭前发送的，false 代表信道已经关闭。如果一个信道已经关闭，&lt;-ch 将永远不会发生阻塞，但是我们可以通过第二个返回值 beforeClosed 得知信道已经关闭，作出相应的处理。</p>
+</blockquote>
+<h3 id="Q30-优雅的Go开发"><a href="#Q30-优雅的Go开发" class="headerlink" title="Q30: 优雅的Go开发"></a>Q30: 优雅的Go开发</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>、定义时间变量</span><br><span class="line"><span class="comment">// BAD</span></span><br><span class="line">delay := time.Second * <span class="number">60</span> * <span class="number">24</span> * <span class="number">60</span></span><br><span class="line"><span class="comment">// VERY BAD</span></span><br><span class="line">delay := <span class="number">60</span> * time.Second * <span class="number">60</span> * <span class="number">24</span></span><br><span class="line"><span class="comment">// GOOD -- 30 * time.Second 比 time.Duration(30) * time.Second 更好</span></span><br><span class="line">delay := <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * time.Second</span><br><span class="line"><span class="comment">// BAD</span></span><br><span class="line"><span class="keyword">var</span> delayMillis <span class="keyword">int64</span> = <span class="number">15000</span></span><br><span class="line"><span class="comment">// GOOD  -- 用 time.Duration 代替 int64 + 变量名</span></span><br><span class="line"><span class="keyword">var</span> delay time.Duration = <span class="number">15</span> * time.Second</span><br><span class="line"><span class="number">2</span>、忽略返回值</span><br><span class="line">_ = f() 比 f() 更好</span><br><span class="line"><span class="number">3</span>、信息打印</span><br><span class="line">用 %+v 来打印数据的比较全的信息</span><br><span class="line"><span class="number">4</span>、不要在循环中使用 <span class="keyword">defer</span>，否则会导致内存泄露：因为这些 <span class="keyword">defer</span> 会不断地填满你的栈（内存）</span><br><span class="line"><span class="number">5</span>、不要忘记停止 ticker, 除非你需要泄露 channel</span><br><span class="line">ticker := time.NewTicker(<span class="number">1</span> * time.Second)</span><br><span class="line"><span class="keyword">defer</span> ticker.Stop()</span><br><span class="line"><span class="number">6</span>、结构体的初始化，不要用<span class="built_in">new</span></span><br><span class="line">sval := T&#123;Name: <span class="string">&quot;foo&quot;</span>&#125;</span><br><span class="line">sptr := &amp;T&#123;Name: <span class="string">&quot;bar&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q31-结构体之间是可以比较的吗"><a href="#Q31-结构体之间是可以比较的吗" class="headerlink" title="Q31: 结构体之间是可以比较的吗?"></a>Q31: 结构体之间是可以比较的吗?</h3><blockquote>
+<p>只有当结构体的所有字段均为可比较类型时，结构体的对象之间，才是可以比较的。以下类型均为不可比较类型：</p>
+<ul>
+<li><code>func() bool</code>   // 函数类型，不可比较</li>
+<li><code>map[string]string</code>    // map类型不可比较</li>
+<li><code>[]byte</code>        // 数组成员只有在数组元素可比较时才算可比较</li>
+</ul>
+</blockquote>
+<h3 id="Q32-Go的runtime包有用过吗，有过哪些使用场景"><a href="#Q32-Go的runtime包有用过吗，有过哪些使用场景" class="headerlink" title="Q32: Go的runtime包有用过吗，有过哪些使用场景?"></a>Q32: Go的runtime包有用过吗，有过哪些使用场景?</h3><ul>
+<li>runtime.GOMAXPROCS(4)    // 多核模式</li>
+<li>runtime.NumCPU()    // 获取逻辑cpu的数量</li>
+<li>runtime/debug      // 打印panic时的stack overflow信息</li>
+<li>runtime.Gosched()  // 让出时间片，先让别的协程执行，它执行完，再回来执行此协程</li>
+<li>runtime.GOROOT()    // 获取goroot目录</li>
+<li>runtime.GOOS       // 获取操作系统</li>
+<li>runtime.Goexit()   //终止所在的协程</li>
+</ul>
+<h3 id="Q33-如何更改一个字符串-陷阱提问"><a href="#Q33-如何更改一个字符串-陷阱提问" class="headerlink" title="Q33: 如何更改一个字符串? - 陷阱提问"></a>Q33: 如何更改一个字符串? - 陷阱提问</h3><blockquote>
+<p>字符串是不可变类型，是不能直接修改的；如果需要更改，就必须更改为byte类型或rune类型的数组或切片，然后再转为字符串类型。</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> 循环遍历字符串时，也有 <span class="keyword">byte</span> 和 <span class="keyword">rune</span> 两种⽅式</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> s := <span class="string">&quot;abc汉字&quot;</span></span><br><span class="line"> <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(s); i++ &#123; <span class="comment">// byte</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%c,&quot;</span>, s[i])</span><br><span class="line"> &#125;</span><br><span class="line"> fmt.Println()</span><br><span class="line"> <span class="keyword">for</span> _, r := <span class="keyword">range</span> s &#123; <span class="comment">// rune</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%c,&quot;</span>, r)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q34-有主动关闭过http连接吗，为啥要这样做"><a href="#Q34-有主动关闭过http连接吗，为啥要这样做" class="headerlink" title="Q34: 有主动关闭过http连接吗，为啥要这样做?"></a>Q34: 有主动关闭过http连接吗，为啥要这样做?</h3><blockquote>
+<p>有关闭，因为不关闭可能会导致程序消耗完 socket 描述符。可选的关闭方式有：</p>
+<ul>
+<li>直接设置请求变量的 Close 字段值为 true，每次请求结束后就会主动关闭连接。设置 Header 请求头部选项 Connection: close，然后服务器返回的响应头部也会有这个选项，此时 HTTP 标准库会主动断开连接<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">req, err := http.NewRequest(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;https://github.com&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">req.Close = <span class="literal">true</span>  <span class="comment">// 或者是 req.Header.Add(&quot;Connection&quot;, &quot;close&quot;)</span></span><br></pre></td></tr></table></figure></li>
+<li>创建一个自定义配置的 HTTP transport 客户端，用来取消 HTTP 全局的复用连接<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">ts := http.Transport&#123;DisableKeepAlives: <span class="literal">true</span>&#125;</span><br><span class="line">client := http.Client&#123;Transport: &amp;ts&#125;</span><br><span class="line">client.Get(<span class="string">&quot;https://github.com&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</blockquote>
+<h3 id="Q35-interface之间是可以相互比较的吗"><a href="#Q35-interface之间是可以相互比较的吗" class="headerlink" title="Q35: interface之间是可以相互比较的吗?"></a>Q35: interface之间是可以相互比较的吗?</h3><p>我们知道，在Go语言中，interface的内部实现包含了两个字段，类型T和值V，interface之间是可以使用 == 或 != 进行比较的。而两个interface相等有以下两种情况：</p>
+<ul>
+<li>两个<code>interface</code>均等于<code>nil</code>(此时<code>V</code>和<code>T</code>都处于<code>unset</code>状态)</li>
+<li>类型<code>T</code>相同，且对应的值<code>V</code>相等。<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Human <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> per1, per2 Human = &amp;Person&#123;<span class="string">&quot;John&quot;</span>&#125;, &amp;Person&#123;<span class="string">&quot;John&quot;</span>&#125;</span><br><span class="line">	<span class="keyword">var</span> per3, per4 Human = Person&#123;<span class="string">&quot;John&quot;</span>&#125;, Person&#123;<span class="string">&quot;John&quot;</span>&#125;</span><br><span class="line">	fmt.Println(per1 == per2) <span class="comment">// false</span></span><br><span class="line">	fmt.Println(per3 == per4) <span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>结构体的地址，两个地址不同，因此结果为<code>false</code><br>per3 和 per4 对应的类型是<code>Person</code>，值是<code>Person</code>结构体，且各字段相等，因此结果为<code>true</code><blockquote>
+<p>从这里，我们也能发现：两个接口值比较时，会先比较T，再比较V；那么interface和非interface之间要如何比较呢?</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p *<span class="keyword">int</span> = <span class="literal">nil</span></span><br><span class="line">	<span class="keyword">var</span> i <span class="keyword">interface</span>&#123;&#125; = p</span><br><span class="line">	fmt.Println(i == p) <span class="comment">// true  - ①</span></span><br><span class="line">	fmt.Println(p == <span class="literal">nil</span>) <span class="comment">// true  - ②</span></span><br><span class="line">	fmt.Println(i == <span class="literal">nil</span>) <span class="comment">// false   - ③</span></span><br><span class="line">&#125;  <span class="comment">// 接口值与非接口值比较时，会先将非接口值尝试转换为接口值，再比较</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   ①中，i被p赋值后，其内部字段为(T=*int, V=nil)；p转换为接口也是(T=*int, V=nil)</span></span><br><span class="line"><span class="comment">   ②中，p与nil直接比较值，都是nil，所以相等</span></span><br><span class="line"><span class="comment">   ③中的nil转换为接口 (T=nil, V=nil)，与i (T=*int, V=nil) 不相等</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Q36-go语言中的引用类型包含哪些"><a href="#Q36-go语言中的引用类型包含哪些" class="headerlink" title="Q36: go语言中的引用类型包含哪些?"></a>Q36: go语言中的引用类型包含哪些?</h3><ul>
+<li>slice</li>
+<li>map</li>
+<li>channel</li>
+<li>interface</li>
+</ul>
+<h3 id="Q37-高并发编程里，可以有哪些思路"><a href="#Q37-高并发编程里，可以有哪些思路" class="headerlink" title="Q37: 高并发编程里，可以有哪些思路?"></a>Q37: 高并发编程里，可以有哪些思路?</h3><ul>
+<li>基于sync包的WaitGroup，但主协程只是傻傻地等待子协程退出，并不能主动通知子协程退出</li>
+<li>基于for + select + channel的组合方式，子协程for+select等待主协程通过channel传递过来的退出信号，当子协程很多时，显得比较难以控制</li>
+<li>基于context通知子协程适时退出，可以同时控制多个子协程<ul>
+<li>手动通过取消的方式控制（<code>context.WithCancel</code>），如果需要往子协程传递参数，还可以使用<code>context.WithValue</code></li>
+<li>超时自动退出（<code>context.WithTimeout</code>）</li>
+<li>到某个截止时间（时刻点）自动退出<code>context.WithDeadline</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="Q38-go程序中，内存泄漏可能会是什么原因导致的"><a href="#Q38-go程序中，内存泄漏可能会是什么原因导致的" class="headerlink" title="Q38: go程序中，内存泄漏可能会是什么原因导致的?"></a>Q38: go程序中，内存泄漏可能会是什么原因导致的?</h3><ul>
+<li><code>goroutine</code>不释放，始终无法退出</li>
+<li>堆栈溢出，递归到<code>stack</code>满</li>
+<li>使用内存作为本地缓存，且持续增加，没有释放的阶段</li>
+</ul>
+<h3 id="Q39-简单聊聊内存逃逸的现象、场景及规避方案"><a href="#Q39-简单聊聊内存逃逸的现象、场景及规避方案" class="headerlink" title="Q39: 简单聊聊内存逃逸的现象、场景及规避方案?"></a>Q39: 简单聊聊内存逃逸的现象、场景及规避方案?</h3><ul>
+<li>现象：局部变量超出原本的作用域，被外部使用，发生内存逃逸，此时变量生命周期未知，因此变量会被分配到堆上</li>
+<li>影响：加大了gc压力，影响程序性能</li>
+<li>场景：<ul>
+<li>局部变量以指针的形式返回，并被外部引用，导致变量不能随方法结束被栈回收，转而分配到堆上</li>
+<li>发送指针数据到channel中，编译时无法确定数据会被哪个goroutine消费，因此生命周期未知，内存逃逸</li>
+<li>切片初始化容量编译时可知，会在栈上分配，当append且超过切片容量时，会重新分配地址，同时如果切片背后的存储要基于运行时的数据进行扩充，就会在堆上分配</li>
+</ul>
+</li>
+<li>规避：<ul>
+<li>尽量不用指针作为参数传递，虽然可以减少复制，但是内存逃逸的开销更大</li>
+<li>预先设置好切片容量</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Go基础</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go的依赖包管理</title>
+    <url>/2021/04/01/go-package-management/</url>
+    <content><![CDATA[<blockquote>
+<p>Go的依赖包管理方式有很多，一般是大厂开源出来的解决方案，例如：<a href="https://github.com/golang/dep">Dep</a>、<a href="https://github.com/tools/godep">GoDep</a>、<a href="https://github.com/kardianos/govendor">GoVendor</a>、GoModule等；目前市面上用的比较多的还是GoVendor+GoModule相结合的方式，具体我们来看看是如何使用的吧.</p>
+</blockquote>
+<h2 id="Dep方式"><a href="#Dep方式" class="headerlink" title="Dep方式"></a>Dep方式</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> go get -u github.com/golang/dep/cmd/dep</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install dep  <span class="comment"># macOS</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew upgrade dep  <span class="comment"># macOS</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dep init</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">Gopkg.toml Gopkg.lock vendor/</span><br></pre></td></tr></table></figure>
+
+<h3 id="日常操作"><a href="#日常操作" class="headerlink" title="日常操作"></a>日常操作</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">dep ensure -add github.com/pkg/errors</span><br><span class="line">dep ensure -update github.com/foo/bar</span><br><span class="line">dep ensure -update                          # update all dependencies</span><br><span class="line">dep status                                  # 用于查看当前项目依赖了哪些包，以及包的版本号</span><br></pre></td></tr></table></figure>
+
+<h2 id="GoDep方式"><a href="#GoDep方式" class="headerlink" title="GoDep方式"></a>GoDep方式</h2><h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go get github.com/tools/godep</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">godep save</span><br></pre></td></tr></table></figure>
+<p><em>该命令会在根目录下自动生成一个Godeps和vendor目录，并将项目所依赖的第三方包信息写入Godeps/Godeps.json，同时复制包源码到vendor目录。注意：godep save并不会自动从远程下载依赖包，需要我们通过go get或godep get手动下载，godep save只是将下载的包源码复制到vendor目录</em></p>
+<h3 id="日常操作-1"><a href="#日常操作-1" class="headerlink" title="日常操作"></a>日常操作</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go get -v -u github.com/gin-gonic/gin # 下载</span><br><span class="line">godep update github.com/gin-gonic/gin</span><br><span class="line">gedep get github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure>
+
+<h2 id="GoVendor方式"><a href="#GoVendor方式" class="headerlink" title="GoVendor方式"></a>GoVendor方式</h2><h3 id="为什么用vendor目录"><a href="#为什么用vendor目录" class="headerlink" title="为什么用vendor目录?"></a>为什么用vendor目录?</h3><p><em>不使用vendor目录的时候，我们代码库的所有依赖包都是安装到GoPath目录下的，也就是说，所有的代码库共用同一个依赖包库，然而实际上，每个代码库很可能依赖的包版本是不一样的；使用vendor目录的话，便可以很好地做到项目的隔离，它允许不同的代码库拥有自己的依赖包.</em></p>
+<h3 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go get -u -v github.com/kardianos/govendor</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-2"><a href="#初始化-2" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor init</span><br></pre></td></tr></table></figure>
+<p>命令执行完后，在我们的服务目录下，便会多出一个vendor目录，里面包含了服务所有依赖的包，与此同时，vendor目录下还有个vendor.json文件，它描述了各个依赖包的版本信息</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li>将已被引用且在 $GOPATH 下的所有包复制到 vendor 目录<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor add +external</span><br></pre></td></tr></table></figure></li>
+<li>仅从 $GOPATH 中复制指定包<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor add github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure></li>
+<li>列出代码中所有被引用到的包及其状态<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor list</span><br><span class="line">govendor list -v fmt  // 显示fmt包被哪些包引用</span><br></pre></td></tr></table></figure></li>
+<li>从远程仓库添加或更新某个包(如果不在 $GOPATH 下，也会存一份)<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor fetch github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure></li>
+<li>根据vendor.json拉取并更新包<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">govendor sync</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="GoModule方式"><a href="#GoModule方式" class="headerlink" title="GoModule方式"></a>GoModule方式</h2><blockquote>
+<p>从 Go 1.11 版本开始，官方已内置了更为强大的 Go modules 来一统多年来 Go 包依赖管理混乱的局面(Go 官方之前推出的 dep 工具也几乎胎死腹中)，并且将在 1.12 版本中正式默认开启。此方式受到社区的看好和强烈推荐，建议新项目采用 Go modules</p>
+</blockquote>
+<h3 id="开启"><a href="#开启" class="headerlink" title="开启"></a>开启</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on   # 有三个值：on、off、auto，默认值为auto</span><br></pre></td></tr></table></figure>
+<ul>
+<li>off: 关闭模式，GOPATH mode，表示查找vendor和GOPATH目录,使用$GOPATH方式管理依赖</li>
+<li>on：启动模式，module-aware mode，使用 go module模式，忽略GOPATH目录，依赖包下载到$GOPATH/pkg/mod</li>
+<li>auto：自动模式，项目在$GOPATH/src之外则使用go.mod方式，项目在$GOPATH/src目录下则使用旧方式</li>
+</ul>
+<h3 id="初始化-3"><a href="#初始化-3" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod init &lt;module-name&gt; # 模块名可选，默认和目录名保持一致</span><br></pre></td></tr></table></figure>
+
+<h3 id="检测-amp-安装"><a href="#检测-amp-安装" class="headerlink" title="检测&amp;安装"></a>检测&amp;安装</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod tidy</span><br></pre></td></tr></table></figure>
+<p><em>tidy会检测该文件夹目录下所有引入的依赖，写入go.mod文件；届时会发现go.mod文件发生改变</em></p>
+<h3 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line">go mod init &lt;module-name&gt; # 初始化go.mod</span><br><span class="line">go mod tidy  # 更新依赖文件</span><br><span class="line">go mod download  # 下载依赖文件</span><br><span class="line">go mod vendor  # 将依赖转移至本地的vendor文件</span><br><span class="line">go mod edit  # 手动修改依赖文件</span><br><span class="line">go mod graph  # 打印依赖图</span><br><span class="line">go mod verify  # 校验依赖</span><br><span class="line">go build -mod=vendor # 编译时使用 vendor 目录</span><br></pre></td></tr></table></figure>
+
+<h3 id="go-mod文件"><a href="#go-mod文件" class="headerlink" title="go.mod文件"></a>go.mod文件</h3><blockquote>
+<p>经常使用GoModule方式管理项目依赖的朋友，应该有注意到go mod文件的配置项都有如下这些：</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">module &lt;module-name&gt; 指明项目的模块名</span><br><span class="line">require ( <span class="comment">//指定的依赖项模块,可选；如果只有单个，括号可省略，和go里面var/const声明多个变量是一样的</span></span><br><span class="line">  github.com/BurntSushi/toml v0<span class="number">.3</span><span class="number">.1</span>   <span class="comment">//配置依赖模块地址和版本，多个配置多行</span></span><br><span class="line">  github.com/DataDog/zstd v1<span class="number">.3</span><span class="number">.5</span></span><br><span class="line">)</span><br><span class="line">replace ( <span class="comment">//替换依赖项模块,可选；如果只有单个，括号可省略，和go里面var/const声明多个变量是一样的</span></span><br><span class="line">)</span><br><span class="line">exclude ( <span class="comment">//忽略依赖项模块，可选；如果只有单个，括号可省略，和go里面var/const声明多个变量是一样的</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Go基础</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学习GPRC，这篇就够了</title>
+    <url>/2021/09/14/grpc-intro/</url>
+    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
+      <categories>
+        <category>grpc</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>grpc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DevOps面试题</title>
+    <url>/2021/03/29/interview/</url>
+    <content><![CDATA[<blockquote>
+<p>目前本人从事的是<code>DevOps</code>工作，主要研究方向为<code>CI</code>/<code>CD</code>，然后是运维开发相关的工具开发，例如发布平台、<code>CMDB</code>、<code>SQL</code>管理平台、<code>DB</code>管理平台、流程系统、工单系统、域名管理系统、<code>Ingress</code>管理平台等；这里就相关招聘岗位做下基础介绍.</p>
+</blockquote>
+<blockquote>
+<p>DevOps愿景，是通过在下面这些方面的输出，为公司创造价值：</p>
+<ul>
+<li>基础设施：为业务提供稳定、易用、统一的基础设施，比如MS框架等等</li>
+<li>基础服务：公用的基础服务，比如消息、定位、推送、用户中心等等</li>
+<li>公共组件：前端、后端、客户端的一些通用组件的开发和维护</li>
+<li>工具开发：小工具大做，提升研发（开发和测试）质量和效率，从小工具里面孵化大项目</li>
+<li>最佳实践：实践研发全流程的各种best practice，结合公司和业务部门的情况进行推广</li>
+</ul>
+</blockquote>
+<h2 id="招聘的岗位"><a href="#招聘的岗位" class="headerlink" title="招聘的岗位"></a>招聘的岗位</h2><ul>
+<li><code>DevOps</code>工程师</li>
+<li>运维开发工程师(<code>Python</code>方向)</li>
+<li><code>Golang</code>工程师</li>
+</ul>
+<h3 id="DevOps工程师"><a href="#DevOps工程师" class="headerlink" title="DevOps工程师"></a><code>DevOps</code>工程师</h3><h4 id="技能要求"><a href="#技能要求" class="headerlink" title="技能要求"></a>技能要求</h4><ul>
+<li>前端<ul>
+<li>熟悉<code>React</code> / <code>Vue</code>任意一样</li>
+<li><code>HTML</code> + <code>CSS</code> 基础</li>
+<li>熟悉<code>Ant Design</code> / <code>Element</code>任意一样</li>
+<li>能够独立解决前端问题，注重前端<code>JS</code>/<code>TS</code>等编码规范</li>
+</ul>
+</li>
+<li>后端<ul>
+<li>熟悉<code>Python2</code>，了解<code>Python3</code></li>
+<li>熟悉<code>Django Web Server</code>框架</li>
+<li>简单算法基础(考验思维活跃度)</li>
+<li>熟悉<code>Celery</code>原理以及常见问题，有过实际项目实践经验</li>
+<li>熟悉<code>Redis</code>常用数据结构和使用场景</li>
+<li>熟悉<code>MySQL</code>和<code>RabbitMQ</code>基本原理和基础使用场景</li>
+<li>熟悉<code>Linux</code>操作系统和常见操作</li>
+<li>认同<code>DevOps</code>理念，对<code>DevOps</code>有自己的想法</li>
+<li>有过实际<code>DevOps</code>项目开发经验，优先考虑</li>
+<li>对<code>Docker</code>和<code>K8S</code>有基本的了解</li>
+</ul>
+</li>
+</ul>
+<h4 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h4><ul>
+<li>请描述下<code>Session</code>和<code>Cookie</code>的区别</li>
+<li>请列举一些实现会话保持的方式</li>
+<li>请描述下<code>Nginx</code>、<code>Django</code>、<code>UWSGI</code>、<code>后端APP应用</code>这几者的区别</li>
+<li>请描述下<code>Django</code>的数据请求处理过程</li>
+<li>使用<code>Django</code>做<code>web</code>开发时, 可以有哪些高并发设计思路?</li>
+<li><code>Django</code>和<code>Flask</code>的优缺点描述下</li>
+<li>我想实时监控<code>Linux</code>机器某个进程的<code>CPU</code>使用率，一旦超过<code>80%</code>，就自动杀死，你会怎么做?</li>
+<li>我想统计一个纯文本的文件中，包含了多少个单词，你会怎么做?  请用一条<code>shell</code>命令实现，可使用管道等操作</li>
+<li>如果要实现一个计划任务/定时任务的需求，你会有哪些解决思路?</li>
+<li>简单算法题：<ul>
+<li>请编写一个函数，用于找出第n个素数，并返回给我.</li>
+<li>请编写一个函数，用于返回斐波那契数列的第n个数.</li>
+<li>请编码实现一个你最熟悉的排序算法. 冒泡、快排、插入、选择、希尔、二叉树、堆排等，任意一个即可</li>
+</ul>
+</li>
+<li>有个新项目，已经进入后端编码阶段，你会如何设计你的代码目录结构</li>
+<li><code>Python</code>中的<code>list</code>和<code>tuple</code>有什么区别，是什么原因导致了这种区别</li>
+<li><code>Python</code>中的迭代器和可迭代对象有什么区别</li>
+<li>说一说你知道的<code>Python3</code>和<code>Python2</code>区别</li>
+<li>都用过哪些python自带的装饰器，平时写代码用设计模式吗?</li>
+<li>说说<code>__init__</code>和<code>__new__</code>方法的区别</li>
+<li>讲讲<code>__get__</code>和<code>__getattr__</code>以及<code>__getattribute__</code>的区别</li>
+<li>列举一些你经常使用的<code>Python</code>包</li>
+<li>做过<code>Python</code>多线程、多进程开发吗? 一般要注意哪些问题</li>
+<li><code>git rebase</code>和<code>git merge</code>的区别是啥?</li>
+<li>请列举一些<code>PEP8</code>的规范</li>
+<li>说一说<code>Python</code>中的垃圾回收机制</li>
+<li>简单说说<code>TCP</code>的三次握手和四次挥手</li>
+<li><code>TCP</code>释放连接时，<code>2MSL</code>的作用是啥</li>
+<li>说一说进程、线程、协程的区别</li>
+<li>从用户在浏览器上输入一个域名拿到页面，期间经历了哪些过程?</li>
+<li>死锁发生的必要条件有哪些? 如何预防死锁</li>
+<li>程序难免出现<code>bug</code>，如何及时尽早的发现<code>bug</code>?  你有哪些稳定性建设的思路?</li>
+<li>系统上线后，做过哪些方面的优化?  如何提升系统的可观测性?</li>
+<li>对<code>Docker</code> / <code>K8S</code>的了解程度如何? 它们俩是什么关系? 简单说说<code>K8S</code>各个组件，以及各自的职能</li>
+<li><code>Docker</code>和<code>K8S</code>分别有什么优点?</li>
+<li>我们知道<code>K8S</code>中有<code>Liveness探针</code> / <code>Readiness探针</code>，它们的含义分别是? 支持的探测方式有哪些?</li>
+<li><code>K8S</code>创建一个<code>pod</code>的流程是什么？</li>
+<li><code>K8S</code>常用的标签分类有哪些？  环境、版本、应用等</li>
+<li><code>K8S</code>的<code>pause</code>容器有什么用?  是否可以去掉?</li>
+<li>如果我的应用程序跑在容器里，有什么方式可以将我的服务暴露出去?</li>
+<li><code>K8S</code>的<code>Deployment</code>在做滚动更新时，主要用到的两个参数是? 含义分别是?</li>
+<li>对<code>Helm</code>了解吗?  对<code>CoreDNS</code>了解吗?  对<code>Service Mesh</code>了解吗?</li>
+<li>请说出一些<code>K8S</code>的常用<code>API</code></li>
+<li><code>Jenkins</code>玩过吗?  用的版本是?  使用程度如何?  主要做了什么事情?</li>
+<li>了解云原生吗?  做过哪些云原生上的实践</li>
+<li>说说你对<code>DevOps</code>的理解?  做过哪些<code>DevOps</code>实践</li>
+<li>描述一下你做的项目，你做了哪些事情，你感觉你在项目中的哪个地方做得好?</li>
+<li>为什么从上一家公司离职?  你的职业规划是?   如果你入职了我们公司，你感觉你能给我们创造什么价值?</li>
+<li><code>Linux</code>上查看一个目录的大小，是用什么命令? 查看机器上各个进程端口的监听情况，你会用什么命令?</li>
+<li>你知道LRU算法吗，可否简单说说，如果让你去设计实现<a href="https://blog.csdn.net/qq_43763344/article/details/105937731">LRU</a>算法，会选用什么数据结构呢，说出你的原因<blockquote>
+<p>如果 CPU 访问的页面不在内存中，则操作系统需要进行置换出内存中的页面，然后把需要访问的页面从磁盘中置换到内存中，而这种算法最常见的就是 LRU 算法，LRU 算法也被称最近最少使用算法.</p>
+</blockquote>
+</li>
+</ul>
+<p>LRU 算法的思想是：长期不被使用的数据，在未来被用到的几率也不大，因此当占用内存达到一个阀值时，就删除不常使用的数据。为什么LRU算法会出现呢，说到底就是为了加速CPU对数据的访问，提前把磁盘中的数据缓存到内存中。</p>
+<blockquote>
+<p>实现思路：在哈希链表中，key 和 value 具有固定的排列顺序，就像双向链表一样，每一个键值对都有一个前驱，一个后驱.如果访问一个数据，首先查看哈希链表中是否存在，如果存在则把它删除，然后添加到哈希链表的尾部，如果要查找的元素不存在哈希链表中，则进行数据库的查询，然后添加到哈希链表的尾部，这样一来，最近最少使用的数据就在哈希链表的头部了，然后就可以直接删除了。</p>
+</blockquote>
+<ul>
+<li>链表和数组有什么不同，优缺点分别是？应用场景能说一下吗<blockquote>
+<p>链表是链式存储结构，数组是顺序存储结构；链表通过指针连接元素，而数组则是把所有元素按顺序进行存储；链表的插入和删除元素比较简单，不需要移动元素，且较为容易实现长度的扩充，但是查询元素比较困难，数组是查询比较快，但是删除和增加会比较麻烦。</p>
+</blockquote>
+</li>
+<li>进程之间通信的方式有哪些?<ul>
+<li>管道</li>
+<li>共享存储</li>
+<li>消息队列</li>
+<li>套接字<code>socket</code></li>
+<li>信号量<code>Semaphore</code></li>
+</ul>
+</li>
+<li>Hash排序的时间复杂度是多少? 为啥hash表的时间复杂度是O(1)常数级?<blockquote>
+<p>因为需要先遍历所有的数，构建一个Hash表，这层循环是少不了的，所以时间复杂度是O(n)；Hash表通过下标Key的方式，一次定位即可拿到数据，所以索引的时间复杂度是O(1).</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="运维开发工程师-Python方向"><a href="#运维开发工程师-Python方向" class="headerlink" title="运维开发工程师(Python方向)"></a>运维开发工程师(<code>Python</code>方向)</h3><h4 id="技能要求-1"><a href="#技能要求-1" class="headerlink" title="技能要求"></a>技能要求</h4><ul>
+<li>前端<ul>
+<li>熟悉<code>React</code> / <code>Vue</code>任意一样</li>
+<li><code>HTML</code> + <code>CSS</code> 基础</li>
+<li>熟悉<code>Ant Design</code> / <code>Element</code>任意一样</li>
+<li>能够独立解决前端问题，注重前端<code>JS</code>/<code>TS</code>等编码规范</li>
+<li><code>React</code> / <code>Vue</code> 中组件之间传递数据的方式是啥?</li>
+</ul>
+</li>
+<li>后端<ul>
+<li>熟悉<code>Python2</code>，了解<code>Python3</code></li>
+<li>至少熟悉<code>Django</code> / <code>Flask</code> / <code>Tornado</code>框架其中一种</li>
+<li>至少熟悉<code>MySQL</code> / <code>Mongo</code> / <code>ES</code>其中一种</li>
+<li>至少熟悉<code>RabbitMQ</code> / <code>RocketMQ</code> / <code>Kafka</code>其中一种</li>
+<li>至少熟悉<code>Redis</code> / <code>Memcached</code> 其中一种</li>
+<li>了解操作系统以及常见数据结构</li>
+<li>熟悉<code>Linux</code>常见命令，能够编写<code>Shell</code>脚本</li>
+<li>具有<code>Python</code>微服务实践经验和高并发设计能力</li>
+<li>常见算法解决问题思维</li>
+</ul>
+</li>
+</ul>
+<h4 id="面试问题-1"><a href="#面试问题-1" class="headerlink" title="面试问题"></a>面试问题</h4><ul>
+<li><code>Django</code>的网路处理模式是? 为啥它的扛并发能力较弱，如何为<code>Django</code>项目做高并发设计?</li>
+<li>说一说，浅拷贝和深拷贝</li>
+<li>要写一个<code>Python</code>生成器，可以有哪些方式?</li>
+<li><code>Celery</code>任务有几种类型，如何确保<code>Celery</code>任务不堆积?</li>
+<li>你用过哪些<code>Python</code>官方的装饰器? 你一般用装饰器都是用来做什么?</li>
+<li>请列举一些<code>Python</code>中的包，官方的，第三方的都可以</li>
+<li><code>range</code>和<code>xrange</code>的区别</li>
+<li><code>Redis</code>为啥比<code>MySQL</code>快?</li>
+<li>请简单说说<code>Redis</code>缓存击穿、缓存穿透、雪崩的含义?</li>
+<li>谈谈<code>Python</code>的<code>GIL</code></li>
+<li>列表和元组有什么区别？</li>
+<li><code>__new__</code>与<code>__init__</code>方法的区别</li>
+<li>元类(<code>Metaclasses</code>)是什么?</li>
+<li>说说<code>Python</code>的垃圾回收机制</li>
+<li><code>is</code> 和 <code>==</code> 的区别？</li>
+<li>什么是僵尸进程和孤儿进程,怎么避免僵尸进程?</li>
+<li>请描述下<code>Session</code>和<code>Cookie</code>的区别</li>
+<li>讲讲<code>__get__</code>和<code>__getattr__</code>以及<code>__getattribute__</code>的区别</li>
+<li>描述一下你做的项目，你做了哪些事情，你感觉你在项目中的哪个地方做得好?</li>
+<li>为什么从上一家公司离职?  你的职业规划是?   如果你入职了我们公司，你感觉你能给我们创造什么价值?</li>
+<li><code>Linux</code>上查看一个目录的大小，是用什么命令? 查看机器上各个进程端口的监听情况，你会用什么命令?</li>
+<li>请列举一些<code>Python</code>中的设计模式</li>
+<li><code>Python</code>中的可变类型和不可变类型都有哪些?</li>
+<li>说一说<code>Python</code>中的<code>LEGB</code>规则</li>
+<li>分别写一个列表推导式、字典推导式、集合推导式</li>
+<li><code>Python</code>中的内置函数都有哪些?  开放题</li>
+<li>说一说同步、异步以及阻塞、非阻塞都是什么意思?</li>
+<li>手写快排算法</li>
+<li>什么是猴子补丁?</li>
+<li>做过<code>Python</code>包创建和分发吗?  例如上传到<code>PIP</code>仓库</li>
+<li>操作系统里，中断和异常有什么区别?</li>
+<li><code>with</code>语句的作用是? 什么样的对象可以使用<code>with</code>语句?</li>
+<li><code>try except else finally</code>每个语句的执行时机说一下</li>
+<li><code>TCP</code>报文段中的标志位都有哪些，简单说说各个标志位的作用</li>
+<li>说一说<code>TCP</code>中的流量控制和拥塞控制解决办法</li>
+</ul>
+<h3 id="Golang工程师"><a href="#Golang工程师" class="headerlink" title="Golang工程师"></a><code>Golang</code>工程师</h3><h4 id="技能要求-2"><a href="#技能要求-2" class="headerlink" title="技能要求"></a>技能要求</h4><ul>
+<li>后端<ul>
+<li>熟悉<code>Golang</code>基础语法</li>
+<li>至少熟悉<code>Gin</code> / <code>Beego</code> / <code>Iris</code> / <code>Echo</code>框架其中一种</li>
+<li>至少熟悉<code>MySQL</code> / <code>Mongo</code> / <code>ES</code>其中一种</li>
+<li>至少熟悉<code>RabbitMQ</code> / <code>RocketMQ</code> / <code>Kafka</code>其中一种</li>
+<li>至少熟悉<code>Redis</code> / <code>Memcached</code> 其中一种</li>
+<li>了解操作系统以及常见数据结构</li>
+<li>熟悉<code>Linux</code>常见命令，能够编写<code>Shell</code>脚本</li>
+<li>具有<code>Golang</code>微服务实践经验和高并发设计能力</li>
+<li>常见算法解决问题思维</li>
+</ul>
+</li>
+</ul>
+<h4 id="面试问题-2"><a href="#面试问题-2" class="headerlink" title="面试问题"></a>面试问题</h4><ul>
+<li><code>Golang</code>中数据和切片的区别是?</li>
+<li><code>Golang</code>中<code>Make</code>和<code>New</code>的区别是?</li>
+<li><code>go</code>浮点型在转换成其他类型的时候，为啥会存在精度丢失的情况?</li>
+<li>说说<code>mysql</code>的<code>hash</code>索引和<code>BTree</code>索引的区别，以及使用场景</li>
+<li>有若干个字符串，请找出这几个字符串的最大公共连续子串，说说你的思路</li>
+<li><code>Gin</code>的路由是如何一层层执行的?</li>
+<li><code>Golang</code>中的<code>Context</code>都有哪些用途</li>
+<li><code>Redis</code>命中率低，有什么办法提高命中率?</li>
+<li>线上出了故障，目前定位到<code>DB</code>层出了问题，此时你会怎么做? 开放题</li>
+<li>为啥你要用<code>Gin</code>，而不直接使用<code>Go</code>原生的<code>HTTP</code>库去写<code>rest</code>接口呢? 考察是否了解<code>Gin</code>的优点</li>
+<li><code>redis</code>常用数据类型和使用场景都有哪些?</li>
+<li>简述下<code>main</code>函数和<code>init</code>函数的区别</li>
+<li>说说<code>go</code>语言中的协程？</li>
+<li>一个空的<code>select</code>语句块，有什么作用?</li>
+<li>说说进程、线程、协程之间的区别？</li>
+<li>我们知道<code>Golang</code>中有<code>channel</code>的概念，请说说<code>channel</code>的类型以及各自有哪些使用场景</li>
+<li>你为什么要将项目从<code>Python</code>迁移到<code>Go</code>?</li>
+<li>简单聊聊内存逃逸？</li>
+<li><code>Golang</code>中的垃圾回收过程是怎么样的？</li>
+<li>简单说说<code>Golang</code>里的<code>GMP</code></li>
+<li><code>Golang</code>中如果要实现定时任务，你会怎么做?</li>
+<li>请列举一些<code>Golang</code>中，你常用的官方包</li>
+<li>踩过哪些<code>Golang</code>的坑</li>
+<li>说一说<code>slice</code>的深拷贝和浅拷贝</li>
+<li>描述一下你做的项目，你做了哪些事情，你感觉你在项目中的哪个地方做得好?</li>
+<li>为什么从上一家公司离职?  你的职业规划是?   如果你入职了我们公司，你感觉你能给我们创造什么价值?</li>
+<li><code>Linux</code>上查看一个目录的大小，是用什么命令? 查看机器上各个进程端口的监听情况，你会用什么命令?</li>
+</ul>
+<h3 id="面试归类"><a href="#面试归类" class="headerlink" title="面试归类"></a>面试归类</h3><blockquote>
+<p>汇总DevOps方向，经常考的面试题目，主要是个人的一些面经，不喜勿喷</p>
+</blockquote>
+<ul>
+<li><code>MySQL</code></li>
+<li><code>Redis</code></li>
+<li>算法</li>
+<li><code>Go</code></li>
+<li><code>Python</code></li>
+<li><code>Shell</code></li>
+<li><code>Linux</code></li>
+<li><code>K8S</code></li>
+<li><code>Docker</code></li>
+<li>操作系统</li>
+<li>计算机网络</li>
+<li>项目经验</li>
+<li>擅长领域</li>
+<li>离职原因</li>
+</ul>
+<h4 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h4><h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><h4 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h4><h4 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h4><h4 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h4><h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><h4 id="K8S"><a href="#K8S" class="headerlink" title="K8S"></a>K8S</h4><h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><h4 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h4><h4 id="项目经验"><a href="#项目经验" class="headerlink" title="项目经验"></a>项目经验</h4><h4 id="擅长领域"><a href="#擅长领域" class="headerlink" title="擅长领域"></a>擅长领域</h4><h4 id="离职原因"><a href="#离职原因" class="headerlink" title="离职原因"></a>离职原因</h4>]]></content>
+      <categories>
+        <category>DevOps</category>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+        <tag>DevOps</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>K8S常见指令</title>
+    <url>/2021/09/07/k8s-intro/</url>
+    <content><![CDATA[<h2 id="K8S"><a href="#K8S" class="headerlink" title="K8S"></a>K8S</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> kubectl == kubernetes + control  <span class="comment"># 即：k8s控制器</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl get namespace  <span class="comment"># 查询物理cluster下拆分出的namespace信息</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl get node  <span class="comment"># 查看k8s集群有哪些k8s节点</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl get pod -ndevga -owide -w |grep -i secrets-distribution-admin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -ndevga describe deploy secrets-distribution-admin-devga</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl get po pod-redis -o yaml  <span class="comment"># 以yaml文件形式显示一个pod的详细信息</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl get po &lt;podname&gt; -o json  <span class="comment"># 以json形式显示一个pod的详细信息</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl describe po rc-nginx-3-l8v2r</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl delete -f rc-nginx.yaml</span>   </span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl delete po rc-nginx-btv4j</span>   </span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl delete po -lapp=nginx-2</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n prodbj <span class="built_in">exec</span> nginx-2476590065-1vtsp  -it sh</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl get service</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl get service nginx -o yaml &gt; nginx_forreplace.yaml</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n qa rollback status deployment xxxxxxx</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n qa rollback resume deployment xxxxxxx</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl rollout <span class="built_in">history</span> deployment cargo-detail-dev -n dev  <span class="comment"># 滚动发布的历史记录</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl rollout undo deployment cargo-detail-dev -n dev --to-revision=7  <span class="comment"># 回滚到指定的某个版本</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl rollout restart deploy xxxxx</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n qa get crd  <span class="comment"># 获取所有的自定义资源</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> node节点打标</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n qa lable nodes ip/name key=value  <span class="comment"># 加标签</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n qa lable nodes ip/name key=value --overwrite  <span class="comment"># 更新</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n qa lable nodes ip/name key-  <span class="comment"># 删除标签</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> kubectl -n qa edit node ip/name  <span class="comment"># 编辑node资源   -- 看起来node节点可以同时打多个标签，倒也合理</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker stop jenkins</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker rm jenkins</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -d \</span></span><br><span class="line"><span class="bash">    --name jenkins \</span></span><br><span class="line"><span class="bash">    -p 18101:8080 \</span></span><br><span class="line"><span class="bash">    -p 50000:50000 \</span></span><br><span class="line"><span class="bash">    -v /srv/jenkins:/var/jenkins_home \</span></span><br><span class="line"><span class="bash">    -v /usr/<span class="built_in">local</span>/maven:/usr/<span class="built_in">local</span>/maven \</span></span><br><span class="line"><span class="bash">    -v /usr/<span class="built_in">local</span>/jdk:/usr/<span class="built_in">local</span>/jdk  \</span></span><br><span class="line"><span class="bash">    -v /etc/localtime:/etc/localtime \</span></span><br><span class="line"><span class="bash">    -v /etc/timezone:/etc/timezone \</span></span><br><span class="line"><span class="bash">    -u root \</span></span><br><span class="line"><span class="bash">    jenkins/jenkins:latest</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  --link gitlab:47.97.174.90 \</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/env bash</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> host_name=gitlab.virtual.vm</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab_dir=/srv/gitlab</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker stop gitlab</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker rm gitlab</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -d \</span></span><br><span class="line"><span class="bash">  --hostname <span class="variable">$&#123;host_name&#125;</span> \</span></span><br><span class="line"><span class="bash">  -p 8443:443 -p 1080:80 -p 2222:22 \</span></span><br><span class="line"><span class="bash">  --name gitlab \</span></span><br><span class="line"><span class="bash">  --restart always \</span></span><br><span class="line"><span class="bash">  --env gitlab_rails[<span class="string">&#x27;SIDEKIQ_MEMORY_KILLER_MAX_RSS&#x27;</span>]=2048 \</span></span><br><span class="line"><span class="bash">  -v <span class="variable">$&#123;gitlab_dir&#125;</span>/config:/etc/gitlab \</span></span><br><span class="line"><span class="bash">  -v <span class="variable">$&#123;gitlab_dir&#125;</span>/logs:/var/<span class="built_in">log</span>/gitlab \</span></span><br><span class="line"><span class="bash">  -v <span class="variable">$&#123;gitlab_dir&#125;</span>/data:/var/opt/gitlab \</span></span><br><span class="line"><span class="bash">  -v /var/run/docker.sock:/run/docker.sock \</span></span><br><span class="line"><span class="bash">  registry.cn-hangzhou.aliyuncs.com/imooc/gitlab-ce:latest</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker image inspect image-name</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker inspect container-name</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker port container-name</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker <span class="built_in">kill</span>/start/stop container-name</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker pull jenkins打包日志里的镜像名</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run --name cargo-test -u root --rm -P  harbor.test.com/app/cargo-test:python-dev-jdk8-20200109_161946 python3 -c <span class="string">&quot;import schedule&quot;</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --name testmock -u root --rm -P harbor.test.com/app/testmock:python-master-jdk8-20200407_143644 bash</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --entrypoint /bin/bash --name bapis-pre -u root --rm -P hub.test.co/k8s-prow/bapis-pre:v0.0.7</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 常用docker命令</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1、删除所有镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker rmi $(docker images -q) -f</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2、删除所有容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看所有容器：</span> </span><br><span class="line"><span class="meta">$</span><span class="bash"> docker ps -a</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看运行容器：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker ps</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 停用所有容器：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker stop $(docker ps -q)</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除所有容器：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker rm $(docker ps -aq)</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 停用和删除所有容器：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>K8S</category>
+      </categories>
+      <tags>
+        <tag>K8S</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pb应知应会</title>
+    <url>/2022/01/03/pb/</url>
+    <content><![CDATA[<h2 id="pb简介"><a href="#pb简介" class="headerlink" title="pb简介"></a>pb简介</h2><blockquote>
+<p>Protobuf是Protocol Buffers的简称，它是Google公司开发的一种数据描述语言，并于2008年对外开源。Protobuf刚开源时的定位类似于XML、JSON等数据描述语言，通过附带工具生成代码并实现将结构化数据序列化的功能。</p>
+</blockquote>
+<p>说的好抽象啊，我们来具象化一下：</p>
+<blockquote>
+<p>写过<code>thrift</code>的朋友，可能立马反应过来了，这东西也是用来定义消息以及消息是如何通信的嘛。都是为RPC服务，<u>我们知道RPC的作用，就是让远程过程调用，看起来像是本地调用一样；但实际上，是请求远端的服务，既然是请求远端的服务，我们肯定要知道对方的<span style="color: orange">服务名(service)</span>、<span style="color: orange">方法名(func)</span>、<span style="color: orange">消息结构(message/struct)</span>吖，不然我找谁去请求，我怎么去解析数据</u>。proto文件就是干这么一件事，所以proto也是一种描述性语言嘛。</p>
+</blockquote>
+<h3 id="pb的好处"><a href="#pb的好处" class="headerlink" title="pb的好处"></a>pb的好处</h3><blockquote>
+<p><code>Protocol Buffers</code>是一种轻便高效的结构化数据存储格式，可以用于结构化数据的序列化，很适合做数据存储或 RPC 数据交换格式。它可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。</p>
+</blockquote>
+<p>听起来，设计rpc的通信协议，好像很简单，也没什么嘛，不就是简单的协议（语法、语义、时序）定义嘛！！！其实不然，这其中，需要考虑的问题很多，比如：<u style="color: orange">数据发送方如何序列化传输数据</u>、<u style="color: orange">数据接受方需要如何接收并反序列化数据</u>、<u style="color: orange">数据的传输效率如何提高</u>、<u style="color: orange">各种语言如何与pb语义对应上</u>等等。</p>
+<h3 id="pb编码方式"><a href="#pb编码方式" class="headerlink" title="pb编码方式"></a>pb编码方式</h3><blockquote>
+<p>在XML或JSON等数据描述语言中，一般通过成员的名字来绑定对应的数据。但是Protobuf编码却是通过成员的唯一编号来绑定对应的数据，因此Protobuf编码后数据的体积会比较小，但是也非常不便于人类查阅。</p>
+</blockquote>
+<h3 id="pb的使用"><a href="#pb的使用" class="headerlink" title="pb的使用"></a>pb的使用</h3><ul>
+<li><code>.proto</code>文件的书写</li>
+<li>使用IDL编译器编译成对应语言的代码</li>
+</ul>
+<h2 id="pb书写规范"><a href="#pb书写规范" class="headerlink" title="pb书写规范"></a><a href="https://developers.google.com/protocol-buffers/docs/style">pb书写规范</a></h2><ul>
+<li><code>pb</code>文件名为小写+下划线形式，文件后缀以<code>.proto</code>结尾</li>
+<li>保证每行80字符左右；请使用2个空格缩进</li>
+<li>除结构定义之外的语句均以分号结尾</li>
+<li>包名必须小写, 并应与目录层次结构相对应. 例如: test/pb/api.proto 包名应该为test.pb</li>
+<li><code>message</code>结构体命名采用驼峰命名方式，字段命名采用小写字母加下划线分隔方式</li>
+<li><code>enums</code>类型名采用驼峰命名方式，字段命名采用大写字母加下划线分隔方式</li>
+<li><code>service</code>与<code>rpc</code>方法名统一采用驼峰式命名</li>
+</ul>
+<h3 id="案例说明"><a href="#案例说明" class="headerlink" title="案例说明"></a>案例说明</h3><figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 指定proto的版本，默认proto2；proto3对语言进行了提炼简化，所有成员均采用类似Go语言中的零值初始化（不再支持自定义默认值）</span></span><br><span class="line"><span class="comment">// 因此消息成员也不再需要支持required特性。</span></span><br><span class="line">syntax = <span class="string">&quot;proto3&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义包名(import path)，防止message重名</span></span><br><span class="line"><span class="keyword">package</span> main;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 导入外部pb</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;google/protobuf/timestamp.proto&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加可选项</span></span><br><span class="line"><span class="keyword">option</span> go_package = <span class="string">&quot;github.com/protocolbuffers/protobuf/examples/go/tutorialpb&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">PersonType</span> </span>&#123;</span><br><span class="line">  WHITE = <span class="number">0</span>;</span><br><span class="line">  BLACK = <span class="number">1</span>;</span><br><span class="line">  YELLOW = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  PersonType type = <span class="number">1</span>;</span><br><span class="line">  <span class="built_in">string</span> name = <span class="number">2</span>;</span><br><span class="line">  <span class="comment">// Unique ID number for this person.</span></span><br><span class="line">  <span class="built_in">int32</span> id = <span class="number">3</span>;</span><br><span class="line">  <span class="built_in">string</span> email = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">PhoneType</span> </span>&#123;</span><br><span class="line">    MOBILE = <span class="number">0</span>;</span><br><span class="line">    HOME = <span class="number">1</span>;</span><br><span class="line">    WORK = <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">message</span> <span class="title">PhoneNumber</span> </span>&#123;</span><br><span class="line">    <span class="built_in">string</span> number = <span class="number">1</span> [(gogoproto.jsontag) = <span class="string">&quot;number&quot;</span>, json_name = <span class="string">&quot;number&quot;</span> ];</span><br><span class="line">    PhoneType type = <span class="number">2</span> [(gogoproto.jsontag) = <span class="string">&quot;type&quot;</span>, json_name = <span class="string">&quot;type&quot;</span> ];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">repeated</span> PhoneNumber phones = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">  google.protobuf.Timestamp last_updated = <span class="number">6</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义message（可定义多个）</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">EntranceReq</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 定义字段： type fieldName = fieldNumber; </span></span><br><span class="line">  <span class="built_in">string</span> query = <span class="number">1</span>;</span><br><span class="line">  <span class="built_in">int32</span> page_number = <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">int32</span> result_per_page = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EntranceResp 入口返回结果</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">EntranceResp</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 图标</span></span><br><span class="line">    <span class="built_in">string</span> icon = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 名称</span></span><br><span class="line">    <span class="built_in">string</span> name = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义服务和方法</span></span><br><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">TestService</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 活动入口</span></span><br><span class="line">    <span class="function"><span class="keyword">rpc</span> TestEntrance (EntranceReq) <span class="keyword">returns</span> (EntranceResp)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><h4 id="字段的fieldNumber"><a href="#字段的fieldNumber" class="headerlink" title="字段的fieldNumber"></a>字段的<code>fieldNumber</code></h4><blockquote>
+<p>这个并不是<code>fieldName</code>的值，只是一个标号（<code>tag</code>），意味着：往后见到<code>fieldNumber</code>就代表是<code>fieldName</code>；换句话说，字段叫啥名在protobuf中并不重要, 因为在传输的时候，二进制数据流里用的是<code>fieldNumber</code>而不是<code>fieldName</code>；所以<code>fieldNumber</code>一旦被使用, 终生这个编号都不要改变，否则很可能引发线上故障，这也是为什么我们说pb字段的<code>fieldNumber</code>只能追加，不能修改，或者插入的原因。<br><code>fieldNumber</code>的取值范围是1~2^29-1. 而常用的<code>fieldNumber</code>范围是: 1-15(只用1个byte编码),  16-2047(采用2个byte编码). 所以为了节省编码后的长度, 经常使用的一些字段名(如:name, id等), 分配1-15的<code>fieldNumber</code>.</p>
+</blockquote>
+<h4 id="字段的定义"><a href="#字段的定义" class="headerlink" title="字段的定义"></a>字段的定义</h4><ul>
+<li>singular单数字段: protobuf的默认字段规则, 就是说这个字段只能出现0或者1次.</li>
+<li>repeated重复字段: 代表该字段是一个数组或者list. 数组里面可以有任意数量的元素. 如果有多个元素, 元素的顺序会被保留.</li>
+</ul>
+<figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Shop</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int32</span> id = <span class="number">1</span>;</span><br><span class="line">  <span class="built_in">string</span> name = <span class="number">2</span>;</span><br><span class="line">  <span class="comment">// 商店会有多个服务员</span></span><br><span class="line">  <span class="keyword">repeated</span> <span class="built_in">string</span> staff = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="保留字段"><a href="#保留字段" class="headerlink" title="保留字段"></a>保留字段</h4><blockquote>
+<p>保留字段的意思就是, 这些字段保留下来, 后续在protobuf中,不能再次使用了.(即: 防止字段名一样, 但是字段含义不同)</p>
+</blockquote>
+<p>案例说明</p>
+<figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line">syntax = <span class="string">&quot;proto3&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">	reserved <span class="number">2</span>, <span class="number">3</span> to <span class="number">7</span>; 	<span class="comment">// 保留这几个fieldNumber</span></span><br><span class="line">    reserved <span class="string">&quot;foo&quot;</span>, <span class="string">&quot;bar&quot;</span>; 	<span class="comment">// 保留这几个字段名</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>举个例子解释下为啥要保留字段</p>
+<figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line">syntax = <span class="string">&quot;proto3&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一开始的需求, UserInfo绑定的是微信的账号和密码</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">UserInfo</span> </span>&#123;</span><br><span class="line">	<span class="built_in">int32</span> Id = <span class="number">1</span>;</span><br><span class="line">    stirng name = <span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">string</span> wechat_account = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">string</span> wechat_pwd = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 现在需求变了,要求用户信息绑定QQ账号密码</span></span><br><span class="line"><span class="comment">// 此时我删除了 wechat_account wechat_pwd两个字段, 并添加QQ_account, QQ_pwd</span></span><br><span class="line"><span class="comment">// 同时, 之前分配给wechat_account和wechat_pwd的fieldNumber 3 4, 又再一次分配给了 QQ_account和QQ_pwd.</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">UserInfo</span> </span>&#123;</span><br><span class="line">	<span class="built_in">int32</span> Id = <span class="number">1</span>;</span><br><span class="line">    stirng name = <span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">string</span> QQ_account = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">string</span> QQ_pwd = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 想想会有什么问题?</span></span><br><span class="line"><span class="comment">// 别想了,我直接说了, 假如server端修改了protobuf的定义,但是client端还没有更新.</span></span><br><span class="line"><span class="comment">// 此时, 客户端传给server微信的账号/密码, 服务端作为QQ的账号密码去验证,肯定是错的.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 所以呢? 所以修改(如删掉)的字段和对应的fieldNumber都应该保留, 后续都不能在使用了.</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="enum-枚举类型"><a href="#enum-枚举类型" class="headerlink" title="enum 枚举类型"></a><code>enum</code> 枚举类型</h4><blockquote>
+<p>枚举可以定义在message里面,也可以定义在外面(便于复用)；在另一个message类型中,可以通过UserInfo.Gender, 使用枚举类型. reserved同样也可以适用于枚举类型.</p>
+</blockquote>
+<p>案例说明</p>
+<figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">UserInfo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	Gender gender = <span class="number">1</span>; <span class="comment">// 使用Gender枚举类型</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定义枚举类型</span></span><br><span class="line">	<span class="class"><span class="keyword">enum</span> <span class="title">Gender</span> </span>&#123;</span><br><span class="line">    	FEMAIL = <span class="number">0</span>; <span class="comment">// 必须从0开始</span></span><br><span class="line">        MAIL = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="message类型"><a href="#message类型" class="headerlink" title="message类型"></a><code>message</code>类型</h4><figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line">syntax = <span class="string">&quot;proto3&quot;</span>; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="built_in">int32</span> id = <span class="number">1</span>; </span><br><span class="line">    <span class="built_in">string</span> name = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    Date birthday = <span class="number">3</span>; <span class="comment">// 使用message类型作为字段的type</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义消息类型Date:生日</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Date</span> </span>&#123;</span><br><span class="line">    <span class="built_in">int32</span> year = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">int32</span> mounth = <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">int32</span> day = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Tips：一般来说,不相关的消息, 每个message,创建一个proto文件. 如果需要用到其他.proto文件中定义的message, 要通过import进行引入. 编译器会在–proto_path参数指定的路径下寻找相应的需要导入的proto文件. 不写默认在当前目录寻找.</p>
+<h4 id="package包名"><a href="#package包名" class="headerlink" title="package包名"></a><code>package</code>包名</h4><blockquote>
+<p>给一个.proto文件指定package, 是为了避免和其他的.proto文件的message名称冲突.</p>
+</blockquote>
+<p>案例说明</p>
+<figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bar.proto</span></span><br><span class="line"><span class="keyword">package</span> foo.bar;</span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Open</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>后面可以使用该.proto文件的包名去使用message Open</p>
+<figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line"><span class="comment">// foo.proto</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;bar.proto&quot;</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  foo.bar.Open open = <span class="number">1</span>;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当被IDL编译器翻译成GO语言后, Go代码的包名, 默认就是.proto文件的pacakge名称, 除非在.proto文件中显示的用go_pacakge指定IDL编译后的Go文件的import path.</p>
+<h4 id="import的搜寻路径是？"><a href="#import的搜寻路径是？" class="headerlink" title="import的搜寻路径是？"></a>import的搜寻路径是？</h4><blockquote>
+<p>搜寻路径由protoc -I或者protoc –proto_path指定. 所以, import 要和 protoc -I/–proto_path 命令配合好.</p>
+</blockquote>
+<h3 id="踩坑笔记"><a href="#踩坑笔记" class="headerlink" title="踩坑笔记"></a>踩坑笔记</h3><ul>
+<li>任何地方的命名，都不要使用关键字，会出问题</li>
+<li>java_package中，包含关键字（如：public / interface）</li>
+<li>pb文件中，混入奇怪的不可打印字符，或者是混入无用的、语法不对的字符</li>
+<li>enum和message名字不一样就好</li>
+<li>message的名字不要和文件名一样，小心踩坑</li>
+</ul>
+<h2 id="pb管理办法"><a href="#pb管理办法" class="headerlink" title="pb管理办法"></a>pb管理办法</h2><blockquote>
+<p>pb是好用，可是如何优雅的管理起来，是个头疼的问题；微服务化后，多人协作开发上，就很容易出问题。不禁引人发问：proto这个IDL的代码到底应该放在哪里，该怎么管理？这里简单讨论下</p>
+</blockquote>
+<p>能够想到的几种方式如下：</p>
+<ul>
+<li>代码仓库</li>
+<li>独立仓库</li>
+<li>集中仓库</li>
+<li>镜像仓库</li>
+<li>组合方式</li>
+</ul>
+<h3 id="代码仓库"><a href="#代码仓库" class="headerlink" title="代码仓库"></a>代码仓库</h3><p>直接将项目所依赖的所有proto文件都存放在项目的<code>proto/</code>目录下，不经过开发工具的自动拉取和发布：</p>
+<div>
+  <img data-src="manage1.png" width="300px" alt="代码仓库">
+</div>
+
+<ul>
+<li>优点<ul>
+<li>项目所有依赖的 Proto 都存储在代码仓库下，因此不涉及个人开仓库权限的问题。</li>
+<li>多 Proto 的切换开销减少，因为都在代码仓库下，不需要看这看那。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>项目所有依赖的 Proto 都存储在代码仓库下，因此所有依赖 Proto 都需要人工的向其它业务组 “要” 来，再放到 proto/ 目录下，人工介入极度麻烦。</li>
+<li>Proto 升级和变更，经常要重复第一步，沟通成本高。</li>
+</ul>
+</li>
+</ul>
+<h3 id="独立仓库"><a href="#独立仓库" class="headerlink" title="独立仓库"></a>独立仓库</h3><blockquote>
+<p>独立仓库存储是我们最早采取的方式，也就是每个服务对应配套一个 Proto 仓库</p>
+</blockquote>
+<div>
+  <img data-src="manage2.png" width="400px" alt="独立仓库">
+</div>
+
+<p>这个方案的好处就是可以独立管理所有 Proto 仓库，并且权限划分清晰。但最大的优点也是最大的缺点。因为一个服务会依赖多个 Proto 仓库，并且存在跨业务组调用的情况</p>
+<div>
+  <img data-src="manage3.png" width="400px" alt="独立仓库">
+</div>
+
+<p>如上图所示，svc-user 服务分别依赖了三块 Proto 仓库，分别是自己组的、业务组 A、业务组 B 总共的 6 个 Proto 仓库。</p>
+<ul>
+<li>优点<ul>
+<li>使得安全性较高（但 IDL 本身没有太多的秘密）。</li>
+<li>按需拉取，不需要关注其余的服务 Proto。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>假设你是一个新入职的开发人员，那么你就需要找不同的业务组申请不同的仓库权限，非常麻烦。如果没有批量赋权工具，也没有管理者权限，那么就需要一个个赋权，非常麻烦。</li>
+<li>在运行服务的时候，你需要将所有相关联的 Proto 仓库拉取下来，如果没有工具做半自动化的支持，麻烦程度无法忍受。</li>
+</ul>
+</li>
+</ul>
+<h3 id="集中仓库"><a href="#集中仓库" class="headerlink" title="集中仓库"></a>集中仓库</h3><blockquote>
+<p>集中仓库也是一些公司考虑的方式之一，是按公司或大事业部的维度进行 Proto 代码的存储。这样子只需要拉取一个仓库，就可以获取到所有所需的IDL.</p>
+</blockquote>
+<div>
+  <img data-src="manage4.png" width="400px" alt="集中仓库">
+</div>
+
+<ul>
+<li>优点<ul>
+<li>只需要拉取一次Proto仓库就可以轻松把一个服务所需的 IDL 集齐。</li>
+<li>仓库权限管理的复杂度下降。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>安全性下降，因为其它业务组的IDL也全都 “泄露” 了。</li>
+<li>非按需拉取，在查看原始文件时，需要关注一些多余的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="镜像仓库"><a href="#镜像仓库" class="headerlink" title="镜像仓库"></a>镜像仓库</h3><blockquote>
+<p>自己服务的 Proto 文件存放在代码仓库的 proto 文件中，在本次 feature 提交或发布后，自动同步到镜像仓库去。你所依赖的其他服务 Proto 则直接通过读取集中的镜像仓库的方式获取.</p>
+</blockquote>
+<div>
+  <img data-src="manage5.png" width="500px" alt="镜像仓库">
+</div>
+
+<p>这样子的话，通过开发工具的配合，开发人员在开发时就只需要关注自己项目的 Proto 就好了。集中的镜像仓库主要用于构建和部署，大幅度降低了多Proto的关注和切换开销。</p>
+<h3 id="组合方式"><a href="#组合方式" class="headerlink" title="组合方式"></a>组合方式</h3><blockquote>
+<p>单一的方式，或多或少的都存在一些问题，如果采用组合的方式，可以最大程度地发挥作用。例如：独立仓库+集中仓库，对于公共的、需要暴露出去的部分放到集中仓库，不需要暴露出去的就放到独立仓库（例如：部门内部的，可以放到独立仓库，需要跨部门的，可以放到集中仓库），可以一定程度上降低安全性问题。</p>
+</blockquote>
+<p>实际工作中，我们不仅需要考虑proto文件的管理，还需要管理proto编译产物的管理，而这个过程，需要考虑到区分版本的问题，因为测试和上线是两个不同的阶段，不能让测试的版本，被用到了线上。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://juejin.cn/post/6865126893063471112">Protobuf入门（大白话版）</a></li>
+<li><a href="https://mp.weixin.qq.com/s/cBXZjg_R8MLFDJyFtpjVVQ">真是头疼，Proto 代码到底放哪里？</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>go</category>
+        <category>grpc</category>
+        <category>pb</category>
+      </categories>
+      <tags>
+        <tag>pb</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python编码规范</title>
+    <url>/2021/03/28/pythonic/</url>
+    <content><![CDATA[<h3 id="变量交换"><a href="#变量交换" class="headerlink" title="变量交换"></a>变量交换</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tmp = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = tmp</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b = b, a</span><br></pre></td></tr></table></figure>
+<h3 id="循环遍历区间元素"><a href="#循环遍历区间元素" class="headerlink" title="循环遍历区间元素"></a>循环遍历区间元素</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]:</span><br><span class="line">    <span class="built_in">print</span> i</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">    <span class="built_in">print</span> i</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">6</span>):</span><br><span class="line">    <span class="built_in">print</span> i</span><br></pre></td></tr></table></figure>
+<h3 id="带有索引位置的集合遍历"><a href="#带有索引位置的集合遍历" class="headerlink" title="带有索引位置的集合遍历"></a>带有索引位置的集合遍历</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">colors = [<span class="string">&#x27;red&#x27;</span>, <span class="string">&#x27;green&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>, <span class="string">&#x27;yellow&#x27;</span>]</span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(colors)):</span><br><span class="line">    <span class="built_in">print</span> i, <span class="string">&#x27;---&gt;&#x27;</span>, colors[i]</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">for</span> i, color <span class="keyword">in</span> <span class="built_in">enumerate</span>(colors):</span><br><span class="line">    <span class="built_in">print</span> i, <span class="string">&#x27;---&gt;&#x27;</span>, color</span><br></pre></td></tr></table></figure>
+<h3 id="字符串连接"><a href="#字符串连接" class="headerlink" title="字符串连接"></a>字符串连接</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 字符串连接时，普通的方式可以用 + 操作</span></span><br><span class="line">names = [<span class="string">&#x27;raymond&#x27;</span>, <span class="string">&#x27;rachel&#x27;</span>, <span class="string">&#x27;matthew&#x27;</span>, <span class="string">&#x27;roger&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;betty&#x27;</span>, <span class="string">&#x27;melissa&#x27;</span>, <span class="string">&#x27;judith&#x27;</span>, <span class="string">&#x27;charlie&#x27;</span>]</span><br><span class="line">s = names[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names[<span class="number">1</span>:]:</span><br><span class="line">    s += <span class="string">&#x27;, &#x27;</span> + name</span><br><span class="line"><span class="built_in">print</span> s</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;, &#x27;</span>.join(names)</span><br></pre></td></tr></table></figure>
+<h3 id="打开-关闭文件"><a href="#打开-关闭文件" class="headerlink" title="打开/关闭文件"></a>打开/关闭文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;data.txt&#x27;</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    data = f.read()</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    f.close()</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.txt&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br></pre></td></tr></table></figure>
+<h3 id="列表推导式"><a href="#列表推导式" class="headerlink" title="列表推导式"></a>列表推导式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">result = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    s = i  <span class="number">2</span></span><br><span class="line">    result.append(s)</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line">[i2 <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">10</span>)]</span><br></pre></td></tr></table></figure>
+<h3 id="善用装饰器"><a href="#善用装饰器" class="headerlink" title="善用装饰器"></a>善用装饰器</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">web_lookup</span>(<span class="params">url, saved=&#123;&#125;</span>):</span></span><br><span class="line">    <span class="keyword">if</span> url <span class="keyword">in</span> saved:</span><br><span class="line">        <span class="keyword">return</span> saved[url]</span><br><span class="line">    page = urllib.urlopen(url).read()</span><br><span class="line">    saved[url] = page</span><br><span class="line">    <span class="keyword">return</span> page</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">import</span> urllib <span class="comment"># py2</span></span><br><span class="line"><span class="comment"># import urllib.request as urllib # py3</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cache</span>(<span class="params">func</span>):</span></span><br><span class="line">    saved = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>(<span class="params">url</span>):</span></span><br><span class="line">        <span class="keyword">if</span> url <span class="keyword">in</span> saved:</span><br><span class="line">            <span class="keyword">return</span> saved[url]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            page = func(url)</span><br><span class="line">            saved[url] = page</span><br><span class="line">            <span class="keyword">return</span> page</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="meta">@cache</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">web_lookup</span>(<span class="params">url</span>):</span></span><br><span class="line">    <span class="keyword">return</span> urllib.urlopen(url).read()</span><br></pre></td></tr></table></figure>
+<h3 id="合理使用列表"><a href="#合理使用列表" class="headerlink" title="合理使用列表"></a>合理使用列表</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">names = [<span class="string">&#x27;raymond&#x27;</span>, <span class="string">&#x27;rachel&#x27;</span>, <span class="string">&#x27;matthew&#x27;</span>, <span class="string">&#x27;roger&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;betty&#x27;</span>, <span class="string">&#x27;melissa&#x27;</span>, <span class="string">&#x27;judith&#x27;</span>, <span class="string">&#x27;charlie&#x27;</span>]</span><br><span class="line">names.pop(<span class="number">0</span>)</span><br><span class="line">names.insert(<span class="number">0</span>, <span class="string">&#x27;mark&#x27;</span>)</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">names = deque([<span class="string">&#x27;raymond&#x27;</span>, <span class="string">&#x27;rachel&#x27;</span>, <span class="string">&#x27;matthew&#x27;</span>, <span class="string">&#x27;roger&#x27;</span>,</span><br><span class="line">               <span class="string">&#x27;betty&#x27;</span>, <span class="string">&#x27;melissa&#x27;</span>, <span class="string">&#x27;judith&#x27;</span>, <span class="string">&#x27;charlie&#x27;</span>])</span><br><span class="line">names.popleft()   <span class="comment"># deque 是一个双向队列的数据结构，删除元素和插入元素会很快</span></span><br><span class="line">names.appendleft(<span class="string">&#x27;mark&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="序列解包"><a href="#序列解包" class="headerlink" title="序列解包"></a>序列解包</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = <span class="string">&#x27;vttalk&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">30</span>, <span class="string">&#x27;python@qq.com&#x27;</span></span><br><span class="line">name = p[<span class="number">0</span>]</span><br><span class="line">gender = p[<span class="number">1</span>]</span><br><span class="line">age = p[<span class="number">2</span>]</span><br><span class="line">email = p[<span class="number">3</span>]</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line">name, gender, age, email = p</span><br></pre></td></tr></table></figure>
+<h3 id="遍历字典的-key-和-value"><a href="#遍历字典的-key-和-value" class="headerlink" title="遍历字典的 key 和 value"></a>遍历字典的 key 和 value</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方法一</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> d:</span><br><span class="line">    <span class="built_in">print</span> k, <span class="string">&#x27;---&gt;&#x27;</span>, d[k]</span><br><span class="line"><span class="comment"># 方法二</span></span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> d.items():</span><br><span class="line">    <span class="built_in">print</span> k, <span class="string">&#x27;---&gt;&#x27;</span>, v</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> d.iteritems():</span><br><span class="line">    <span class="built_in">print</span> k, <span class="string">&#x27;---&gt;&#x27;</span>, v</span><br></pre></td></tr></table></figure>
+<h3 id="链式比较操作"><a href="#链式比较操作" class="headerlink" title="链式比较操作"></a>链式比较操作</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">age = <span class="number">18</span></span><br><span class="line"><span class="keyword">if</span> age &gt; <span class="number">18</span> <span class="keyword">and</span> x &lt; <span class="number">60</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;yong man&quot;</span>)</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">if</span> <span class="number">18</span> &lt; age &lt; <span class="number">60</span>:  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;yong man&quot;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">False</span> == <span class="literal">False</span> == <span class="literal">True</span>  <span class="comment"># 这也是一个链式比较</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="if-else-三目运算"><a href="#if-else-三目运算" class="headerlink" title="if/else 三目运算"></a>if/else 三目运算</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> gender == <span class="string">&#x27;male&#x27;</span>:</span><br><span class="line">    text = <span class="string">&#x27;男&#x27;</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    text = <span class="string">&#x27;女&#x27;</span></span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line">text = <span class="string">&#x27;男&#x27;</span> <span class="keyword">if</span> gender == <span class="string">&#x27;male&#x27;</span> <span class="keyword">else</span> <span class="string">&#x27;女&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="真值判断"><a href="#真值判断" class="headerlink" title="真值判断"></a>真值判断</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> attr == <span class="literal">True</span>:</span><br><span class="line">    do_something()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(values) != <span class="number">0</span>:  <span class="comment"># 判断列表是否为空</span></span><br><span class="line">    do_something()</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">if</span> attr:</span><br><span class="line">    do_something()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> values:</span><br><span class="line">    do_something()</span><br></pre></td></tr></table></figure>
+<h3 id="for-else语句"><a href="#for-else语句" class="headerlink" title="for/else语句"></a>for/else语句</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">flagfound = <span class="literal">False</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line">    <span class="keyword">if</span> i == theflag:</span><br><span class="line">        flagfound = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    process(i)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> flagfound:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&quot;List argument missing terminal flag.&quot;</span>)</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line">    <span class="keyword">if</span> i == theflag:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    process(i)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&quot;List argument missing terminal flag.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="字符串格式化"><a href="#字符串格式化" class="headerlink" title="字符串格式化"></a>字符串格式化</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s1 = <span class="string">&quot;foofish.net&quot;</span></span><br><span class="line">s2 = <span class="string">&quot;vttalk&quot;</span></span><br><span class="line">s3 = <span class="string">&quot;welcome to %s and following %s&quot;</span> % (s1, s2)</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line">s3 = <span class="string">&quot;welcome to &#123;blog&#125; and following &#123;wechat&#125;&quot;</span>.<span class="built_in">format</span>(blog=<span class="string">&quot;foofish.net&quot;</span>, wechat=<span class="string">&quot;vttalk&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="列表切片"><a href="#列表切片" class="headerlink" title="列表切片"></a>列表切片</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">items = <span class="built_in">range</span>(<span class="number">10</span>)</span><br><span class="line"><span class="comment"># 奇数</span></span><br><span class="line">odd_items = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> items:</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> != <span class="number">0</span>:</span><br><span class="line">        odd_items.append(i)</span><br><span class="line"><span class="comment"># 拷贝</span></span><br><span class="line">copy_items = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> items:</span><br><span class="line">    copy_items.append(i)</span><br><span class="line">pythonic</span><br><span class="line"><span class="comment"># 第1到第4个元素的范围区间</span></span><br><span class="line">sub_items = items[<span class="number">1</span>:<span class="number">4</span>]</span><br><span class="line"><span class="comment"># 奇数</span></span><br><span class="line">odd_items = items[<span class="number">1</span>::<span class="number">2</span>]</span><br><span class="line"><span class="comment"># 拷贝</span></span><br><span class="line">copy_items = items[::] 或者 items[:]</span><br></pre></td></tr></table></figure>
+<h3 id="善用生成器"><a href="#善用生成器" class="headerlink" title="善用生成器"></a>善用生成器</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span>(<span class="params">n</span>):</span></span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    result = []</span><br><span class="line">     <span class="keyword">while</span> b &lt; n:</span><br><span class="line">        result.append(b)</span><br><span class="line">        a, b = b, a+b</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span>(<span class="params">n</span>):</span></span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> a &lt; n:</span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a, b = b, a + b</span><br><span class="line"><span class="comment"># 上面是用生成器生成费波那契数列。生成器的好处就是无需一次性把所有元素加载到内存，只有迭代获取元素时才返回该元素，而列表是预先一次性把全部元素加载到了内存。此外用 yield 代码看起来更清晰。</span></span><br></pre></td></tr></table></figure>
+<h3 id="获取字典元素"><a href="#获取字典元素" class="headerlink" title="获取字典元素"></a>获取字典元素</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">d = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;foo&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">if</span> d.has_key(<span class="string">&#x27;name&#x27;</span>):</span><br><span class="line">    <span class="built_in">print</span>(d[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;unkonw&#x27;</span>)</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line">d.get(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;unknow&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="预设字典默认值"><a href="#预设字典默认值" class="headerlink" title="预设字典默认值"></a>预设字典默认值</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过 key 分组的时候，不得不每次检查 key 是否已经存在于字典中。</span></span><br><span class="line">data = [(<span class="string">&#x27;foo&#x27;</span>, <span class="number">10</span>), (<span class="string">&#x27;bar&#x27;</span>, <span class="number">20</span>), (<span class="string">&#x27;foo&#x27;</span>, <span class="number">39</span>), (<span class="string">&#x27;bar&#x27;</span>, <span class="number">49</span>)]</span><br><span class="line">groups = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> (key, value) <span class="keyword">in</span> data:</span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> groups:</span><br><span class="line">        groups[key].append(value)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        groups[key] = [value]</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="comment">#　第一种方式</span></span><br><span class="line">groups = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> (key, value) <span class="keyword">in</span> data:</span><br><span class="line">    groups.setdefault(key, []).append(value) </span><br><span class="line"><span class="comment"># 第二种方式</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line">groups = defaultdict(<span class="built_in">list</span>)</span><br><span class="line"><span class="keyword">for</span> (key, value) <span class="keyword">in</span> data:</span><br><span class="line">    groups[key].append(value)</span><br><span class="line"><span class="comment"># dict.fromkeys(&#x27;hello&#x27;, &#x27;world&#x27;)</span></span><br></pre></td></tr></table></figure>
+<h3 id="字典推导式"><a href="#字典推导式" class="headerlink" title="字典推导式"></a>字典推导式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在python2.7之前，构建字典对象一般使用下面这种方式，可读性非常差</span></span><br><span class="line">numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">my_dict = <span class="built_in">dict</span>([(number,number*<span class="number">2</span>) <span class="keyword">for</span> number <span class="keyword">in</span> numbers])</span><br><span class="line"><span class="built_in">print</span>(my_dict)  <span class="comment"># &#123;1: 2, 2: 4, 3: 6&#125;</span></span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">my_dict = &#123;number: number * <span class="number">2</span> <span class="keyword">for</span> number <span class="keyword">in</span> numbers&#125;</span><br><span class="line"><span class="built_in">print</span>(my_dict)  <span class="comment"># &#123;1: 2, 2: 4, 3: 6&#125;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 还可以指定过滤条件</span></span><br><span class="line">my_dict = &#123;number: number * <span class="number">2</span> <span class="keyword">for</span> number <span class="keyword">in</span> numbers <span class="keyword">if</span> number &gt; <span class="number">1</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(my_dict)  <span class="comment"># &#123;2: 4, 3: 6&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="交换两个变量值"><a href="#交换两个变量值" class="headerlink" title="交换两个变量值"></a>交换两个变量值</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a,b = b,a</span><br></pre></td></tr></table></figure>
+<h3 id="去掉list中的重复元素"><a href="#去掉list中的重复元素" class="headerlink" title="去掉list中的重复元素"></a>去掉list中的重复元素</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">old_list = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">new_list = <span class="built_in">list</span>(<span class="built_in">set</span>(old_list))</span><br></pre></td></tr></table></figure>
+<h3 id="翻转一个字符串"><a href="#翻转一个字符串" class="headerlink" title="翻转一个字符串"></a>翻转一个字符串</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s = <span class="string">&#x27;abcde&#x27;</span></span><br><span class="line">ss = s[::-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="用两个元素之间有对应关系的list构造一个dict"><a href="#用两个元素之间有对应关系的list构造一个dict" class="headerlink" title="用两个元素之间有对应关系的list构造一个dict"></a>用两个元素之间有对应关系的list构造一个dict</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">names = [<span class="string">&#x27;jianpx&#x27;</span>, <span class="string">&#x27;yue&#x27;</span>]</span><br><span class="line">ages = [<span class="number">23</span>, <span class="number">40</span>]</span><br><span class="line">m = <span class="built_in">dict</span>(<span class="built_in">zip</span>(names,ages))</span><br></pre></td></tr></table></figure>
+<h3 id="将数量较多的字符串相连，如何效率较高，为什么"><a href="#将数量较多的字符串相连，如何效率较高，为什么" class="headerlink" title="将数量较多的字符串相连，如何效率较高，为什么"></a>将数量较多的字符串相连，如何效率较高，为什么</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fruits = [<span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>]</span><br><span class="line">result = <span class="string">&#x27;&#x27;</span>.join(fruits)</span><br><span class="line"><span class="comment"># python字符串效率问题之一就是在连接字符串的时候使用‘+’号，例如 s = ‘s1’ + ‘s2’ + ‘s3’ + ...+’sN’，总共将N个字符串连接起来， 但是使用+号的话，python需要申请N-1次内存空间， 然后进行字符串拷贝。原因是字符串对象PyStringObject在python当中是不可变 对象，所以每当需要合并两个字符串的时候，就要重新申请一个新的内存空间 （大小为两个字符串长度之和）来给这个合并之后的新字符串，然后进行拷贝。 所以用+号效率非常低。建议在连接字符串的时候使用字符串本身的方法 join（list），这个方法能提高效率，原因是它只是申请了一次内存空间， 因为它可以遍历list中的元素计算出总共需要申请的内存空间的大小，一次申请完</span></span><br></pre></td></tr></table></figure>
+<h3 id="多用lambda函数"><a href="#多用lambda函数" class="headerlink" title="多用lambda函数"></a>多用lambda函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">variable = <span class="keyword">lambda</span>:  <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h3 id="巧用-or-子句"><a href="#巧用-or-子句" class="headerlink" title="巧用 or 子句"></a>巧用 or 子句</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">variable =  a  <span class="keyword">or</span>  b</span><br></pre></td></tr></table></figure>
+<h3 id="如何检测用户有没有传进来你想要的参数呢？"><a href="#如何检测用户有没有传进来你想要的参数呢？" class="headerlink" title="如何检测用户有没有传进来你想要的参数呢？"></a>如何检测用户有没有传进来你想要的参数呢？</h3><blockquote>
+<p>一个函数需要测试某个可选参数是否被使用者传递 进来。这时候需要小心的是你不能用某个默认值比如<code>None</code>、<code>0</code>或者<code>False</code>值来测试用 户提供的值因为这些值都是合法的值，是可能被用户传递进来的 。因此，你需要其他的解决方案了。<br>为了解决这个问题，你可以创建一个独一无二的私有对象实例，就像上面的<code>_no_value</code>变量那样。在函数里面，你可以通过检查被传递参数值跟这个实例是否一样来判断。这里的思路是用户不可能去传递这个 实例作为输入。因此，这<br>里通过检查这个值就能确定某个参数是否被传递进来了。  </p>
+</blockquote>
+<blockquote>
+<p>这里对<code>object()</code>的使用看上去有点不太常见。<code>object</code>是<code>python</code>中所有类的基类。你可以创建<code>object</code>类的实例，但是这些实例没什么实际用处，因为它并没有任何有用 的方法，也没有哦任何实例数据 因为它没有任何的实例字典，你甚至都不能设置任何 属性值 。你唯一能做的就是测试同一性。这个刚好符合我的要求，因为我在函数中就 只是需要一个同一性的测试而已。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">_no_value = <span class="built_in">object</span>()</span><br><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">spam</span>(<span class="params">a,  b=_no_value</span>):</span></span><br><span class="line">    <span class="keyword">if</span>  b <span class="keyword">is</span>  _no_value:</span><br><span class="line">         <span class="built_in">print</span>(<span class="string">&#x27;No b value supplied&#x27;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>真的理解同步和异步了吗?</title>
+    <url>/2021/03/28/sync_and_sync/</url>
+    <content><![CDATA[<html>
+  <body>
+    <div>
+      <p style="text-align: left; color: #1f7199; font-style: italic">
+        老实说，玩电脑也玩了好几年了；印象中看到" 同步和异步" 关键字的次数已经记不清了，总感觉自己知道点什么，但却又说不出来什么东西，这是为啥？ ——   因为没有深入理解，没有总结；也应了那句古话：纸上学来终觉浅，绝知此事要躬行。   不卖关子了，开始进入正题。
+      </p>
+    </div>
+  </body>
+</html>
+
+<ul>
+<li><code>同步</code></li>
+<li><code>异步</code></li>
+</ul>
+<blockquote>
+<p><code>同步</code>就好比：你去外地上学(人生地不熟)，突然生活费不够了；此时你决定打电话回家，通知家里转生活费过来，可是当你拨出电话时，对方一直处于待接听状态(即：打不通，联系不上)，为了拿到生活费，你就不停的 oncall 、等待，最终可能不能及时要到生活费，导致你今天要做的事都没有完成，而白白花掉了时间。   </p>
+</blockquote>
+<blockquote>
+<p><code>异步</code>就是：在你打完电话发现没人接听时，猜想：对方可能在忙，暂时无法接听电话，所以你发了一条短信(或者语音留言，亦或是其他的方式)通知对方后便忙其他要紧的事了；这时你就不需要持续不断的拨打电话，还可以做其他事情；待一定时间后，对方看到你的留言便回复响应你，当然对方可能转钱也可能不转钱。但是整个一天下来，你还做了很多事情。   或者说你找室友临时借了一笔钱，又开始 happy 的上学时光了。</p>
+</blockquote>
+<blockquote>
+<p><code>简而言之，言而总之</code>：同步就是我强依赖你(对方)，我必须等到你的回复，才能做出下一步响应。即我的操作(行程)是顺序执行的，中间少了哪一步都不可以，或者说中间哪一步出错都不可以，类似于编程中程序被解释器顺序执行一样；同时如果我没有收到你的回复，我就一直处于等待、也就是阻塞的状态。   异步则相反，我并不强依赖你，我对你响应的时间也不敏感，无论你返回还是不返回，我都能继续运行；你响应并返回了，我就继续做之前的事情，你没有响应，我就做其他的事情。也就是说我不存在等待对方的概念，我就是非阻塞的。</p>
+</blockquote>
+<html>
+  <body>
+    <div>
+      <p style="text-align: left; color: #1f7199; font-style: italic">
+        这么看来，同步似乎等价于阻塞，异步则等价于非阻塞。其实有些狭义，但不可否认的是，在一定情况下，确实可以这么认为；因为同步一定存在着阻塞状态，而异步一定不存在非阻塞的状态。 但是不是就是说 同步调用 == 阻塞调用呢？我们接着往下看.
+      </p>
+    </div>
+  </body>
+</html>
+
+<ul>
+<li><code>同步 &amp; 异步</code></li>
+<li><code>阻塞 &amp; 非阻塞</code></li>
+</ul>
+<blockquote>
+<p><code>同步 &amp; 异步</code>：同步和异步强调的是消息通信机制 (<code>synchronous communication</code> / <code>asynchronous communication</code>)。所谓同步，就是在发出一个”调用”时，在没有得到结果之前，该“调用”就不返回。但是一旦调用返回，就得到返回值了。换句话说，就是由“调用者”主动等待这个“调用”的结果。而异步则是相反，”调用”在发出之后，这个调用就直接返回了，所以没有返回结果。换句话说，当一个异步过程调用发出后，调用者不会立刻得到结果。而是在”调用”发出后，”被调用者”通过状态、通知来通知调用者，或通过回调函数处理这个调用。</p>
+</blockquote>
+<blockquote>
+<p><code>阻塞 &amp; 非阻塞</code>：阻塞和非阻塞强调的是程序在等待调用结果（消息，返回值）时的状态.  阻塞调用是指调用结果返回之前，当前线程会被挂起。调用线程只有在得到结果之后才会返回。非阻塞调用指在不能立刻得到结果之前，该调用不会阻塞当前线程。 对于同步调用来说，很多时候当前线程还是激活的状态，只是从逻辑上当前函数没有返回而已，即同步等待时什么都不干，白白占用着资源。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>同步</tag>
+        <tag>异步</tag>
+      </tags>
+  </entry>
+</search>

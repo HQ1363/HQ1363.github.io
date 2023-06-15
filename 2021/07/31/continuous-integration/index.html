@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hq1363.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="持续集成，简称&#96;CI&#96;，也不是一个新概念了；早在极限编程(XP)中，便作为12种实践之一被提出。最近三四年，随着&#96;DevOps&#96;概念逐渐被重视，&#96;CI&#x2F;CD&#96;也成了市面上津津乐道的一个东西；然而也就是这么一个东西，即使每个公司都有着自己的实践方案，也仍然被其内部员工不停吐槽，这其中有很多原因，本文将会提到一部分；同时本文也将从多个角度，反复推敲&#96;CI&#96;，欢迎大佬们驻足留言，谢谢～">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊持续集成">
+<meta property="og:url" content="http://hq1363.github.io/2021/07/31/continuous-integration/index.html">
+<meta property="og:site_name" content="春暖花开">
+<meta property="og:description" content="持续集成，简称&#96;CI&#96;，也不是一个新概念了；早在极限编程(XP)中，便作为12种实践之一被提出。最近三四年，随着&#96;DevOps&#96;概念逐渐被重视，&#96;CI&#x2F;CD&#96;也成了市面上津津乐道的一个东西；然而也就是这么一个东西，即使每个公司都有着自己的实践方案，也仍然被其内部员工不停吐槽，这其中有很多原因，本文将会提到一部分；同时本文也将从多个角度，反复推敲&#96;CI&#96;，欢迎大佬们驻足留言，谢谢～">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/git_flow.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/classic_case.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/microservice_case.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/cloud_native.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/eless_v1.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/eless_v2.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/waimai_branch.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/ali_cloud.png">
+<meta property="og:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/tencent_coding.png">
+<meta property="article:published_time" content="2021-07-31T16:02:15.000Z">
+<meta property="article:modified_time" content="2023-06-15T14:02:23.077Z">
+<meta property="article:author" content="HQ">
+<meta property="article:tag" content="CI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hq1363.github.io/2021/07/31/continuous-integration/git_flow.png">
+
+
+<link rel="canonical" href="http://hq1363.github.io/2021/07/31/continuous-integration/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>聊聊持续集成 | 春暖花开</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="春暖花开" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">春暖花开</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">春风正暖, 朝阳正好</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%96%E5%9C%BA%E7%83%AD%E8%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">暖场热身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-number">2.4.</span> <span class="nav-text">目的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E6%88%90%E6%A8%A1%E5%9D%97"><span class="nav-number">3.</span> <span class="nav-text">组成模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E7%AE%A1%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">仓库管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">代码质量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">设计实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="nav-number">4.1.</span> <span class="nav-text">典型场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">4.2.</span> <span class="nav-text">微服务场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cloud-Native"><span class="nav-number">4.3.</span> <span class="nav-text">Cloud Native</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%A1%88%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">参考案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%A1%E5%B8%AE"><span class="nav-number">5.1.</span> <span class="nav-text">满帮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A5%BF%E4%BA%86%E4%B9%88"><span class="nav-number">5.2.</span> <span class="nav-text">饿了么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%88%92%E5%88%86"><span class="nav-number">5.2.1.</span> <span class="nav-text">环境划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AD%96%E7%95%A5"><span class="nav-number">5.2.2.</span> <span class="nav-text">分支策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9"><span class="nav-number">5.3.</span> <span class="nav-text">哔哩哔哩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4"><span class="nav-number">5.4.</span> <span class="nav-text">阿里巴巴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%85%BE%E8%AE%AFCoding"><span class="nav-number">5.5.</span> <span class="nav-text">腾讯Coding</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HQ"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">HQ</p>
+  <div class="site-description" itemprop="description">这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HQ1363" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HQ1363" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:huangqiang1363@outlook.com" title="E-Mail → mailto:huangqiang1363@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Friend Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/huangqiang1363" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;huangqiang1363" rel="noopener" target="_blank">CSDN</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/HQ1363" title="https:&#x2F;&#x2F;github.com&#x2F;HQ1363" rel="noopener" target="_blank">GitHub</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/HQ1363" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hq1363.github.io/2021/07/31/continuous-integration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="HQ">
+      <meta itemprop="description" content="这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春暖花开">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          聊聊持续集成
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-01 00:02:15" itemprop="dateCreated datePublished" datetime="2021-08-01T00:02:15+08:00">2021-08-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-06-15 22:02:23" itemprop="dateModified" datetime="2023-06-15T22:02:23+08:00">2023-06-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CI/" itemprop="url" rel="index"><span itemprop="name">CI</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>持续集成，简称<code>CI</code>，也不是一个新概念了；早在极限编程(XP)中，便作为12种实践之一被提出。最近三四年，随着<code>DevOps</code>概念逐渐被重视，<code>CI/CD</code>也成了市面上津津乐道的一个东西；然而也就是这么一个东西，即使每个公司都有着自己的实践方案，也仍然被其内部员工不停吐槽，这其中有很多原因，本文将会提到一部分；同时本文也将从多个角度，反复推敲<code>CI</code>，欢迎大佬们驻足留言，谢谢～</p>
+</blockquote>
+<h2 id="暖场热身"><a href="#暖场热身" class="headerlink" title="暖场热身"></a>暖场热身</h2><p><strong><span style="color: blue">Q1</span>：你知道什么是<code>CI</code>吗？</strong><br><em>我相信很多人都听过CI，当我问出这个问题的时候，估计有人就会说了，这谁不知道啊，不就是<code>Continuous integration</code>嘛，整的好像谁不知道似的；紧接着，我要问了，那什么是<code>Continuous integration</code>呢。曾经我问过好几个开发朋友，他们也表示只知道字面意思，平时的工作”好像”也和CI没什么关系，应该指的就是打包、构建吧！！！</em></p>
+<p><strong><span style="color: blue">Q2</span>: 你知道为啥需要<code>CI</code>吗？</strong><br><em>可能有的开发会说，我不需要，这东西浪费我开发时间，我只想专心写代码，现在整的一堆麻烦事，严重影响我的开发效率，真的是搞事情！！！</em></p>
+<p><strong><span style="color: blue">Q3</span>: 你知道作为一名<code>Dev/Qa</code>，需要关注<code>CI</code>的哪些东西呢？</strong><br><em>只知道死干活的人，可能根本就不会去思考这类问题；说来也奇怪，往往是那些喜欢偷懒的人，懂得变通，可以想尽一切办法去偷懒。</em></p>
+<p><strong><span style="color: blue">Q4</span>: 你知道大厂的CI都是怎么玩的吗？</strong><br><em>诚然，即便在业界已经有众多开源解决方案的今天，当结合到每家公司的不同场景下，往往会呈现出不同的效应；每家公司的发展阶段和侧重点是不一样的，其所需要落地的目标也是不尽相同的；特别是在一家快速发展的公司，你会发现其<code>CI</code>流程也是在逐渐变化，不停发展演进的。这也就意味着，在设计<code>CI</code>的时候，你需要充分考虑后期的可扩展性、可维护性、以及健壮性；以避免后期出现大规模的改动。</em></p>
+<p><strong><span style="color: blue">Q5</span>: 倘若让你去设计CI流程，你会如何设计？</strong><br><em>一个好的CI流程，将会让开发团队极大受益，不仅能尽早地发现问题，还能维持高效、稳定、安全的业务迭代速度。</em></p>
+<hr>
+<p>在介绍持续集成之前，我想先介绍下传统的开发过程下的坑：</p>
+<ul>
+<li>BUG总是很晚才被发现，并且难以修复</li>
+<li>研发交付质量无法得到保障</li>
+<li>变更频繁，研发效率低下</li>
+<li>重复性劳动，无效等待过多，用户满意度低</li>
+</ul>
+<p>如果你经历过或正在经历传统开发模式的伤与痛，你是否用过/想过：</p>
+<ul>
+<li>什么时候可以不用再为开发/测试环境而苦恼</li>
+<li>什么时候可以不用再麻烦运维帮忙调试环境</li>
+<li>什么时候可以不用手动测试，自动帮我测试</li>
+<li>什么时候可以只专注于代码的开发</li>
+</ul>
+<blockquote>
+<p>既然如此，我们话不多说，一起来了解一下<code>CI</code>吧；当然了，如果是大佬，我这就班门弄斧了，还望大佬们批评指正。</p>
+</blockquote>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><ul>
+<li>持续：意为长期、频繁不断地</li>
+<li>集成：将一些孤立的事物或者元素通过某种方式联系在一起，从而构成一个有机整体的过程</li>
+</ul>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>是一种通过在应用开发阶段引入自动化来频繁向客户交付应用的方法</li>
+<li>是一种软件开发实践，项目成员能够频繁地进行集成，并通过自动化方式来尽快发现问题</li>
+</ul>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>需要有代码托管工具支持，如：<a target="_blank" rel="noopener" href="https://github.com/">github</a>、<a target="_blank" rel="noopener" href="https://gitee.com/">gitee</a></li>
+<li>需要有专门的集成服务器来执行集成构建，如：<a target="_blank" rel="noopener" href="https://www.jenkins.io/zh/">Jenkins</a>、<a target="_blank" rel="noopener" href="https://circleci.com/">CircleCI</a>、<a target="_blank" rel="noopener" href="https://travis-ci.com/">TravisCI</a></li>
+<li>它是一个自动化的周期性集成测试过程，从检出代码、编译构建、运行测试、结果记录、测试统计等都是自动完成的，无需人工干预</li>
+</ul>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>可以提高软件开发和交付过程的透明度和洞察力</li>
+<li>有效减少重复过程，节省时间、成本和工作量，完全自动化，利于尽早发现问题</li>
+<li>可以帮助开发人员更加频繁地（有时甚至每天）将代码变更合并到共享分支或“主干”中</li>
+</ul>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><ul>
+<li>就是让产品可以快速迭代，同时还能保持高质量；即：高效率、高质量、高产出。</li>
+</ul>
+<p>以上仅代表个人对<code>CI</code>的理解，关于基础概念这一块，可详细读一读<a target="_blank" rel="noopener" href="https://www.cnblogs.com/davenkin/archive/2012/02/25/continuous-integration-from-martin-fowler.html">「Martin Fowler的持续集成」</a></p>
+<hr>
+<h2 id="组成模块"><a href="#组成模块" class="headerlink" title="组成模块"></a>组成模块</h2><h3 id="仓库管理"><a href="#仓库管理" class="headerlink" title="仓库管理"></a>仓库管理</h3><blockquote>
+<p>一个好的仓库管理方式，在很多程度上，决定了研发之间的沟通协作方式；虽然是老生常谈的话题，但这个环节确实有必要拿出来捋一捋。到底是选择<code>mono repo</code>还是<code>multi repo</code>呢？我们来看看这其中的优缺点：</p>
+</blockquote>
+<ul>
+<li><code>mono repo</code><br>也就是常说的<strong>单体仓库</strong>（大仓模式），它是将所有的服务，全部放到一个代码库，包含了每个业务的服务代码和公共的<code>Lib</code>库、<code>Tools</code>集合；既然代码都放到一起，也就很好管理了，带来的好处也不少，比如：<ul>
+<li>易于开发者测试</li>
+<li>易于标准化代码</li>
+<li>易于开展Code Review</li>
+<li>易于共享公共组件，避免重复造轮子</li>
+<li>易于重构</li>
+</ul>
+</li>
+<li><code>multi repo</code><br>和单体仓库相反，为<strong>多仓库</strong>方式（小仓模式）；每个服务代码单独成库，各自为营，彼此之间，井水不犯河水，做了很好的隔离。也就说多仓库具备如下特点：<ul>
+<li>服务之间职责划分清晰</li>
+<li>易于扩展，服务之间的解耦</li>
+<li>限制clone范围，避免代码库完全泄漏</li>
+</ul>
+</li>
+</ul>
+<p>可以发现，<code>mono repo</code>的优点恰恰是<code>multi repo</code>的缺点，两者之间是互斥的关系；中小型的企业，一般用的是单体仓库，大型企业往往是多仓库；如果单论优点的个数，貌似mono repo确实更好一些，但其实也有一些大公司，用的是单体仓库，如：<code>Google</code>、<code>Facebook</code>、<code>Salesforce</code>.</p>
+<h3 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h3><blockquote>
+<p>但凡提交过代码，就一定会涉及到分支，至少也会有一个<code>master</code>默认分支；如果你是一个优秀的<strong style="color: orange">Coder</strong>，在分支使用上，必然有一定的讲究，比如<u>分支的命名、分支的存活周期</u>上。业内有很多的分支管理方法，包括著名的<strong style="color: blue">GitFlow</strong>、<strong style="color: blue">TBD</strong>以及从他们衍生出来的版本。</p>
+</blockquote>
+<p><img data-src="git_flow.png" alt="git_flow.png"></p>
+<ul>
+<li><code>feature</code>分支：具体要开发的功能的分支，完成后合并到develop</li>
+<li><code>develop</code>分支：开发的主分支，feature和release分支会基于此分支</li>
+<li><code>release</code>分支：用于发布新版本的分支，完成后合并到develop和master</li>
+<li><code>hotfix</code>分支：用于紧急修复已发布的产品问题的分支，完成后合并到develop和master</li>
+<li><code>master</code>分支：与产品环境代码保持一致的分支，也就是每次发布完成之后发布的功能分支就要合并于此，以保持master更新</li>
+</ul>
+<p><strong>持续集成</strong>往往会基于分支做逻辑，不同的分支往往代表了研发的不同阶段；<u>合并分支的过程，其实就是一次代码集成的过程</u>；一个好的分支策略，不仅能使研发养成良好的开发习惯，还能加大持续集成发现问题的可能性。</p>
+<h3 id="代码质量"><a href="#代码质量" class="headerlink" title="代码质量"></a>代码质量</h3><blockquote>
+<p>当然了，持续集成，最关心的当属<strong style="color: orange">代码质量</strong>这一块了；而在代码质量评估这个环节，可以做的事情很多，但却很难发现所有的问题，只能说尽可能地、尽快地去发现问题。<span style="color: blue">Martin Fowler</span>曾说过，”<u>持续集成并不能消除Bug，而是让它们非常容易发现和改正</u>“。</p>
+</blockquote>
+<ul>
+<li><p><code>编译构建</code><br>这个是肯定的，提交的代码如果编译都没法完成，下面的几步，根本没必要进行。有些公司，可能还会包含打包构建出产物的环节，但这属于持续交付，不应纳入持续集成环节。</p>
+</li>
+<li><p><code>代码评审</code><br>很多时候，我们会「因时间不够，需要急着上线」抑或是「代码太多，看不过来，也不想看」等原因不去<code>Code Review</code>。然而实际上，编写可维护代码的秘诀之一便是<code>Code Review</code>。这绝对不是一件易事，即便是Google，也花了很大的篇幅才说清楚他们在这一块的实践，感兴趣的朋友，可以来<a target="_blank" rel="noopener" href="https://github.com/google/eng-practices/blob/master/review/reviewer/index.md"><span style="color: orange">这里</span></a>看看。很多代码管理平台，都自带了<code>code review</code>的特性，如<code>github</code>/<code>gitlab</code>/<code>gitee</code>等，也有对这一块做补充的Gerrit工具；前段时间，在<code>github</code>上看到了一个叫<code>ReviewDog</code>的产品，可以做到一些简单的自动化<code>review</code>工作，真感觉是个神器啊，必须respect一把。</p>
+</li>
+<li><p><code>持续测试</code><br>做到快速重复自动的测试，持续评估代码质量；这个过程主要是为了发现bug，确保主逻辑能走通；能做的测试很多，例如：</p>
+<ul>
+<li>单元测试：依赖于研发和QA及时编写和更新测试用例</li>
+<li>集成测试：多feature同时上线时的多功能测试阶段</li>
+<li>性能测试：服务接口上线前的压力测试</li>
+</ul>
+</li>
+<li><p><code>代码分析</code><br>可以做的<strong>lint</strong>检测很多，市面上也有很多工具平台，包括但不限于<u><span style="color: orange">SonarQube</span></u>、<u><span style="color: orange">TeskLink</span></u>、<u><span style="color: orange">FindBugs</span></u>、<u><span style="color: orange">CheckStyles</span></u>等。除了这些，我们可能还会做安全漏洞扫描，以及自定义的lint检测任务。</p>
+</li>
+</ul>
+<hr>
+<h2 id="设计实现"><a href="#设计实现" class="headerlink" title="设计实现"></a>设计实现</h2><p>终于来到了，大伙儿最关心的设计实现环节；其实，实现持续集成的过程，就是将上述组成模块拼接到一块，形成自动化的流水线；而一套<code>CI</code>的设计与实现，往往跟一家公司的规模、发展阶段、以及所使用的技术栈紧密相关，当然也可能包含有很重的历史包袱，这里给出几个范例，具体还需要大伙儿结合自身场景出发。</p>
+<h3 id="典型场景"><a href="#典型场景" class="headerlink" title="典型场景"></a>典型场景</h3><p><img data-src="classic_case.png" alt="典型场景"></p>
+<h3 id="微服务场景"><a href="#微服务场景" class="headerlink" title="微服务场景"></a>微服务场景</h3><p><img data-src="microservice_case.png" alt="微服务场景"></p>
+<h3 id="Cloud-Native"><a href="#Cloud-Native" class="headerlink" title="Cloud Native"></a><a target="_blank" rel="noopener" href="https://github.com/kubernetes/test-infra/tree/master/prow">Cloud Native</a></h3><p><img data-src="cloud_native.png" alt="云原生"><br>其实总的来说，也就那么两条路子，要么自研、要么使用开源版；有能力和时间的公司，往往会选择自研，毕竟开源版，很多功能都是受限的，也无法很好地融入到企业技术栈，需要深度定制；所以你会发现，基于开源版二次开发，往往是大部分公司的路子。</p>
+<h2 id="参考案例"><a href="#参考案例" class="headerlink" title="参考案例"></a>参考案例</h2><h3 id="满帮"><a href="#满帮" class="headerlink" title="满帮"></a>满帮</h3><blockquote>
+<p>满帮由运满满+货车帮合并而来，技术栈也是融合了1-2年，CI/CD一块最终沿用了运满满的一套体系，而运满满的体系源自早期滴滴的一套体系。</p>
+</blockquote>
+<p>满帮的<code>CI</code>是测试团队负责的，每次打包构建都是用户手动触发的，可以节省资源，降低成本，避免无用的构建任务；<u>测试会在<code>Jenkins</code>构建的生命周期上做自己的逻辑，一旦构建过程中，发现问题，会去统计，并反馈到各个研发团队</u>。研发团队用的也是小仓文化，采用的分支比较简单，feature分支+master分支，无论哪一个分支，都需要在qa环境（等价于ppe/pre预发环境）部署测试通过，然后由测试老师进行线上的部署动作。环境的划分是dev/qa/prod，每个环境下，又会有不同的机房、不同的k8s甬道，研发通常会在dev的不同甬道下做自己的业务测试。</p>
+<h3 id="饿了么"><a href="#饿了么" class="headerlink" title="饿了么"></a>饿了么</h3><blockquote>
+<p>如果你对饿了么有一定了解，想必你也知道，饿了么的业务线（外卖、物流、商户、新零售、开放平台等）非常多，光<span style="color: orange">AppID</span>（应用服务标示）就多达上千（小仓模式），而这些业务往往需要快速迭代，很多时候的需求都是倒排期，各种CR需求也是常有的事情，加班也是出了名的；可想而知，饿了么每天的持续集成任务量，得有多大，不禁让人好奇饿了么的<strong>持续集成</strong>是如何设计实现的。</p>
+</blockquote>
+<p>饿了么的持续集成，经历了三代的发展（<span style="color: orange">Eless</span> -&gt; <span style="color: orange">ElessV2/APPOS</span> -&gt; <span style="color: orange">AONE</span>）；<span style="color: orange">AONE</span>是饿了么融入阿里体系后，使用的方案，这个没办法，集团内技术栈打通并统一是肯定的趋势。每个版本的UI我也记得不是很清楚了，下面的图仅为作者印象还原样子，不喜勿喷！！！<br><img data-src="eless_v1.png" alt="ELESS初代目"><div style="color: blue">初代目是基于Jenkins玩的，根据每个仓库的语言类别，执行Jenkins上对应的Job任务(例如：ci-python-job/ci-java-job)，每个Job任务，会根据仓库根目录下的CI YAML(类同gitlab-ci.yaml/travis-ci.yaml)完成编译构建之外的CI环节。</div></p>
+<p><img data-src="eless_v2.png" alt="ELESS二代目"><div style="color: blue">二代目去掉了Jenkins，因为Jenkins很容易出现任务堆积；虽说饿了么当时的Jenkins集群，node节点有十几台，但也还是会出现堆积等待的情况，成本也是一个问题，索性自研实现了jenkins环节。但无论是一代目还是二代目，只要有新的commit触发，便会触发新的构建任务，环境划分也是一致的。二代目，不过是在一代目的基础上，做了改进和优化，整个CI没有太大的变化。</div></p>
+<h4 id="环境划分"><a href="#环境划分" class="headerlink" title="环境划分"></a>环境划分</h4><ul>
+<li>alpha环境：开发自测环境</li>
+<li>beta环境：qa测试环境</li>
+<li>ppe/vip环境：预发环境，几乎等同于线上，仅允许办公网用户测试</li>
+<li>prod环境</li>
+</ul>
+<p>不过当时的环境存在很严重的资源互斥使用问题，多个研发的需求，没办法同时测试；A开发将自己的代码发布到alpha环境后，B开发如果也想在alpha环境测试，就只能把A开发的代码覆盖掉，这个是有问题的，整个请求链路无法自由调整。虽然每个服务所在的集群有自己的SOA Cluster名，可以在服务注册中心中，修改上游服务调用的Cluster名，做到测试的目的，但依旧不能同时测试多人的开发需求。其实完全，可以根据前端传入不同Header、或者动态域名来做请求链路区分的。</p>
+<h4 id="分支策略"><a href="#分支策略" class="headerlink" title="分支策略"></a>分支策略</h4><p><span style="color: orange">Eless</span>在分支上并未做特殊的限制，整体上和git flow是一致的，发布的时候，也没有锁分支（仅限<code>release</code>分支），也就是说，任何一个分支都可以发布到线上，只不过每一个分支下的<code>commit</code>，必须是上一个环境发布测试通过后，手动点击<code>test pass</code>，才可以发到下一个环境；当准备<code>ppe</code> -&gt; <code>prod</code>时，需要测试负责人点通过，才可以发布<code>prod</code>。使用<span style="color: orange">AONE</span>后，可以做集成测试，多个开发分支，会合并到一个集成测试分支下，用作多需求同时测试，这个过程会遭遇频繁地解决冲突，用起来也是够呛（😓）；不过冲突只是提早被发现了，这个过程无法避免。AoneFlow只有feature、release、master三类分支，但你却能看到其他分支模式的影子；它基本上兼顾了 TrunkBased 的“易于持续集成”和 GitFlow 的“易于管理需求”特点，同时规避掉 GitFlow 的那些繁文缛节。不过AONE平台集成了<u>在线解决冲突</u>、<u>在线Code Review</u>、<u>发布完毕自动合并release分支到master分支</u>的优点，可以保证线上的包都经过了所有环境的验证。<br><img data-src="waimai_branch.png" alt="Eless分支策略"></p>
+<blockquote>
+<p>不同研发团队，可能会有所差别，具体看团队怎么玩。</p>
+</blockquote>
+<h3 id="哔哩哔哩"><a href="#哔哩哔哩" class="headerlink" title="哔哩哔哩"></a>哔哩哔哩</h3><blockquote>
+<p>无论是饿了么，还是满帮，CI过程都脱离了<span style="color: orange">研发场景</span>，或者说比较简单；<u>B站的CI和研发绑定的尤为密切，整个CI过程，围绕PR的生命周期来，只要CI（各种各样的Lint检测任务）不通过，就不让合入代码</u>。不过有一点确实挺好奇，B站后端的CI和CD是完全割裂的，没有串起来，形成流水线。</p>
+</blockquote>
+<p>B站的研发测试环境，主要依赖于服务节点染色的概念，和k8s甬道（给pod打标签）的方式是类似的，不过B站每个染色节点都是单独可测的，上下游请求链路完全打通，也就是说：它满足了多需求可以同时测试。</p>
+<p>细心的朋友，可能会发现，上述的三个案例，正好是「第四点」说的三种设计实现方式。</p>
+<h3 id="阿里巴巴"><a href="#阿里巴巴" class="headerlink" title="阿里巴巴"></a>阿里巴巴</h3><p><img data-src="ali_cloud.png" alt="阿里云效"></p>
+<h3 id="腾讯Coding"><a href="#腾讯Coding" class="headerlink" title="腾讯Coding"></a>腾讯Coding</h3><p><img data-src="tencent_coding.png" alt="腾讯Coding"></p>
+<p>不难发现，无论是阿里、腾讯，还是百度，他们的CI设计都是和CD完全串起来的，而且没有脱离研发场景。但是也不难发现，这三家公司的设计，大体都长一个样子，你懂我的意思吧（😂）。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/alipay.jpg" alt="HQ 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>HQ
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hq1363.github.io/2021/07/31/continuous-integration/" title="聊聊持续集成">http://hq1363.github.io/2021/07/31/continuous-integration/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CI/" rel="tag"><i class="fa fa-tag"></i> CI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/01/go-hundred-questions/" rel="prev" title="go 一百问">
+                  <i class="fa fa-chevron-left"></i> go 一百问
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/02/gitlab-ctl/" rel="next" title="gitlab维护指南">
+                  gitlab维护指南 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HQ</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">45k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">41 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('.gitalk-container', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '92c3b22149916841d16f',
+      clientSecret: '8a3bfb3dbd9f0805f3659886b1becccc96b5a991',
+      repo        : 'HQ1363.github.io',
+      owner       : 'HQ1363',
+      admin       : ['HQ1363'],
+      id          : '7ca49d4080dc54433f0d82d5319a55d0',
+      proxy       : 'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render(document.querySelector('.gitalk-container'));
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

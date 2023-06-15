@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hq1363.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="好的编码风格，能够让你的代码更优雅、更简洁，还能避免很多坑.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go 一百问">
+<meta property="og:url" content="http://hq1363.github.io/2021/04/01/go-hundred-questions/index.html">
+<meta property="og:site_name" content="春暖花开">
+<meta property="og:description" content="好的编码风格，能够让你的代码更优雅、更简洁，还能避免很多坑.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hq1363.github.io/2021/04/01/go-hundred-questions/go_import.png">
+<meta property="article:published_time" content="2021-04-01T08:02:13.000Z">
+<meta property="article:modified_time" content="2023-06-15T14:02:23.097Z">
+<meta property="article:author" content="HQ">
+<meta property="article:tag" content="go">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hq1363.github.io/2021/04/01/go-hundred-questions/go_import.png">
+
+
+<link rel="canonical" href="http://hq1363.github.io/2021/04/01/go-hundred-questions/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>go 一百问 | 春暖花开</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="春暖花开" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">春暖花开</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">春风正暖, 朝阳正好</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-%E4%B8%BA%E5%95%A5%E9%9C%80%E8%A6%81%E7%A7%81%E6%9C%89goproxy%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Q1: 为啥需要私有goproxy？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">1.1.</span> <span class="nav-text">上下文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">可选配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-Make%E5%92%8CNew%E7%9A%84%E5%BC%82%E5%90%8C%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">Q2: Make和New的异同？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q3-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%E9%99%B7%E9%98%B1"><span class="nav-number">3.</span> <span class="nav-text">Q3: 数组和切片陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%B7%E9%98%B1%E4%B8%80"><span class="nav-number">3.1.</span> <span class="nav-text">陷阱一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%B7%E9%98%B1%E4%BA%8C"><span class="nav-number">3.2.</span> <span class="nav-text">陷阱二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q4-for-vs-for%E2%80%A6range%E7%9A%84%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">Q4: for vs for…range的性能问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%B7%E9%98%B1%E4%B8%80-1"><span class="nav-number">4.1.</span> <span class="nav-text">陷阱一</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q5-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%AB%98%E6%95%88%E6%8B%BC%E6%8E%A5"><span class="nav-number">5.</span> <span class="nav-text">Q5: 字符串如何实现高效拼接?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q6-%E5%B8%B8%E8%A7%81%E5%AF%BC%E8%87%B4Go%E7%A8%8B%E5%BA%8FOOM%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">6.</span> <span class="nav-text">Q6: 常见导致Go程序OOM的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q7-%E5%A6%82%E4%BD%95%E9%80%80%E5%87%BA%E5%8D%8F%E7%A8%8B"><span class="nav-number">7.</span> <span class="nav-text">Q7: 如何退出协程?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q8-%E5%8F%AF%E4%BB%A5%E5%BC%BA%E5%88%B6kill%E6%8E%89goroutine%E5%90%97"><span class="nav-number">8.</span> <span class="nav-text">Q8: 可以强制kill掉goroutine吗?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q9-%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%85%B3%E9%97%AD%E9%80%9A%E9%81%93"><span class="nav-number">9.</span> <span class="nav-text">Q9: 如何优雅正确的关闭通道?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q10-%E8%AF%B7%E5%88%97%E4%B8%BE%E4%B8%80%E4%BA%9B%E4%BD%A0%E6%89%80%E7%9F%A5%E9%81%93%E7%9A%84%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">Q10: 请列举一些你所知道的内置函数?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q11-Go%E8%AF%AD%E8%A8%80%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%E6%98%AF-%E6%88%96%E8%80%85%E8%AF%B4init%E5%87%BD%E6%95%B0%E7%9A%84%E6%89%A7%E8%A1%8C%E6%97%B6%E6%9C%BA%E6%98%AF"><span class="nav-number">11.</span> <span class="nav-text">Q11: Go语言的执行过程是? 或者说init函数的执行时机是?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q12-map%E5%A6%82%E4%BD%95%E9%A1%BA%E5%BA%8F%E8%AF%BB%E5%8F%96"><span class="nav-number">12.</span> <span class="nav-text">Q12: map如何顺序读取?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q13-%E8%AF%B4%E5%87%BA%E4%B8%80%E4%B8%AAcontext%E5%8C%85%E7%9A%84%E7%94%A8%E9%80%94"><span class="nav-number">13.</span> <span class="nav-text">Q13: 说出一个context包的用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q14-%E5%A6%82%E4%BD%95%E8%B7%B3%E5%87%BAfor-select%E5%BE%AA%E7%8E%AF"><span class="nav-number">14.</span> <span class="nav-text">Q14: 如何跳出for select循环?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q15-%E5%93%AA%E4%BA%9B%E6%83%85%E5%86%B5%EF%BC%8C%E4%BC%9A%E5%AF%BC%E8%87%B4go%E8%A7%A6%E5%8F%91%E5%BC%82%E5%B8%B8"><span class="nav-number">15.</span> <span class="nav-text">Q15: 哪些情况，会导致go触发异常?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q16-Slice%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E5%95%A5"><span class="nav-number">16.</span> <span class="nav-text">Q16: Slice的原理是啥?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q17-Map%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E6%98%AF%E5%9F%BA%E4%BA%8E%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">17.</span> <span class="nav-text">Q17: Map的底层实现是基于什么数据结构?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q18-%E5%A4%9A%E4%B8%AAdefer%E5%87%BD%E6%95%B0%E5%90%8C%E6%97%B6%E5%AD%98%E5%9C%A8%E6%97%B6%EF%BC%8C%E7%A8%8B%E5%BA%8F%E4%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86"><span class="nav-number">18.</span> <span class="nav-text">Q18: 多个defer函数同时存在时，程序会如何处理?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q19-%E7%A9%BASelect%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%EF%BC%8C%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81"><span class="nav-number">19.</span> <span class="nav-text">Q19: 空Select有什么用，如何避免死锁?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q20-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93struct-%E5%8D%A0%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E5%90%97%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%93%AA%E4%BA%9B%E5%9C%BA%E6%99%AF%E4%B8%8B%E4%BD%BF%E7%94%A8"><span class="nav-number">20.</span> <span class="nav-text">Q20: 空结构体struct{}占内存空间吗，可以在哪些场景下使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q21-Go%E9%87%8C%E9%9D%A2%EF%BC%8C%E6%9C%89%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%A6%82%E5%BF%B5%E5%90%97%EF%BC%9F"><span class="nav-number">21.</span> <span class="nav-text">Q21: Go里面，有异常类型的概念吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q22-%E4%BB%80%E4%B9%88%E6%98%AF-rune-%E7%B1%BB%E5%9E%8B"><span class="nav-number">22.</span> <span class="nav-text">Q22: 什么是 rune 类型?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q23-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%89%93%E5%8D%B0%E6%97%B6%EF%BC%8C-v%E5%92%8C-v%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">23.</span> <span class="nav-text">Q23: 字符串打印时，%v和%+v的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q24-Go%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89enum%E6%9E%9A%E4%B8%BE%E5%80%BC"><span class="nav-number">24.</span> <span class="nav-text">Q24: Go中如何定义enum枚举值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q25-Go%E8%AF%AD%E8%A8%80%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E6%98%AF%E5%88%86%E9%85%8D%E5%9C%A8%E6%A0%88%E4%B8%8A%EF%BC%8C%E8%BF%98%E6%98%AF%E5%A0%86%E4%B8%8A"><span class="nav-number">25.</span> <span class="nav-text">Q25: Go语言的局部变量是分配在栈上，还是堆上?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q26-%E8%AF%B7%E5%88%97%E4%B8%BE%E4%B8%80%E4%BA%9Bchannel%E6%93%8D%E4%BD%9C%E4%BC%9A%E5%AF%BC%E8%87%B4panic%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">26.</span> <span class="nav-text">Q26: 请列举一些channel操作会导致panic的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q27-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%8F%E7%A8%8B%E6%B3%84%E9%9C%B2%EF%BC%8C%E5%B8%B8%E8%A7%81%E5%AF%BC%E8%87%B4%E5%8D%8F%E7%A8%8B%E6%B3%84%E9%9C%B2%E7%9A%84%E5%9C%BA%E6%99%AF%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">27.</span> <span class="nav-text">Q27: 什么是协程泄露，常见导致协程泄露的场景有哪些?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q28-%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2Struct%E7%94%A8%E7%BA%AF%E5%80%BC%E6%96%B9%E5%BC%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8F%98%E9%87%8F-%E8%80%8C%E4%B8%8D%E6%8C%87%E5%AE%9A%E5%8F%98%E9%87%8F%E5%90%8D"><span class="nav-number">28.</span> <span class="nav-text">Q28: 如何防止Struct用纯值方式初始化变量? 而不指定变量名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q29-%E5%9B%9E%E9%A1%BE%E4%B8%8Bchannel%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">29.</span> <span class="nav-text">Q29: 回顾下channel的基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q30-%E4%BC%98%E9%9B%85%E7%9A%84Go%E5%BC%80%E5%8F%91"><span class="nav-number">30.</span> <span class="nav-text">Q30: 优雅的Go开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q31-%E7%BB%93%E6%9E%84%E4%BD%93%E4%B9%8B%E9%97%B4%E6%98%AF%E5%8F%AF%E4%BB%A5%E6%AF%94%E8%BE%83%E7%9A%84%E5%90%97"><span class="nav-number">31.</span> <span class="nav-text">Q31: 结构体之间是可以比较的吗?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q32-Go%E7%9A%84runtime%E5%8C%85%E6%9C%89%E7%94%A8%E8%BF%87%E5%90%97%EF%BC%8C%E6%9C%89%E8%BF%87%E5%93%AA%E4%BA%9B%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">32.</span> <span class="nav-text">Q32: Go的runtime包有用过吗，有过哪些使用场景?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q33-%E5%A6%82%E4%BD%95%E6%9B%B4%E6%94%B9%E4%B8%80%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2-%E9%99%B7%E9%98%B1%E6%8F%90%E9%97%AE"><span class="nav-number">33.</span> <span class="nav-text">Q33: 如何更改一个字符串? - 陷阱提问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q34-%E6%9C%89%E4%B8%BB%E5%8A%A8%E5%85%B3%E9%97%AD%E8%BF%87http%E8%BF%9E%E6%8E%A5%E5%90%97%EF%BC%8C%E4%B8%BA%E5%95%A5%E8%A6%81%E8%BF%99%E6%A0%B7%E5%81%9A"><span class="nav-number">34.</span> <span class="nav-text">Q34: 有主动关闭过http连接吗，为啥要这样做?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q35-interface%E4%B9%8B%E9%97%B4%E6%98%AF%E5%8F%AF%E4%BB%A5%E7%9B%B8%E4%BA%92%E6%AF%94%E8%BE%83%E7%9A%84%E5%90%97"><span class="nav-number">35.</span> <span class="nav-text">Q35: interface之间是可以相互比较的吗?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q36-go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%8C%85%E5%90%AB%E5%93%AA%E4%BA%9B"><span class="nav-number">36.</span> <span class="nav-text">Q36: go语言中的引用类型包含哪些?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q37-%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%87%8C%EF%BC%8C%E5%8F%AF%E4%BB%A5%E6%9C%89%E5%93%AA%E4%BA%9B%E6%80%9D%E8%B7%AF"><span class="nav-number">37.</span> <span class="nav-text">Q37: 高并发编程里，可以有哪些思路?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q38-go%E7%A8%8B%E5%BA%8F%E4%B8%AD%EF%BC%8C%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%98%AF%E4%BB%80%E4%B9%88%E5%8E%9F%E5%9B%A0%E5%AF%BC%E8%87%B4%E7%9A%84"><span class="nav-number">38.</span> <span class="nav-text">Q38: go程序中，内存泄漏可能会是什么原因导致的?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q39-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8%E7%9A%84%E7%8E%B0%E8%B1%A1%E3%80%81%E5%9C%BA%E6%99%AF%E5%8F%8A%E8%A7%84%E9%81%BF%E6%96%B9%E6%A1%88"><span class="nav-number">39.</span> <span class="nav-text">Q39: 简单聊聊内存逃逸的现象、场景及规避方案?</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HQ"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">HQ</p>
+  <div class="site-description" itemprop="description">这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HQ1363" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HQ1363" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:huangqiang1363@outlook.com" title="E-Mail → mailto:huangqiang1363@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Friend Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/huangqiang1363" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;huangqiang1363" rel="noopener" target="_blank">CSDN</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/HQ1363" title="https:&#x2F;&#x2F;github.com&#x2F;HQ1363" rel="noopener" target="_blank">GitHub</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/HQ1363" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hq1363.github.io/2021/04/01/go-hundred-questions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="HQ">
+      <meta itemprop="description" content="这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="春暖花开">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go 一百问
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-01 16:02:13" itemprop="dateCreated datePublished" datetime="2021-04-01T16:02:13+08:00">2021-04-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-06-15 22:02:23" itemprop="dateModified" datetime="2023-06-15T22:02:23+08:00">2023-06-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Go基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="Q1-为啥需要私有goproxy？"><a href="#Q1-为啥需要私有goproxy？" class="headerlink" title="Q1: 为啥需要私有goproxy？"></a>Q1: 为啥需要私有<code>goproxy</code>？</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><blockquote>
+<p>我们知道在大陆的网络环境是无法访问到<code>http://golang.org</code>等<code>google</code>的网站的。但在开发日常中使用的很多依赖包或系统包依赖都是在<code>google</code>的服务器上。为了解决无法加载依赖的问题，国内也有很多种解决方案。一种是使用<code>http://goproxy.io</code>或七牛主导的<code>http://goproxy.cn</code>。<br>在企业里，有很多情况是生产网络或测试网络环境是无法正常访问外网的，为了解决这个问题可能需要自己搭建一个<code>proxy</code>来管理依赖包。</p>
+</blockquote>
+<h4 id="可选配置"><a href="#可选配置" class="headerlink" title="可选配置"></a>可选配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPROXY=https://mirrors.aliyun.com/goproxy/</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://proxy.golang.org,direct</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gonexus.dev</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://athens.azurefd.net</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://gocenter.io</span><br><span class="line"><span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
+<h3 id="Q2-Make和New的异同？"><a href="#Q2-Make和New的异同？" class="headerlink" title="Q2: Make和New的异同？"></a>Q2: <code>Make</code>和<code>New</code>的异同？</h3><ul>
+<li>slice、map和channel，使用make</li>
+<li>array、struct和所有的值类型，使用new<blockquote>
+<p>内置函数 new 计算类型的⼤小，为其分配零值内存，返回指针。⽽ make 会被编译器翻译成具体的创建函数，由其分配内存和初始化成员结构，返回对象⽽⾮指针。new和make都是在堆上分配内存，只是行为有所不同。new分配完后会返回指向其的内存地址(指针)，make是返回整个数值/对象。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Q3-数组和切片陷阱"><a href="#Q3-数组和切片陷阱" class="headerlink" title="Q3: 数组和切片陷阱"></a>Q3: 数组和切片陷阱</h3><h4 id="陷阱一"><a href="#陷阱一" class="headerlink" title="陷阱一"></a>陷阱一</h4><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a [2]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">2</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a *[2]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	(*a)[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">2</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(&amp;a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="陷阱二"><a href="#陷阱二" class="headerlink" title="陷阱二"></a>陷阱二</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	a = <span class="built_in">append</span>(a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a []<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">	a = <span class="built_in">append</span>(a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line">	a[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">	<span class="keyword">return</span> a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	a = foo(a)   <span class="comment">// 可读性更好</span></span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a *[]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	*a = <span class="built_in">append</span>(*a, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line">	(*a)[<span class="number">0</span>] = <span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	foo(&amp;a)</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Q4-for-vs-for…range的性能问题"><a href="#Q4-for-vs-for…range的性能问题" class="headerlink" title="Q4: for vs for…range的性能问题"></a>Q4: for vs for…range的性能问题</h3><blockquote>
+<p>与 for 不同的是，range 对每个迭代值都创建了一个拷贝。因此如果每次迭代的值内存占用很小的情况下，for 和 range 的性能几乎没有差异，但是如果每个迭代值内存占用很大，两者的差距就很明显了.</p>
+</blockquote>
+<h4 id="陷阱一-1"><a href="#陷阱一-1" class="headerlink" title="陷阱一"></a>陷阱一</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// for 语句中的迭代变量在每次迭代中都会重用, 即 for 中创建的闭包函数接收到的参数始终是同一个变量, 在`goroutine`开始执行时都会得到同一个迭代值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    data := []<span class="keyword">string</span>&#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> data &#123;</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            fmt.Println(v)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">    <span class="comment">// 输出 three three three</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    data := []<span class="keyword">string</span>&#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> data &#123;</span><br><span class="line">        vCopy := v</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            fmt.Println(vCopy)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">    <span class="comment">// 输出 one two three</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    data := []<span class="keyword">string</span>&#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> data &#123;</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(in <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">            fmt.Println(in)</span><br><span class="line">        &#125;(v)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">    <span class="comment">// 输出 one two three</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Q5-字符串如何实现高效拼接"><a href="#Q5-字符串如何实现高效拼接" class="headerlink" title="Q5: 字符串如何实现高效拼接?"></a>Q5: 字符串如何实现高效拼接?</h3><blockquote>
+<p>一般我们拼接字符串时，会使用如下几种方式：</p>
+<ul>
+<li>使用操作符<code>+</code>，此方式最差</li>
+<li>使用<code>fmt.Sprintf</code></li>
+<li>使用<code>strings.Builder</code>，此方式最佳</li>
+<li>使用<code>bytes.Buffer</code></li>
+<li>使用<code>[]byte</code><br>感兴趣的朋友，可以使用<code>benchmark</code>做下测试</li>
+</ul>
+</blockquote>
+<h3 id="Q6-常见导致Go程序OOM的情况"><a href="#Q6-常见导致Go程序OOM的情况" class="headerlink" title="Q6: 常见导致Go程序OOM的情况"></a>Q6: 常见导致<code>Go</code>程序<code>OOM</code>的情况</h3><ul>
+<li>递归调用函数导致栈溢出</li>
+<li><code>Goroutine</code>永久不退出，单个协程一般占4k，若堆积，就会导致<code>OOM</code></li>
+</ul>
+<h3 id="Q7-如何退出协程"><a href="#Q7-如何退出协程" class="headerlink" title="Q7: 如何退出协程?"></a>Q7: 如何退出协程?</h3><blockquote>
+<p>超时陷阱</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doBadthing</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">	done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeout</span><span class="params">(f <span class="keyword">func</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span>) <span class="title">error</span></span> &#123;</span><br><span class="line">	done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line">	<span class="keyword">go</span> f(done)</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-done:</span><br><span class="line">		fmt.Println(<span class="string">&quot;done&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	<span class="keyword">case</span> &lt;-time.After(time.Millisecond):</span><br><span class="line">		<span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;timeout&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">timeout(doBadthing)</span><br></pre></td></tr></table></figure>
+<p><em>上述<code>doBadthing</code>协程，永久不会退出，会死锁的，针对上述问题，可以有哪些解决办法?</em></p>
+<ul>
+<li>思路一：保证协程能够执行完毕，不至于一直阻塞，可以给<code>channel</code>设置缓冲区<br>eg: <code>done := make(chan bool, 1)</code></li>
+<li>思路二：仿照主函数<code>timeout</code>，也利用<code>select</code>来尝试发送，发送失败也能理解返回<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doGoodthing</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> done &lt;- <span class="literal">true</span>:</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Q8-可以强制kill掉goroutine吗"><a href="#Q8-可以强制kill掉goroutine吗" class="headerlink" title="Q8: 可以强制kill掉goroutine吗?"></a>Q8: 可以强制<code>kill</code>掉<code>goroutine</code>吗?</h3><p><em>答案是不能，<code>goroutine</code>只能自己退出，而不能被其他<code>goroutine</code>强制关闭或者杀死</em></p>
+<h3 id="Q9-如何优雅正确的关闭通道"><a href="#Q9-如何优雅正确的关闭通道" class="headerlink" title="Q9: 如何优雅正确的关闭通道?"></a>Q9: 如何优雅正确的关闭通道?</h3><blockquote>
+<p>我们知道一个已经关闭的channel，如果尝试再次close，会导致panic，虽然可以通过recover使程序恢复正常，但很粗鲁；作为文明人，自然要礼貌.</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MyChannel <span class="keyword">struct</span> &#123;</span><br><span class="line">	C    <span class="keyword">chan</span> T</span><br><span class="line">	once sync.Once</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMyChannel</span><span class="params">()</span> *<span class="title">MyChannel</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;MyChannel&#123;C: <span class="built_in">make</span>(<span class="keyword">chan</span> T)&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mc *MyChannel)</span> <span class="title">SafeClose</span><span class="params">()</span></span> &#123;</span><br><span class="line">	mc.once.Do(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="built_in">close</span>(mc.C)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q10-请列举一些你所知道的内置函数"><a href="#Q10-请列举一些你所知道的内置函数" class="headerlink" title="Q10: 请列举一些你所知道的内置函数?"></a>Q10: 请列举一些你所知道的内置函数?</h3><ul>
+<li>len、cap</li>
+<li>close、copy、append</li>
+<li>panic、recover</li>
+<li>new、make</li>
+</ul>
+<h3 id="Q11-Go语言的执行过程是-或者说init函数的执行时机是"><a href="#Q11-Go语言的执行过程是-或者说init函数的执行时机是" class="headerlink" title="Q11: Go语言的执行过程是? 或者说init函数的执行时机是?"></a>Q11: Go语言的执行过程是? 或者说init函数的执行时机是?</h3><p><img data-src="go_import.png" alt="go_import"><br><em>init函数是Go程序初始化的一部分，而Go程序的初始化先于main函数；runtime会在运行时解析包依赖关系，依次完成初始化，执行顺序如下：</em></p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> import –&gt; const –&gt; var –&gt; init() –&gt; main()</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 每个包首先初始化包作用域的常量和变量（常量优先于变量），然后执行包的 init() 函数。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 同一个包，甚至是同一个源文件可以有多个 init() 函数。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> init() 函数没有入参和返回值，不能被其他函数调用，同一个包内多个 init() 函数的执行顺序不作保证</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Q12-map如何顺序读取"><a href="#Q12-map如何顺序读取" class="headerlink" title="Q12: map如何顺序读取?"></a>Q12: map如何顺序读取?</h3><p><em>map是无序的，不能顺序读取，要想顺序读取，第一个要解决的问题就是，把ｋｅｙ变得有序，然后通过key取值。</em></p>
+<h3 id="Q13-说出一个context包的用途"><a href="#Q13-说出一个context包的用途" class="headerlink" title="Q13: 说出一个context包的用途"></a>Q13: 说出一个context包的用途</h3><ul>
+<li>避免<code>Goroutine</code>内存泄漏<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line"></span><br><span class="line">    ch := <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span> &lt;-<span class="title">chan</span> <span class="title">int</span></span> &#123;</span><br><span class="line">        ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; ; i++ &#123;</span><br><span class="line">                <span class="keyword">select</span> &#123;</span><br><span class="line">                <span class="keyword">case</span> &lt;- ctx.Done():</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                <span class="keyword">case</span> ch &lt;- i:</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; ()</span><br><span class="line">        <span class="keyword">return</span> ch</span><br><span class="line">    &#125;(ctx)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> ch &#123;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">        <span class="keyword">if</span> v == <span class="number">5</span> &#123;</span><br><span class="line">            cancel()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<em>下面的 for 循环停止取数据时，就用 cancel 函数，让另一个协程停止写数据。如果下面 for 已停止读取数据，上面 for 循环还在写入，就会造成内存泄漏。</em></li>
+</ul>
+<h3 id="Q14-如何跳出for-select循环"><a href="#Q14-如何跳出for-select循环" class="headerlink" title="Q14: 如何跳出for select循环?"></a>Q14: 如何跳出for select循环?</h3><p><em>通常在for循环中，使用break可以跳出循环，但是注意在go语言中，for select配合时，break 并不能跳出循环</em></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ForSelectLoop</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span>&#123;</span><br><span class="line"> EXIT:</span><br><span class="line">    <span class="keyword">for</span>  &#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> v, ok := &lt;-ch:</span><br><span class="line">            <span class="keyword">if</span> !ok &#123;</span><br><span class="line">                fmt.Println(<span class="string">&quot;close channel&quot;</span>, v)</span><br><span class="line">                <span class="keyword">break</span> EXIT   <span class="comment">//goto EXIT2</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            fmt.Println(<span class="string">&quot;ch val =&quot;</span>, v)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//EXIT2:</span></span><br><span class="line">    fmt.Println(<span class="string">&quot;exit ForSelectLoop&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q15-哪些情况，会导致go触发异常"><a href="#Q15-哪些情况，会导致go触发异常" class="headerlink" title="Q15: 哪些情况，会导致go触发异常?"></a>Q15: 哪些情况，会导致go触发异常?</h3><ul>
+<li>NPE，空指针异常，对空指针做了解析引用</li>
+<li>索引溢出/下标越界</li>
+<li>除数为0</li>
+<li>调用panic函数</li>
+</ul>
+<h3 id="Q16-Slice的原理是啥"><a href="#Q16-Slice的原理是啥" class="headerlink" title="Q16: Slice的原理是啥?"></a>Q16: Slice的原理是啥?</h3><blockquote>
+<p>切片是基于数组实现的，它的底层是数组，它自己本身非常小，是只有3个字段的struct类型：</p>
+<ul>
+<li>指向底层数据的指针</li>
+<li>切片的长度</li>
+<li>切片的容量</li>
+</ul>
+</blockquote>
+<h3 id="Q17-Map的底层实现是基于什么数据结构"><a href="#Q17-Map的底层实现是基于什么数据结构" class="headerlink" title="Q17: Map的底层实现是基于什么数据结构?"></a>Q17: Map的底层实现是基于什么数据结构?</h3><p><code>散列表</code></p>
+<h3 id="Q18-多个defer函数同时存在时，程序会如何处理"><a href="#Q18-多个defer函数同时存在时，程序会如何处理" class="headerlink" title="Q18: 多个defer函数同时存在时，程序会如何处理?"></a>Q18: 多个defer函数同时存在时，程序会如何处理?</h3><ul>
+<li><code>先进后出，后进先出的栈处理方式</code></li>
+<li><code>defer</code>在<code>return</code>语句之后执行，但在函数退出之前，<code>defer</code>可以修改返回值</li>
+</ul>
+<h3 id="Q19-空Select有什么用，如何避免死锁"><a href="#Q19-空Select有什么用，如何避免死锁" class="headerlink" title="Q19: 空Select有什么用，如何避免死锁?"></a>Q19: 空Select有什么用，如何避免死锁?</h3><ul>
+<li>阻塞主协程</li>
+<li>主线程内，存在其他运行的协程即可</li>
+</ul>
+<h3 id="Q20-空结构体struct-占内存空间吗，可以在哪些场景下使用"><a href="#Q20-空结构体struct-占内存空间吗，可以在哪些场景下使用" class="headerlink" title="Q20: 空结构体struct{}占内存空间吗，可以在哪些场景下使用"></a>Q20: 空结构体struct{}占内存空间吗，可以在哪些场景下使用</h3><ul>
+<li><code>struct&#123;&#125;</code>不占用内存空间，<code>unsafe.Sizeof</code>可说明</li>
+</ul>
+<p>实用场景</p>
+<ul>
+<li>基于map实现set，对于集合来说，只需要map的键，而不需要值</li>
+<li>不发送任何数据的信道，只用来通知子协程(goroutine)执行任务，或只用来控制协程并发度</li>
+<li>仅包含方法的结构体，虽说可以为任意数据结构绑定方法，但其他类型都需要占用额外的内存空间</li>
+</ul>
+<h3 id="Q21-Go里面，有异常类型的概念吗？"><a href="#Q21-Go里面，有异常类型的概念吗？" class="headerlink" title="Q21: Go里面，有异常类型的概念吗？"></a>Q21: Go里面，有异常类型的概念吗？</h3><blockquote>
+<p>Go 没有异常类型，只有错误类型（Error），通常使用返回值来表示异常状态</p>
+</blockquote>
+<h3 id="Q22-什么是-rune-类型"><a href="#Q22-什么是-rune-类型" class="headerlink" title="Q22: 什么是 rune 类型?"></a>Q22: 什么是 rune 类型?</h3><blockquote>
+<p>正常ASCII码的所有值，只需要7bit就能全部表示，但只能表示英文字母在内的128个字符；为了统一世界上所有的语言，引入了Unicode编码，它是ASCII的超集；<br>它能表示所有字符，而Go里面，unicode称之为rune，是int32类型的别名；在Go语言中，字符串的底层表示是byte(8bit)序列，而非rune(32 bit)序列。<br>Go的默认字符串编码方式是UTF8，一个汉字占3个字节。下面的输出，你看懂了吗?</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(<span class="built_in">len</span>(<span class="string">&quot;Go一百问&quot;</span>)) <span class="comment">// 11</span></span><br><span class="line">fmt.Println(<span class="built_in">len</span>([]<span class="keyword">rune</span>(<span class="string">&quot;Go一百问&quot;</span>))) <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Q23-字符串打印时，-v和-v的区别"><a href="#Q23-字符串打印时，-v和-v的区别" class="headerlink" title="Q23: 字符串打印时，%v和%+v的区别"></a>Q23: 字符串打印时，<code>%v</code>和<code>%+v</code>的区别</h3><p><em>%v 和 %+v 都可以用来打印 struct 的值，但%v 仅打印各个字段的值，%+v 还会打印各个字段的名称</em></p>
+<h3 id="Q24-Go中如何定义enum枚举值"><a href="#Q24-Go中如何定义enum枚举值" class="headerlink" title="Q24: Go中如何定义enum枚举值"></a>Q24: Go中如何定义enum枚举值</h3><p><em>使用常量(const)来表示枚举值</em></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> EnumType <span class="keyword">int32</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	XXXXX EnumType = <span class="literal">iota</span></span><br><span class="line">	YYYYY</span><br><span class="line">	ZZZZZ</span><br><span class="line">	DDDDD</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q25-Go语言的局部变量是分配在栈上，还是堆上"><a href="#Q25-Go语言的局部变量是分配在栈上，还是堆上" class="headerlink" title="Q25: Go语言的局部变量是分配在栈上，还是堆上?"></a>Q25: Go语言的局部变量是分配在栈上，还是堆上?</h3><blockquote>
+<p>这个由编译器决定，当Go编译器检测到变量逃出其作用域(内存逃逸)时，就会将其分配到堆上，防止因函数调用结束，其对应的资源被释放，而出现变量无法被问题的问题<br>通常当变量的作用域没有超出函数范围时，变量就可以被分配到栈上，反之必须分配到堆上.</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">()</span> *<span class="title">int</span></span> &#123;</span><br><span class="line">	v := <span class="number">11</span></span><br><span class="line">	<span class="keyword">return</span> &amp;v</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	m := foo()</span><br><span class="line">	<span class="built_in">println</span>(*m) <span class="comment">// 11</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>foo() 函数中，如果 v 分配在栈上，foo 函数返回时，&amp;v 就不存在了，但是这段函数是能够正常运行的。Go 编译器发现 v 的引用脱离了 foo 的作用域，会将其分配在堆上。因此，main 函数中仍能够正常访问该值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go run -gcflags -m main.go   <span class="comment"># 通过执行该命令，对程序做内存逃逸分析</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Q26-请列举一些channel操作会导致panic的情况"><a href="#Q26-请列举一些channel操作会导致panic的情况" class="headerlink" title="Q26: 请列举一些channel操作会导致panic的情况"></a>Q26: 请列举一些channel操作会导致panic的情况</h3><ul>
+<li>channel一旦关闭，就只能读，不能再写了，否则panic</li>
+<li>channel一旦关闭了，就不能关闭第二次，如何保证channel只被close一次呢？sync.Once可以</li>
+<li>因channel缺少接收者和发送者，导致死锁，程序出现panic(导致panic不是必然现象，视情况而定)</li>
+</ul>
+<h3 id="Q27-什么是协程泄露，常见导致协程泄露的场景有哪些"><a href="#Q27-什么是协程泄露，常见导致协程泄露的场景有哪些" class="headerlink" title="Q27: 什么是协程泄露，常见导致协程泄露的场景有哪些?"></a>Q27: 什么是协程泄露，常见导致协程泄露的场景有哪些?</h3><ul>
+<li>channel缺少接收器，导致发送阻塞，协程始终无法退出；类似的还有：缺少发送器，导致接收阻塞，接收和发送总是互斥，相互等待</li>
+<li>多个协程之间，存在资源竞争，出现死锁，相互等待，永远不退出</li>
+<li>死循环，没有退出条件导致，或者退出条件始终得不到满足</li>
+</ul>
+<h3 id="Q28-如何防止Struct用纯值方式初始化变量-而不指定变量名"><a href="#Q28-如何防止Struct用纯值方式初始化变量-而不指定变量名" class="headerlink" title="Q28: 如何防止Struct用纯值方式初始化变量? 而不指定变量名"></a>Q28: 如何防止Struct用纯值方式初始化变量? 而不指定变量名</h3><blockquote>
+<p>可以在struct中，添加_ struct {}字段，这个没什么好说的，特殊用法，记住就好</p>
+</blockquote>
+<h3 id="Q29-回顾下channel的基本操作"><a href="#Q29-回顾下channel的基本操作" class="headerlink" title="Q29: 回顾下channel的基本操作"></a>Q29: 回顾下channel的基本操作</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>) <span class="comment">// 不带缓冲区</span></span><br><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>) <span class="comment">// 带缓冲区，缓冲区满之前，即使没有接收方，发送方不阻塞</span></span><br><span class="line"><span class="built_in">close</span>(ch)  <span class="comment">// 关闭channel</span></span><br><span class="line">ch &lt;- v  <span class="comment">// 向通道发送值v</span></span><br><span class="line">&lt;-ch <span class="comment">// 忽略接收值</span></span><br><span class="line">v := &lt;-ch <span class="comment">// 接收值并赋值给变量 v</span></span><br><span class="line">v, beforeClosed := &lt;-ch  <span class="comment">// 接收操作可以有 2 个返回值</span></span><br><span class="line"><span class="built_in">len</span>(ch)  <span class="comment">// channel长度</span></span><br><span class="line"><span class="built_in">cap</span>(ch)  <span class="comment">// channel容量</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>beforeClosed 代表 v 是否是信道关闭前发送的。true 代表是信道关闭前发送的，false 代表信道已经关闭。如果一个信道已经关闭，&lt;-ch 将永远不会发生阻塞，但是我们可以通过第二个返回值 beforeClosed 得知信道已经关闭，作出相应的处理。</p>
+</blockquote>
+<h3 id="Q30-优雅的Go开发"><a href="#Q30-优雅的Go开发" class="headerlink" title="Q30: 优雅的Go开发"></a>Q30: 优雅的Go开发</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、定义时间变量</span><br><span class="line"><span class="comment">// BAD</span></span><br><span class="line">delay := time.Second * <span class="number">60</span> * <span class="number">24</span> * <span class="number">60</span></span><br><span class="line"><span class="comment">// VERY BAD</span></span><br><span class="line">delay := <span class="number">60</span> * time.Second * <span class="number">60</span> * <span class="number">24</span></span><br><span class="line"><span class="comment">// GOOD -- 30 * time.Second 比 time.Duration(30) * time.Second 更好</span></span><br><span class="line">delay := <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * time.Second</span><br><span class="line"><span class="comment">// BAD</span></span><br><span class="line"><span class="keyword">var</span> delayMillis <span class="keyword">int64</span> = <span class="number">15000</span></span><br><span class="line"><span class="comment">// GOOD  -- 用 time.Duration 代替 int64 + 变量名</span></span><br><span class="line"><span class="keyword">var</span> delay time.Duration = <span class="number">15</span> * time.Second</span><br><span class="line"><span class="number">2</span>、忽略返回值</span><br><span class="line">_ = f() 比 f() 更好</span><br><span class="line"><span class="number">3</span>、信息打印</span><br><span class="line">用 %+v 来打印数据的比较全的信息</span><br><span class="line"><span class="number">4</span>、不要在循环中使用 <span class="keyword">defer</span>，否则会导致内存泄露：因为这些 <span class="keyword">defer</span> 会不断地填满你的栈（内存）</span><br><span class="line"><span class="number">5</span>、不要忘记停止 ticker, 除非你需要泄露 channel</span><br><span class="line">ticker := time.NewTicker(<span class="number">1</span> * time.Second)</span><br><span class="line"><span class="keyword">defer</span> ticker.Stop()</span><br><span class="line"><span class="number">6</span>、结构体的初始化，不要用<span class="built_in">new</span></span><br><span class="line">sval := T&#123;Name: <span class="string">&quot;foo&quot;</span>&#125;</span><br><span class="line">sptr := &amp;T&#123;Name: <span class="string">&quot;bar&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q31-结构体之间是可以比较的吗"><a href="#Q31-结构体之间是可以比较的吗" class="headerlink" title="Q31: 结构体之间是可以比较的吗?"></a>Q31: 结构体之间是可以比较的吗?</h3><blockquote>
+<p>只有当结构体的所有字段均为可比较类型时，结构体的对象之间，才是可以比较的。以下类型均为不可比较类型：</p>
+<ul>
+<li><code>func() bool</code>   // 函数类型，不可比较</li>
+<li><code>map[string]string</code>    // map类型不可比较</li>
+<li><code>[]byte</code>        // 数组成员只有在数组元素可比较时才算可比较</li>
+</ul>
+</blockquote>
+<h3 id="Q32-Go的runtime包有用过吗，有过哪些使用场景"><a href="#Q32-Go的runtime包有用过吗，有过哪些使用场景" class="headerlink" title="Q32: Go的runtime包有用过吗，有过哪些使用场景?"></a>Q32: Go的runtime包有用过吗，有过哪些使用场景?</h3><ul>
+<li>runtime.GOMAXPROCS(4)    // 多核模式</li>
+<li>runtime.NumCPU()    // 获取逻辑cpu的数量</li>
+<li>runtime/debug      // 打印panic时的stack overflow信息</li>
+<li>runtime.Gosched()  // 让出时间片，先让别的协程执行，它执行完，再回来执行此协程</li>
+<li>runtime.GOROOT()    // 获取goroot目录</li>
+<li>runtime.GOOS       // 获取操作系统</li>
+<li>runtime.Goexit()   //终止所在的协程</li>
+</ul>
+<h3 id="Q33-如何更改一个字符串-陷阱提问"><a href="#Q33-如何更改一个字符串-陷阱提问" class="headerlink" title="Q33: 如何更改一个字符串? - 陷阱提问"></a>Q33: 如何更改一个字符串? - 陷阱提问</h3><blockquote>
+<p>字符串是不可变类型，是不能直接修改的；如果需要更改，就必须更改为byte类型或rune类型的数组或切片，然后再转为字符串类型。</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> 循环遍历字符串时，也有 <span class="keyword">byte</span> 和 <span class="keyword">rune</span> 两种⽅式</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> s := <span class="string">&quot;abc汉字&quot;</span></span><br><span class="line"> <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(s); i++ &#123; <span class="comment">// byte</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%c,&quot;</span>, s[i])</span><br><span class="line"> &#125;</span><br><span class="line"> fmt.Println()</span><br><span class="line"> <span class="keyword">for</span> _, r := <span class="keyword">range</span> s &#123; <span class="comment">// rune</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%c,&quot;</span>, r)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q34-有主动关闭过http连接吗，为啥要这样做"><a href="#Q34-有主动关闭过http连接吗，为啥要这样做" class="headerlink" title="Q34: 有主动关闭过http连接吗，为啥要这样做?"></a>Q34: 有主动关闭过http连接吗，为啥要这样做?</h3><blockquote>
+<p>有关闭，因为不关闭可能会导致程序消耗完 socket 描述符。可选的关闭方式有：</p>
+<ul>
+<li>直接设置请求变量的 Close 字段值为 true，每次请求结束后就会主动关闭连接。设置 Header 请求头部选项 Connection: close，然后服务器返回的响应头部也会有这个选项，此时 HTTP 标准库会主动断开连接<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">req, err := http.NewRequest(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;https://github.com&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">req.Close = <span class="literal">true</span>  <span class="comment">// 或者是 req.Header.Add(&quot;Connection&quot;, &quot;close&quot;)</span></span><br></pre></td></tr></table></figure></li>
+<li>创建一个自定义配置的 HTTP transport 客户端，用来取消 HTTP 全局的复用连接<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ts := http.Transport&#123;DisableKeepAlives: <span class="literal">true</span>&#125;</span><br><span class="line">client := http.Client&#123;Transport: &amp;ts&#125;</span><br><span class="line">client.Get(<span class="string">&quot;https://github.com&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</blockquote>
+<h3 id="Q35-interface之间是可以相互比较的吗"><a href="#Q35-interface之间是可以相互比较的吗" class="headerlink" title="Q35: interface之间是可以相互比较的吗?"></a>Q35: interface之间是可以相互比较的吗?</h3><p>我们知道，在Go语言中，interface的内部实现包含了两个字段，类型T和值V，interface之间是可以使用 == 或 != 进行比较的。而两个interface相等有以下两种情况：</p>
+<ul>
+<li>两个<code>interface</code>均等于<code>nil</code>(此时<code>V</code>和<code>T</code>都处于<code>unset</code>状态)</li>
+<li>类型<code>T</code>相同，且对应的值<code>V</code>相等。<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Human <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> per1, per2 Human = &amp;Person&#123;<span class="string">&quot;John&quot;</span>&#125;, &amp;Person&#123;<span class="string">&quot;John&quot;</span>&#125;</span><br><span class="line">	<span class="keyword">var</span> per3, per4 Human = Person&#123;<span class="string">&quot;John&quot;</span>&#125;, Person&#123;<span class="string">&quot;John&quot;</span>&#125;</span><br><span class="line">	fmt.Println(per1 == per2) <span class="comment">// false</span></span><br><span class="line">	fmt.Println(per3 == per4) <span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>结构体的地址，两个地址不同，因此结果为<code>false</code><br>per3 和 per4 对应的类型是<code>Person</code>，值是<code>Person</code>结构体，且各字段相等，因此结果为<code>true</code><blockquote>
+<p>从这里，我们也能发现：两个接口值比较时，会先比较T，再比较V；那么interface和非interface之间要如何比较呢?</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p *<span class="keyword">int</span> = <span class="literal">nil</span></span><br><span class="line">	<span class="keyword">var</span> i <span class="keyword">interface</span>&#123;&#125; = p</span><br><span class="line">	fmt.Println(i == p) <span class="comment">// true  - ①</span></span><br><span class="line">	fmt.Println(p == <span class="literal">nil</span>) <span class="comment">// true  - ②</span></span><br><span class="line">	fmt.Println(i == <span class="literal">nil</span>) <span class="comment">// false   - ③</span></span><br><span class="line">&#125;  <span class="comment">// 接口值与非接口值比较时，会先将非接口值尝试转换为接口值，再比较</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   ①中，i被p赋值后，其内部字段为(T=*int, V=nil)；p转换为接口也是(T=*int, V=nil)</span></span><br><span class="line"><span class="comment">   ②中，p与nil直接比较值，都是nil，所以相等</span></span><br><span class="line"><span class="comment">   ③中的nil转换为接口 (T=nil, V=nil)，与i (T=*int, V=nil) 不相等</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Q36-go语言中的引用类型包含哪些"><a href="#Q36-go语言中的引用类型包含哪些" class="headerlink" title="Q36: go语言中的引用类型包含哪些?"></a>Q36: go语言中的引用类型包含哪些?</h3><ul>
+<li>slice</li>
+<li>map</li>
+<li>channel</li>
+<li>interface</li>
+</ul>
+<h3 id="Q37-高并发编程里，可以有哪些思路"><a href="#Q37-高并发编程里，可以有哪些思路" class="headerlink" title="Q37: 高并发编程里，可以有哪些思路?"></a>Q37: 高并发编程里，可以有哪些思路?</h3><ul>
+<li>基于sync包的WaitGroup，但主协程只是傻傻地等待子协程退出，并不能主动通知子协程退出</li>
+<li>基于for + select + channel的组合方式，子协程for+select等待主协程通过channel传递过来的退出信号，当子协程很多时，显得比较难以控制</li>
+<li>基于context通知子协程适时退出，可以同时控制多个子协程<ul>
+<li>手动通过取消的方式控制（<code>context.WithCancel</code>），如果需要往子协程传递参数，还可以使用<code>context.WithValue</code></li>
+<li>超时自动退出（<code>context.WithTimeout</code>）</li>
+<li>到某个截止时间（时刻点）自动退出<code>context.WithDeadline</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="Q38-go程序中，内存泄漏可能会是什么原因导致的"><a href="#Q38-go程序中，内存泄漏可能会是什么原因导致的" class="headerlink" title="Q38: go程序中，内存泄漏可能会是什么原因导致的?"></a>Q38: go程序中，内存泄漏可能会是什么原因导致的?</h3><ul>
+<li><code>goroutine</code>不释放，始终无法退出</li>
+<li>堆栈溢出，递归到<code>stack</code>满</li>
+<li>使用内存作为本地缓存，且持续增加，没有释放的阶段</li>
+</ul>
+<h3 id="Q39-简单聊聊内存逃逸的现象、场景及规避方案"><a href="#Q39-简单聊聊内存逃逸的现象、场景及规避方案" class="headerlink" title="Q39: 简单聊聊内存逃逸的现象、场景及规避方案?"></a>Q39: 简单聊聊内存逃逸的现象、场景及规避方案?</h3><ul>
+<li>现象：局部变量超出原本的作用域，被外部使用，发生内存逃逸，此时变量生命周期未知，因此变量会被分配到堆上</li>
+<li>影响：加大了gc压力，影响程序性能</li>
+<li>场景：<ul>
+<li>局部变量以指针的形式返回，并被外部引用，导致变量不能随方法结束被栈回收，转而分配到堆上</li>
+<li>发送指针数据到channel中，编译时无法确定数据会被哪个goroutine消费，因此生命周期未知，内存逃逸</li>
+<li>切片初始化容量编译时可知，会在栈上分配，当append且超过切片容量时，会重新分配地址，同时如果切片背后的存储要基于运行时的数据进行扩充，就会在堆上分配</li>
+</ul>
+</li>
+<li>规避：<ul>
+<li>尽量不用指针作为参数传递，虽然可以减少复制，但是内存逃逸的开销更大</li>
+<li>预先设置好切片容量</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/alipay.jpg" alt="HQ 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>HQ
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hq1363.github.io/2021/04/01/go-hundred-questions/" title="go 一百问">http://hq1363.github.io/2021/04/01/go-hundred-questions/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i> go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/01/go-package-management/" rel="prev" title="go的依赖包管理">
+                  <i class="fa fa-chevron-left"></i> go的依赖包管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/31/continuous-integration/" rel="next" title="聊聊持续集成">
+                  聊聊持续集成 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HQ</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">45k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">41 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('.gitalk-container', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '92c3b22149916841d16f',
+      clientSecret: '8a3bfb3dbd9f0805f3659886b1becccc96b5a991',
+      repo        : 'HQ1363.github.io',
+      owner       : 'HQ1363',
+      admin       : ['HQ1363'],
+      id          : 'd62dcadc1c254dfb8f3735288cb9007a',
+      proxy       : 'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render(document.querySelector('.gitalk-container'));
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
