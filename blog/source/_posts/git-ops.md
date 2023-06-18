@@ -110,5 +110,5 @@ $ git config credential.helper store  # window的可能需要手动找到git的�
 
 ### 测试
 ```shell
-$ bash a1112aa1.sh
+$ bash aa2aa1.sh
 ```
