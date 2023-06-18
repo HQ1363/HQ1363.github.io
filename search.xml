@@ -251,7 +251,7 @@
 
 <h3 id="删除本地认证"><a href="#删除本地认证" class="headerlink" title="删除本地认证"></a>删除本地认证</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git config --global --<span class="built_in">unset</span> credential.helper</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config credential.helper store  <span class="comment"># window的可能需要手动找到git的凭证删掉，见下图</span></span></span><br></pre></td></tr></table></figure>
 <p><img data-src="git_identity.png"></p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bash a1112aa1.sh</span></span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bash aa2aa1.sh</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Git</category>
