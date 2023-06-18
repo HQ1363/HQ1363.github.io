@@ -108,7 +108,25 @@ $ git config credential.helper store  # window的可能需要手动找到git的�
 ```
 ![](git_identity.png)
 
-### 测试
+### HTTP认证方式更改为SSH
 ```shell
-$ bash aa2aa1.sh
+$ git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+# 执行上述命令后，可以查看下全局的.gitconfig配置如下：
+[url "ssh://git@gitlab.sss.com/"]
+	insteadOf = https://gitlab.sss.com/
+[url "ssh://git@pkg.sss.com/"]
+	insteadOf = https://pkg.sss.com/
+[http]
+	sslVerify = false
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+# 完成替换后，记得添加ssh public key到gitlab profile配置里
+# 删除本地认证
+$ git config --global --unset credential.helper
+# 设置记住密码（默认15分钟）：
+$ git config --global credential.helper cache
+# 如果想自己设置时间，可以这样做
+$ git config credential.helper 'cache --timeout=3600'
+# 永久存储密码
+$ git config --global credential.helper store
 ```
