@@ -130,3 +130,10 @@ $ git config credential.helper 'cache --timeout=3600'
 # 永久存储密码
 $ git config --global credential.helper store
 ```
+
+### 如何知道分支是从哪拉出来的
+```shell
+$ git reflog --date=local | grep 本地分支名       # 仅限本地创建的分支
+$ git log --oneline --decorate --graph --all    # 看的迷糊，看不懂
+# 可借助sourceTree等工具查看，比较稳
+```
