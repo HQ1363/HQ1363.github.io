@@ -103,7 +103,7 @@ $ git rebase --continue # 手动处理冲突的文件：执行git add .，再 gi
 
 ### 删除本地认证
 ```shell
-$ git config --global --unset credential.helper
+$ git config --global --unset credential.helper  # --system or --local
 $ git config credential.helper store  # window的可能需要手动找到git的凭证删掉，见下图
 ```
 ![](git_identity.png)
@@ -121,8 +121,12 @@ $ git config --global url.ssh://git@github.com/.insteadOf https://github.com/
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 # 完成替换后，记得添加ssh public key到gitlab profile配置里
-# 删除本地认证
+# 删除Local认证
+$ git config --local --unset credential.helper
+# 删除全局认证
 $ git config --global --unset credential.helper
+# 删除系统认证
+$ git config --system --unset credential.helper
 # 设置记住密码（默认15分钟）：
 $ git config --global credential.helper cache
 # 如果想自己设置时间，可以这样做
