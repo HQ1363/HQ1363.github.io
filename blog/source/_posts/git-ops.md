@@ -133,6 +133,8 @@ $ git config --global credential.helper cache
 $ git config credential.helper 'cache --timeout=3600'
 # 永久存储密码
 $ git config --global credential.helper store
+# 清理缓存的账号密码
+$ git credential-manager uninstall
 ```
 
 ### 如何知道分支是从哪拉出来的
