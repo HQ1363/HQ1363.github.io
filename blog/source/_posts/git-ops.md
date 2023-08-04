@@ -143,3 +143,9 @@ $ git reflog --date=local | grep 本地分支名       # 仅限本地创建的�
 $ git log --oneline --decorate --graph --all    # 看的迷糊，看不懂
 # 可借助sourceTree等工具查看，比较稳
 ```
+
+### git的两点diff和三点diff区别是啥
+```shell
+# 三点diff会找到两边的共同祖先，然后拿到祖先到最新版本的差异，可能会有以下应用场景：
+# 1、feature分支提交了，很多次，我想知道，我的feature相比于主干分支(master)的所有改动内容，然后codereview
+```
