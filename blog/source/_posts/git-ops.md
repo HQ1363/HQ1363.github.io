@@ -78,6 +78,17 @@ $ git apply diff.patch
 git --no-pager log -2 --author="HQ" --pretty=format:"%h"
 ```
 
+### 指定tag/branch克隆仓库
+```shell
+$ git clone -b <tag-name|branch-name> xxxxxxxxx.git
+```
+
+### 获取指定tag下的仓库地址
+```shell
+# 浏览器地址上，替换对应的tag名称即可
+# https://gitlab.com/gitlab-org/gitaly/-/tree/v13.12.8?ref_type=tags  # 官方gitaly仓库地址
+```
+
 ### 查看分支合并图
 ```shell
 $ git log --graph
