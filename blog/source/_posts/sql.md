@@ -85,6 +85,60 @@ set character_set_results=utf8;
 ```
 
 ### JSON字段处理
+json对象
+- 使用对象操作的方法进行查询：字段->'$.json属性'   
+- 使用函数进行查询：json_extract(字段, '$.json属性')   
+- 获取JSON数组/对象长度：JSON_LENGTH()
+
 ```shell
-select * FROM table_a where JSON_TYPE(`extra_info`) = 'NULL' limit 10;  # json_length(table_a.reason) = 0
+# 查询面料不为空的商品
+select * from test where desc_attr->'$.material' is not null;
+select * from test where JSON_EXTRACT(desc_attr, '$.material') is not null;
+
+# 查询面料为纯棉的商品
+select * from test where desc_attr->'$.material'='纯棉';
+select * from test where JSON_EXTRACT(desc_attr, '$.material')='纯棉';
+
+# 查询标签数量大于2的商品
+select * from test where JSON_LENGTH(desc_attr->'$.tag')>2;
+```
+json数组
+- 对象操作方式查询：字段->'$[0].属性'   
+- 使用函数查询：JSON_CONTAINS(字段,JSON_OBJECT('json属性', '内容'))   
+- 获取JSON数组/对象长度：JSON_LENGTH()   
+
+```shell
+# 查询描述属性不为空的商品
+select * from test2 where JSON_LENGTH(desc_attrs) > 0;
+
+# 查询第1项存在颜色属性的商品
+select * from test2 where desc_attrs->'$[0].color' is not null;
+
+# 查询任意项存在链接属性的商品
+select * from test2 where desc_attrs->'$[*].link' is not null;
+
+# 查询任意项存在链接等于xxx属性的商品
+select * from test2 where JSON_CONTAINS(desc_attrs,JSON_OBJECT('link', 'xxx'));
+```
+
+更多案例：
+```shell
+select * FROM table_a where JSON_TYPE(`extra_info`) = 'NULL' limit 10;  # json_length(table_a.reason) = 0;
+# json为对象时，查询姿势一
+select * from users where json_extract(address, '$.province') = "河北省";
+# json为对象时，查询姿势二
+select * from users where address -> '$.province' = "河北省";
+# json为数组时，查询姿势
+select * from users where address -> '$[0]'= "家";
+# 根据json对象里的属性个数进行查询
+select * from users where json_length(address) = 2;
+# 查询JSON数组里面对象属性任意项存在指定属性的数据
+select * from users where address->'$[*].city' is not null;
+# 查询JSON对象存在指定属性的数据
+select * from users where address->'$.tags' is not null;
+```
+
+### 正则匹配
+```shell
+select count(*) from table_a inner join table_b on table_a.id = table_b.color_id where table_a.version = '527' and table_a.name not REGEXP '-[0-9]{3}-[0-9]+-[0-9]+$' order by color_id desc;
 ```
