@@ -85,7 +85,7 @@ set character_set_results=utf8;
 ```
 
 ### JSON字段处理
-json对象
+JSON对象
 - 使用对象操作的方法进行查询：字段->'$.json属性'   
 - 使用函数进行查询：json_extract(字段, '$.json属性')   
 - 获取JSON数组/对象长度：JSON_LENGTH()
@@ -102,7 +102,7 @@ select * from test where JSON_EXTRACT(desc_attr, '$.material')='纯棉';
 # 查询标签数量大于2的商品
 select * from test where JSON_LENGTH(desc_attr->'$.tag')>2;
 ```
-json数组
+JSON数组
 - 对象操作方式查询：字段->'$[0].属性'   
 - 使用函数查询：JSON_CONTAINS(字段,JSON_OBJECT('json属性', '内容'))   
 - 获取JSON数组/对象长度：JSON_LENGTH()   
@@ -121,7 +121,7 @@ select * from test2 where desc_attrs->'$[*].link' is not null;
 select * from test2 where JSON_CONTAINS(desc_attrs,JSON_OBJECT('link', 'xxx'));
 ```
 
-更多案例：
+更多案例
 ```shell
 select * FROM table_a where JSON_TYPE(`extra_info`) = 'NULL' limit 10;  # json_length(table_a.reason) = 0;
 # json为对象时，查询姿势一
