@@ -1192,14 +1192,14 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
 
 <h3 id="中文乱码问题解决"><a href="#中文乱码问题解决" class="headerlink" title="中文乱码问题解决"></a>中文乱码问题解决</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">show variables like&#x27;%char%&#x27;;  # 查看</span><br><span class="line">set character_set_results=utf8;</span><br><span class="line">set character_set_client=utf8;</span><br><span class="line">set character_set_connection=utf8;</span><br><span class="line">set character_set_database=utf8;</span><br><span class="line">set character_set_results=utf8;</span><br></pre></td></tr></table></figure>
 
-<h3 id="JSON字段处理"><a href="#JSON字段处理" class="headerlink" title="JSON字段处理"></a>JSON字段处理</h3><p>json对象</p>
+<h3 id="JSON字段处理"><a href="#JSON字段处理" class="headerlink" title="JSON字段处理"></a>JSON字段处理</h3><p>JSON对象</p>
 <ul>
 <li>使用对象操作的方法进行查询：字段-&gt;’$.json属性’   </li>
 <li>使用函数进行查询：json_extract(字段, ‘$.json属性’)   </li>
 <li>获取JSON数组/对象长度：JSON_LENGTH()</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查询面料不为空的商品</span></span><br><span class="line">select * from test where desc_attr-&gt;&#x27;$.material&#x27; is not null;</span><br><span class="line">select * from test where JSON_EXTRACT(desc_attr, &#x27;$.material&#x27;) is not null;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询面料为纯棉的商品</span></span><br><span class="line">select * from test where desc_attr-&gt;&#x27;$.material&#x27;=&#x27;纯棉&#x27;;</span><br><span class="line">select * from test where JSON_EXTRACT(desc_attr, &#x27;$.material&#x27;)=&#x27;纯棉&#x27;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询标签数量大于2的商品</span></span><br><span class="line">select * from test where JSON_LENGTH(desc_attr-&gt;&#x27;$.tag&#x27;)&gt;2;</span><br></pre></td></tr></table></figure>
-<p>json数组</p>
+<p>JSON数组</p>
 <ul>
 <li>对象操作方式查询：字段-&gt;’$[0].属性’   </li>
 <li>使用函数查询：JSON_CONTAINS(字段,JSON_OBJECT(‘json属性’, ‘内容’))   </li>
@@ -1207,7 +1207,7 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
 </ul>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查询描述属性不为空的商品</span></span><br><span class="line">select * from test2 where JSON_LENGTH(desc_attrs) &gt; 0;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询第1项存在颜色属性的商品</span></span><br><span class="line">select * from test2 where desc_attrs-&gt;&#x27;$[0].color&#x27; is not null;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询任意项存在链接属性的商品</span></span><br><span class="line">select * from test2 where desc_attrs-&gt;&#x27;$[*].link&#x27; is not null;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询任意项存在链接等于xxx属性的商品</span></span><br><span class="line">select * from test2 where JSON_CONTAINS(desc_attrs,JSON_OBJECT(&#x27;link&#x27;, &#x27;xxx&#x27;));</span><br></pre></td></tr></table></figure>
 
-<p>更多案例：</p>
+<p>更多案例</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">select * FROM table_a where JSON_TYPE(`extra_info`) = &#x27;NULL&#x27; limit 10;  # json_length(table_a.reason) = 0;</span><br><span class="line"><span class="meta">#</span><span class="bash"> json为对象时，查询姿势一</span></span><br><span class="line">select * from users where json_extract(address, &#x27;$.province&#x27;) = &quot;河北省&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash"> json为对象时，查询姿势二</span></span><br><span class="line">select * from users where address -&gt; &#x27;$.province&#x27; = &quot;河北省&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash"> json为数组时，查询姿势</span></span><br><span class="line">select * from users where address -&gt; &#x27;$[0]&#x27;= &quot;家&quot;;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 根据json对象里的属性个数进行查询</span></span><br><span class="line">select * from users where json_length(address) = 2;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询JSON数组里面对象属性任意项存在指定属性的数据</span></span><br><span class="line">select * from users where address-&gt;&#x27;$[*].city&#x27; is not null;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询JSON对象存在指定属性的数据</span></span><br><span class="line">select * from users where address-&gt;&#x27;$.tags&#x27; is not null;</span><br></pre></td></tr></table></figure>
 
 <h3 id="正则匹配"><a href="#正则匹配" class="headerlink" title="正则匹配"></a>正则匹配</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">select count(*) from table_a inner join table_b on table_a.id = table_b.color_id where table_a.version = &#x27;527&#x27; and table_a.name not REGEXP &#x27;-[0-9]&#123;3&#125;-[0-9]+-[0-9]+$&#x27; order by color_id desc;</span><br></pre></td></tr></table></figure>
