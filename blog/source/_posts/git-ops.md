@@ -165,7 +165,7 @@ $ git log --oneline --decorate --graph --all    # 看的迷糊，看不懂
 ```shell
 # 1、如果本地或者其他地方，有备份的话，就直接重推一下就好了
 # 2、如果存有分支被删除时的，最新sha，那可以继续sha来创建分支恢复
-注意：通过sha的方式恢复，要求分支的最新commit，必须已合入目标分支（主干分支）。
+注意：通过sha的方式恢复，要求分支的最新commit，必须已合入目标分支（主干分支），否则无法恢复分支。
 git checkout -b branch/xxx <commitID>，对应gitlab api创建分支时，指定commit
 ----   
 如果你误删除了 Git 的远程分支，有可能找到该提交的 SHA1 校验值并恢复。
