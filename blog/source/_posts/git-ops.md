@@ -179,3 +179,29 @@ git push origin <branch_to_recover>
 这样就实现了误删的远程分支的恢复。
 请注意，git reflog 命令仅会记录本地的 Git 操作，如果你在删除远程分支后没有在本地进行过任何 Git 操作，可能无法用这个办法找到该删除的分的 SHA1 校验值。同时，这种方法只能用于恢复误删的最后一次提交，如果在删除分支后做了新的提交，这种方法将无法找回这些新的提交。
 ```
+
+### go get -v gitlab.com/oxxx/yyyyy 报错
+```
+Fetching https://xxx.local/a/b/project?go-get=1
+Parsing meta tags from https://xxx.local/a/b/project?go-get=1 (status code 200)
+get "xxx.local/a/b/project": found meta tag main.metaImport{Prefix:"xxx.local/a/b", VCS:"git", RepoRoot:"https://xxx.local/a/b.git"} at https://xxx.local/a/b/project?go-get=1
+get "xxx.local/a/b/project": verifying non-authoritative meta tag
+Fetching https://xxx.local/a/b?go-get=1
+Parsing meta tags from https://xxx.local/a/b?go-get=1 (status code 200)
+xxx.local/a/b (download)
+package xxx.local/a/b/project: /home/user/go/src/xxx.local/a/b exists but /home/user/go/src/xxx.local/a/b/.git does not - stale checkout?
+```
+亦或者是如下的报错：
+```
+go module xxxx.xxx.com/ssss/bbbb/zzzz: git ls-remote -q origin in xxxxx: exit status 128:
+   remote: The project you were looking for could not be found or you don't have permission to view it.
+      fatal: repository 'xxxx.xxx.com/ssss/bbbb.git' not found
+```
+解决办法如下：
+```
+编辑 vim ~/.netrc 添加：
+machine xxx.yyy.com
+login username
+password <personal-token>
+```
+详情可见：https://gitlab.com/gitlab-org/gitlab-foss/-/issues/30785
