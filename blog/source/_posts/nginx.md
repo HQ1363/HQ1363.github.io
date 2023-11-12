@@ -92,6 +92,11 @@ server {
 ```
 
 ## 跨域配置
+在标准的跨域请求中，Access-Control-Allow-Origin 头部只能包含单个域名或*。它指示浏览器允许哪些源（域名）进行跨域请求。
+所以根据规范，Access-Control-Allow-Origin 不支持返回多个域名。如果需要允许多个域名进行跨域请求，您需要在后端服务器根据请求的 Origin 值进行逻辑判断，然后动态设置正确的 Access-Control-Allow-Origin 头部。
+例如，在后端服务器代码中，可以根据请求头中的 Origin 判断是哪个域名发起的请求，然后设置相应的 Access-Control-Allow-Origin 头部值。
+请注意，当在响应头中设置 Access-Control-Allow-Origin 为 * 时，表示允许任何源进行跨域请求。这是一种宽松的设置，适用于公开的 API，但对于一些需要更严格访问控制的场景，建议根据具体需求设置具体的域名。
+总结来说，Access-Control-Allow-Origin 头部是单值的，不支持返回多个域名，但您可以根据你的后端逻辑设置合适的值。
 > 跨域配置有很多种写法，而且有其生效的作用域，具体视情况而定，这里列一些case：
 ```shell
 # case 1
@@ -147,6 +152,20 @@ location / {
         return 204;  
     }  
 }
+# case 3 因API返回了多层跨域配置，导致API无法调用通，需要将多个跨域配置，改为单个
+当 API 的响应头中出现了多个 `Access-Control-Allow-Origin` 头部时，浏览器会视为无效的响应头，并拒绝处理跨域请求。为了解决这个问题，您可以采取下面的步骤：
+确保后端 API 只返回一个 `Access-Control-Allow-Origin` 头部。在后端服务器的响应中，只设置一个允许跨域请求的源，而不是返回多个 `Access-Control-Allow-Origin` 头部。例如，将以下代码添加到后端服务器的响应中：
+response.headers['Access-Control-Allow-Origin'] = 'https://example.com'
+如果后端服务器无法修复此问题，您可以使用 `Nginx` 来移除多余的 `Access-Control-Allow-Origin` 头部。示例如下：
+location /api {
+  proxy_pass http://backend;
+  proxy_hide_header Access-Control-Allow-Origin;
+  add_header Access-Control-Allow-Origin $http_origin always;
+}
+在该配置中使用了 `proxy_hide_header` 指令来隐藏 `Access-Control-Allow-Origin` 头部，然后再使用 `add_header` 指令添加正确的 `Access-Control-Allow-Origin` 头部。
+这样配置后，`Nginx` 会先隐藏原始的 `Access-Control-Allow-Origin` 头部，然后添加一个根据请求头中的 `Origin` 值动态生成的正确的 `Access-Control-Allow-Origin` 头部。
+请注意，使用 `proxy_hide_header` 只是将该头部从响应头中隐藏，并不代表它不存在。因此，您仍然需要使用 `add_header` 指令添加正确的 `Access-Control-Allow-Origin` 头部。
+用以上方法可以解决返回多个 `Access-Control-Allow-Origin` 头部的问题，并确保正确的跨域配置。
 ```
 
 ## 负载均衡
