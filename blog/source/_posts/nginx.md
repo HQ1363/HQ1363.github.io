@@ -152,21 +152,23 @@ location / {
         return 204;  
     }  
 }
-# case 3 因API返回了多层跨域配置，导致API无法调用通，需要将多个跨域配置，改为单个
+```
+如果因API返回了多层跨域配置，导致API无法调用通，需要将多个跨域配置，改为单个
 当 API 的响应头中出现了多个 `Access-Control-Allow-Origin` 头部时，浏览器会视为无效的响应头，并拒绝处理跨域请求。为了解决这个问题，您可以采取下面的步骤：
 确保后端 API 只返回一个 `Access-Control-Allow-Origin` 头部。在后端服务器的响应中，只设置一个允许跨域请求的源，而不是返回多个 `Access-Control-Allow-Origin` 头部。例如，将以下代码添加到后端服务器的响应中：
 response.headers['Access-Control-Allow-Origin'] = 'https://example.com'
 如果后端服务器无法修复此问题，您可以使用 `Nginx` 来移除多余的 `Access-Control-Allow-Origin` 头部。示例如下：
+```
 location /api {
-  proxy_pass http://backend;
-  proxy_hide_header Access-Control-Allow-Origin;
-  add_header Access-Control-Allow-Origin $http_origin always;
+    proxy_pass http://backend;
+    proxy_hide_header Access-Control-Allow-Origin;
+    add_header Access-Control-Allow-Origin $http_origin always;
 }
+```
 在该配置中使用了 `proxy_hide_header` 指令来隐藏 `Access-Control-Allow-Origin` 头部，然后再使用 `add_header` 指令添加正确的 `Access-Control-Allow-Origin` 头部。
 这样配置后，`Nginx` 会先隐藏原始的 `Access-Control-Allow-Origin` 头部，然后添加一个根据请求头中的 `Origin` 值动态生成的正确的 `Access-Control-Allow-Origin` 头部。
 请注意，使用 `proxy_hide_header` 只是将该头部从响应头中隐藏，并不代表它不存在。因此，您仍然需要使用 `add_header` 指令添加正确的 `Access-Control-Allow-Origin` 头部。
 用以上方法可以解决返回多个 `Access-Control-Allow-Origin` 头部的问题，并确保正确的跨域配置。
-```
 
 ## 负载均衡
 ```shell
