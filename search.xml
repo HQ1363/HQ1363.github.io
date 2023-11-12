@@ -1147,18 +1147,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
-    <title>慢SQL优化实践</title>
-    <url>/2023/11/11/slow_sql/</url>
-    <content><![CDATA[<h1 id="慢SQL优化实践"><a href="#慢SQL优化实践" class="headerlink" title="慢SQL优化实践"></a>慢SQL优化实践</h1>]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>SQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python编码规范</title>
     <url>/2021/03/28/pythonic/</url>
     <content><![CDATA[<h3 id="变量交换"><a href="#变量交换" class="headerlink" title="变量交换"></a>变量交换</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tmp = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = tmp</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b = b, a</span><br></pre></td></tr></table></figure>
@@ -1201,6 +1189,18 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>慢SQL优化实践</title>
+    <url>/2023/11/11/slow-sql/</url>
+    <content><![CDATA[<h1 id="慢SQL优化实践"><a href="#慢SQL优化实践" class="headerlink" title="慢SQL优化实践"></a>慢SQL优化实践</h1>]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>

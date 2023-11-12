@@ -9,13 +9,13 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Sun, 12 Nov 2023 03:38:29 GMT</pubDate>
+    <pubDate>Sun, 12 Nov 2023 03:38:53 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
       <title>慢SQL优化实践</title>
-      <link>http://hq1363.github.io/2023/11/11/slow_sql/</link>
-      <guid>http://hq1363.github.io/2023/11/11/slow_sql/</guid>
+      <link>http://hq1363.github.io/2023/11/11/slow-sql/</link>
+      <guid>http://hq1363.github.io/2023/11/11/slow-sql/</guid>
       <pubDate>Sat, 11 Nov 2023 03:36:50 GMT</pubDate>
       
       <description>日常CRUD开发，经常遇到API耗时严重、慢SQL层出不穷的问题；本人在经过一个月的慢SQL斗争中，得到了一些经验，现汇总如下。</description>
@@ -33,7 +33,7 @@
       <category domain="http://HQ1363.github.io/tags/SQL/">SQL</category>
       
       
-      <comments>http://hq1363.github.io/2023/11/11/slow_sql/#disqus_thread</comments>
+      <comments>http://hq1363.github.io/2023/11/11/slow-sql/#disqus_thread</comments>
       
     </item>
     
