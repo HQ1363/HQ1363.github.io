@@ -9,8 +9,33 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Sun, 12 Nov 2023 03:29:46 GMT</pubDate>
+    <pubDate>Sun, 12 Nov 2023 03:38:29 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>慢SQL优化实践</title>
+      <link>http://hq1363.github.io/2023/11/11/slow_sql/</link>
+      <guid>http://hq1363.github.io/2023/11/11/slow_sql/</guid>
+      <pubDate>Sat, 11 Nov 2023 03:36:50 GMT</pubDate>
+      
+      <description>日常CRUD开发，经常遇到API耗时严重、慢SQL层出不穷的问题；本人在经过一个月的慢SQL斗争中，得到了一些经验，现汇总如下。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="慢SQL优化实践"><a href="#慢SQL优化实践" class="headerlink" title="慢SQL优化实践"></a>慢SQL优化实践</h1>]]></content:encoded>
+      
+      
+      <category domain="http://HQ1363.github.io/categories/MySQL/">MySQL</category>
+      
+      
+      <category domain="http://HQ1363.github.io/tags/MySQL/">MySQL</category>
+      
+      <category domain="http://HQ1363.github.io/tags/SQL/">SQL</category>
+      
+      
+      <comments>http://hq1363.github.io/2023/11/11/slow_sql/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>nginx配置实战</title>
@@ -236,29 +261,6 @@
       
       
       <comments>http://hq1363.github.io/2021/08/02/git-ops/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>gitlab维护指南</title>
-      <link>http://hq1363.github.io/2021/08/02/gitlab-ctl/</link>
-      <guid>http://hq1363.github.io/2021/08/02/gitlab-ctl/</guid>
-      <pubDate>Mon, 02 Aug 2021 06:36:50 GMT</pubDate>
-      
-      <description>gitlab部署、日常维护、常见问题解决方式.</description>
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><h3 id="彻底卸载gitlab"><a href="#彻底卸载gitlab" class="headerlink" title="彻底卸载gitlab"></a>彻底卸载gitlab</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl stop</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl uninstall</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl cleanse</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo rm -rf /opt/gitlab</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可通过`sudo gitlab-ctl <span class="built_in">help</span>`来获取相关命令</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo gitlab-ctl uninstall，关于其的说明是</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Kill all processes and uninstall the process supervisor (data will be preserved).</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 但在实际操作中，只通过uninstall无法彻底卸载gitlab</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo gitlab-ctl reconfigure</span></span><br></pre></td></tr></table></figure><h3 id="重载配置文件"><a href="#重载配置文件" class="headerlink" title="重载配置文件"></a>重载配置文件</h3><p><code>gitlab-ctl reconfigure</code></p><h3 id="启动所有-gitlab-组件"><a href="#启动所有-gitlab-组件" class="headerlink" title="启动所有 gitlab 组件"></a>启动所有 gitlab 组件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl start         <span class="comment"># 启动所有服务</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl start unicorn <span class="comment"># 启动单个服务</span></span></span><br></pre></td></tr></table></figure><h3 id="停止所有-gitlab-组件"><a href="#停止所有-gitlab-组件" class="headerlink" title="停止所有 gitlab 组件"></a>停止所有 gitlab 组件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl stop          <span class="comment"># 停止所有服务</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl stop unicorn  <span class="comment"># 停止单个服务</span></span></span><br></pre></td></tr></table></figure><h3 id="重启所有-gitlab-组件"><a href="#重启所有-gitlab-组件" class="headerlink" title="重启所有 gitlab 组件"></a>重启所有 gitlab 组件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl restart         <span class="comment"># 重启所有服务</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl restart unicorn <span class="comment"># 重启单个服务</span></span></span><br></pre></td></tr></table></figure><h3 id="查看服务的活动日志"><a href="#查看服务的活动日志" class="headerlink" title="查看服务的活动日志"></a>查看服务的活动日志</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl tail         <span class="comment"># 查看所有服务的活动日志</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gitlab-ctl tail unicorn <span class="comment"># 查看单个服务的活动日志</span></span></span><br></pre></td></tr></table></figure><h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><p><code>gitlab-ctl status</code></p>]]></content:encoded>
-      
-      
-      <category domain="http://HQ1363.github.io/categories/Git/">Git</category>
-      
-      
-      <category domain="http://HQ1363.github.io/tags/git/">git</category>
-      
-      
-      <comments>http://hq1363.github.io/2021/08/02/gitlab-ctl/#disqus_thread</comments>
       
     </item>
     

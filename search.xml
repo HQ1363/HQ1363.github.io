@@ -577,18 +577,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
-    <title>学习GPRC，这篇就够了</title>
-    <url>/2021/09/14/grpc-intro/</url>
-    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
-      <categories>
-        <category>grpc</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>grpc</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>go的依赖包管理</title>
     <url>/2021/04/01/go-package-management/</url>
     <content><![CDATA[<blockquote>
@@ -643,6 +631,18 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </categories>
       <tags>
         <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学习GPRC，这篇就够了</title>
+    <url>/2021/09/14/grpc-intro/</url>
+    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
+      <categories>
+        <category>grpc</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>grpc</tag>
       </tags>
   </entry>
   <entry>
@@ -1144,6 +1144,18 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </categories>
       <tags>
         <tag>pb</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>慢SQL优化实践</title>
+    <url>/2023/11/11/slow_sql/</url>
+    <content><![CDATA[<h1 id="慢SQL优化实践"><a href="#慢SQL优化实践" class="headerlink" title="慢SQL优化实践"></a>慢SQL优化实践</h1>]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>
