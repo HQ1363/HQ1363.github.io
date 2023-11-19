@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   hexo:
-    specifier: ^5.4.0
-    version: 5.4.0
+    specifier: ^5.4.1
+    version: 5.4.1
   hexo-asset-image:
     specifier: ^1.0.0
     version: 1.0.0
@@ -744,8 +744,8 @@ packages:
       hexo-util: 2.4.0
     dev: false
 
-  /hexo@5.4.0:
-    resolution: {integrity: sha512-4vMDle5GjpMeOVrx0NKoTZCqrmpJVg3wNiNNUVjcoFfcpYcMzQUCZHBtQqLl7BzjJ8x2gs002VQ5yv0ZKtj8Jg==}
+  /hexo@5.4.1:
+    resolution: {integrity: sha512-20tyZB8TfaddneySZZ40mGFsN/V9nlolToUnA2KhRVl1wl6uWT10mnziVjLMhQfaYddqCwD36NvOamGS3DOLhQ==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dependencies:
@@ -760,6 +760,7 @@ packages:
       hexo-log: 2.0.0
       hexo-util: 2.7.0
       js-yaml: 4.1.0
+      js-yaml-js-types: 1.0.1(js-yaml@4.1.0)
       micromatch: 4.0.5
       moment: 2.29.4
       moment-timezone: 0.5.43
@@ -888,6 +889,15 @@ packages:
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+    dev: false
+
+  /js-yaml-js-types@1.0.1(js-yaml@4.1.0):
+    resolution: {integrity: sha512-5tpfyORs8OQ43alNERbWfYRCtWgykvzYgY46fUhrQi2+kS7N0NuuFYLZ/IrfmVm5muLTndeMublgraXiFRjEPw==}
+    peerDependencies:
+      js-yaml: 4.x
+    dependencies:
+      esprima: 4.0.1
+      js-yaml: 4.1.0
     dev: false
 
   /js-yaml@3.14.1:
