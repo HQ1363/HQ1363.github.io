@@ -205,3 +205,61 @@ login username
 password <personal-token>
 ```
 详情可见：https://gitlab.com/gitlab-org/gitlab-foss/-/issues/30785
+
+### 一个分支上的几个commit的代码不再需要了，如何处理?
+方式一：
+```shell
+$ git reset --hard <commit-id>
+```
+方式二：
+如果你有一个分支上的几个 commit 的代码不再需要了，你可以使用以下步骤来移除这些不需要的代码：
+首先，确保你当前位于包含这些不需要的 commit 的分支上。你可以使用 git branch 命令查看当前所在的分支，并使用 git checkout 命令切换到目标分支。
+运行以下命令来执行交互式的 rebase 操作：
+`git rebase -i commit_hash`
+这里的 commit_hash 是你要移除的最早的 commit 的哈希值。
+例如，如果你要移除从 commit_hash 开始的三个 commit，你可以使用：
+`git rebase -i commit_hash~3`
+这个命令将打开一个文本编辑器，显示所有要进行 rebase 的 commit。
+在打开的文本编辑器中，将要移除的 commit 的关键词由 pick 改为 drop 或者直接删除对应的行。例如，如果要移除第二个 commit，可以修改为：
+```
+pick commit_hash
+drop commit_hash
+pick commit_hash
+...
+```
+保存并关闭文本编辑器。
+Git 将会执行 rebase 操作，并移除指定的 commit。如果有冲突发生，Git 会暂停并提示你进行处理。根据提示解决冲突，并继续 rebase 的过程。
+在 rebase 完成后，使用 git log 命令查看提交历史，你会发现已经成功移除了指定的 commit。
+请注意，执行 git rebase 命令会修改提交历史，如果这些 commit 已经被推送到远程仓库，你可能需要使用 git push --force 强制推送更新后的提交历史。然而，强制推送会覆盖远程仓库的提交历史，所以请确保在删除之前与团队成员进行适当的沟通和讨论。
+同时，请确保在执行这些操作之前，你已经备份了重要的代码或者创建了一个分支来保存这些代码，以防止意外丢失。
+方式三：
+git revert 命令可以一次撤销多个 commit。你可以使用以下步骤来一次性撤销多个 commit：
+首先，确保你当前位于包含要撤销的 commit 的分支上。
+使用 git log 命令查看提交历史，找到你要撤销的 commit 的哈希值。记录下这些 commit 的哈希值。
+运行以下命令来撤销多个 commit：
+`git revert --no-commit commit_hash1..commit_hash2`
+这里的 commit_hash1 和 commit_hash2 分别是要撤销的 commit 的起始和结束哈希值。
+例如，如果你要撤销从 commit_hash1 到 commit_hash2 这两个 commit，你可以使用：
+`git revert --no-commit commit_hash1..commit_hash2`
+这个命令会创建一个新的撤销 commit，同时撤销指定范围内所有的 commit。注意，--no-commit 选项会告诉 Git 不要自动提交撤销 commit。
+在撤销 commit 之后，你可以使用 git status 命令来查看撤销的更改。
+如果一切正常，使用以下命令来提交撤销 commit：
+`git commit -m "Revert multiple commits"`
+这个命令将会创建一个新的 commit，包含了所有撤销的更改。
+请注意，每个被撤销的 commit 都会创建一个撤销 commit，因此最终会创建多个新 commit。在撤销多个 commit 之前，请确保备份了重要的代码或者创建了一个分支来保存这些代码。
+git revert 命令也可以撤销多个非连续的 commit。以下是使用 git revert 撤销多个非连续 commit 的步骤：
+首先，确保你当前位于包含要撤销的 commit 的分支上。
+使用 git log 命令查看提交历史，找到你要撤销的每个 commit 的哈希值。记录下这些 commit 的哈希值。
+运行以下命令来撤销每个 commit：
+git revert --no-commit commit_hash1
+git revert --no-commit commit_hash2
+...
+这里的 commit_hash1，commit_hash2，等等是要撤销的每个 commit 的哈希值。
+例如，如果你要撤销两个 commit，分别是 commit_hash1 和 commit_hash2，你可以使用：
+git revert --no-commit commit_hash1
+git revert --no-commit commit_hash2
+这些命令会为每个 commit 都创建一个新的撤销 commit。注意，--no-commit 选项会告诉 Git 不要自动提交撤销 commit。
+在撤销 commit 之后，你可以使用 git status 命令来查看撤销的更改。
+如果一切正常，使用以下命令来提交撤销 commit：
+git commit -m "Revert multiple commits"
+这个命令将会创建一个新的 commit，包含了所有撤销的更改。
