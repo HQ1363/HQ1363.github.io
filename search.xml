@@ -296,6 +296,11 @@
 <p>解决办法如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">编辑 vim ~&#x2F;.netrc 添加：</span><br><span class="line">machine xxx.yyy.com</span><br><span class="line">login username</span><br><span class="line">password &lt;personal-token&gt;</span><br></pre></td></tr></table></figure>
 <p>详情可见：<a href="https://gitlab.com/gitlab-org/gitlab-foss/-/issues/30785">https://gitlab.com/gitlab-org/gitlab-foss/-/issues/30785</a></p>
+<h3 id="一个分支上的几个commit的代码不再需要了，如何处理"><a href="#一个分支上的几个commit的代码不再需要了，如何处理" class="headerlink" title="一个分支上的几个commit的代码不再需要了，如何处理?"></a>一个分支上的几个commit的代码不再需要了，如何处理?</h3><p>方式一：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git reset --hard &lt;commit-id&gt;</span></span><br></pre></td></tr></table></figure>
+<p>方式二：<br>如果你有一个分支上的几个 commit 的代码不再需要了，你可以使用以下步骤来移除这些不需要的代码：<br>首先，确保你当前位于包含这些不需要的 commit 的分支上。你可以使用 git branch 命令查看当前所在的分支，并使用 git checkout 命令切换到目标分支。<br>运行以下命令来执行交互式的 rebase 操作：<br><code>git rebase -i commit_hash</code><br>这里的 commit_hash 是你要移除的最早的 commit 的哈希值。<br>例如，如果你要移除从 commit_hash 开始的三个 commit，你可以使用：<br><code>git rebase -i commit_hash~3</code><br>这个命令将打开一个文本编辑器，显示所有要进行 rebase 的 commit。<br>在打开的文本编辑器中，将要移除的 commit 的关键词由 pick 改为 drop 或者直接删除对应的行。例如，如果要移除第二个 commit，可以修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pick commit_hash</span><br><span class="line">drop commit_hash</span><br><span class="line">pick commit_hash</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>保存并关闭文本编辑器。<br>Git 将会执行 rebase 操作，并移除指定的 commit。如果有冲突发生，Git 会暂停并提示你进行处理。根据提示解决冲突，并继续 rebase 的过程。<br>在 rebase 完成后，使用 git log 命令查看提交历史，你会发现已经成功移除了指定的 commit。<br>请注意，执行 git rebase 命令会修改提交历史，如果这些 commit 已经被推送到远程仓库，你可能需要使用 git push –force 强制推送更新后的提交历史。然而，强制推送会覆盖远程仓库的提交历史，所以请确保在删除之前与团队成员进行适当的沟通和讨论。<br>同时，请确保在执行这些操作之前，你已经备份了重要的代码或者创建了一个分支来保存这些代码，以防止意外丢失。<br>方式三：<br>git revert 命令可以一次撤销多个 commit。你可以使用以下步骤来一次性撤销多个 commit：<br>首先，确保你当前位于包含要撤销的 commit 的分支上。<br>使用 git log 命令查看提交历史，找到你要撤销的 commit 的哈希值。记录下这些 commit 的哈希值。<br>运行以下命令来撤销多个 commit：<br><code>git revert --no-commit commit_hash1..commit_hash2</code><br>这里的 commit_hash1 和 commit_hash2 分别是要撤销的 commit 的起始和结束哈希值。<br>例如，如果你要撤销从 commit_hash1 到 commit_hash2 这两个 commit，你可以使用：<br><code>git revert --no-commit commit_hash1..commit_hash2</code><br>这个命令会创建一个新的撤销 commit，同时撤销指定范围内所有的 commit。注意，–no-commit 选项会告诉 Git 不要自动提交撤销 commit。<br>在撤销 commit 之后，你可以使用 git status 命令来查看撤销的更改。<br>如果一切正常，使用以下命令来提交撤销 commit：<br><code>git commit -m &quot;Revert multiple commits&quot;</code><br>这个命令将会创建一个新的 commit，包含了所有撤销的更改。<br>请注意，每个被撤销的 commit 都会创建一个撤销 commit，因此最终会创建多个新 commit。在撤销多个 commit 之前，请确保备份了重要的代码或者创建了一个分支来保存这些代码。<br>git revert 命令也可以撤销多个非连续的 commit。以下是使用 git revert 撤销多个非连续 commit 的步骤：<br>首先，确保你当前位于包含要撤销的 commit 的分支上。<br>使用 git log 命令查看提交历史，找到你要撤销的每个 commit 的哈希值。记录下这些 commit 的哈希值。<br>运行以下命令来撤销每个 commit：<br>git revert –no-commit commit_hash1<br>git revert –no-commit commit_hash2<br>…<br>这里的 commit_hash1，commit_hash2，等等是要撤销的每个 commit 的哈希值。<br>例如，如果你要撤销两个 commit，分别是 commit_hash1 和 commit_hash2，你可以使用：<br>git revert –no-commit commit_hash1<br>git revert –no-commit commit_hash2<br>这些命令会为每个 commit 都创建一个新的撤销 commit。注意，–no-commit 选项会告诉 Git 不要自动提交撤销 commit。<br>在撤销 commit 之后，你可以使用 git status 命令来查看撤销的更改。<br>如果一切正常，使用以下命令来提交撤销 commit：<br>git commit -m “Revert multiple commits”<br>这个命令将会创建一个新的 commit，包含了所有撤销的更改。</p>
 ]]></content>
       <categories>
         <category>Git</category>
@@ -577,6 +582,18 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
+    <title>学习GPRC，这篇就够了</title>
+    <url>/2021/09/14/grpc-intro/</url>
+    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
+      <categories>
+        <category>grpc</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>grpc</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>go的依赖包管理</title>
     <url>/2021/04/01/go-package-management/</url>
     <content><![CDATA[<blockquote>
@@ -631,18 +648,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </categories>
       <tags>
         <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>学习GPRC，这篇就够了</title>
-    <url>/2021/09/14/grpc-intro/</url>
-    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
-      <categories>
-        <category>grpc</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>grpc</tag>
       </tags>
   </entry>
   <entry>
