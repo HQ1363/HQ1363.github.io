@@ -111,3 +111,39 @@ func main() {
 	fmt.Printf("%+v", nameList)
 }
 ```
+如果修改前的代码里，ddList是基本数据类型，而nameList同样是指针数组，同样有一样的问题，代码如下：
+```go
+func main() {
+	ddList := []string{"aaa", "bbb", "ccc"}
+	var nameList []*string
+	for _, dd := range ddList {
+		nameList = append(nameList, &dd)
+	}
+	fmt.Printf("%+v", nameList)
+}
+```
+上述同样是由于使用循环变量dd的内存空间导致的，而这个内存空间的始终是固定不变的。如果最开始的代码，这样改，那也没问题：
+```go
+func main() {
+	type DD struct {
+		Name string `json:"name"`
+	}
+	ddList := []DD{
+		{
+			Name: "aaa",
+		},
+		{
+			Name: "bbb",
+		},
+		{
+			Name: "ccc",
+		},
+	}
+	var nameList []DD
+	for _, dd := range ddList {
+		nameList = append(nameList, dd)
+	}
+	fmt.Printf("%+v", nameList) // 每个值都是不一样的
+}
+```
+有些人可能搞不明白了，为啥区别这么大呢，其实也能理解：for的循环变量始终是取值的操作逻辑，当ddList是指针数组时，那循环变量dd的值始终是循环的每一个地址，每一个都是不同的；如果ddList非指针数组，切记不能把他的指针传递给调用方，因为此时他值所在的内存地址始终是固定的，不会变。总计一句话：<strong>for循环非指针数组时，不可直接取地址给依赖方</strong>
