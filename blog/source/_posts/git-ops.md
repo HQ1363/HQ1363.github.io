@@ -122,7 +122,7 @@ $ git config credential.helper store  # window的可能需要手动找到git的�
 ### HTTP认证方式更改为SSH
 ```shell
 $ git config --global url.ssh://git@github.com/.insteadOf https://github.com/
-# 执行上述命令后，可以查看下全局的.gitconfig配置如下：
+# 执行上述命令后，可以查看下全局的.gitconfig配置(cat ~/.gitconfig)如下：
 [url "ssh://git@gitlab.sss.com/"]
 	insteadOf = https://gitlab.sss.com/
 [url "ssh://git@pkg.sss.com/"]
