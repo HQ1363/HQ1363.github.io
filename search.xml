@@ -315,6 +315,25 @@
       </tags>
   </entry>
   <entry>
+    <title>gorm血泪史</title>
+    <url>/2021/09/10/go-gorm-blood-tears/</url>
+    <content><![CDATA[<h3 id="Rows没有Close"><a href="#Rows没有Close" class="headerlink" title="Rows没有Close"></a>Rows没有Close</h3><blockquote>
+<p><strong>上下文</strong>：有个实习生，写了一个需求，结果for循环到第十次的时候，一直卡死，没有任何响应，最终请求超时；不仅如此，后续的接口请求，都是没有处理的，整个程序仿佛处于假死状态。这让当时的我感到十分诧异，我的第一个感觉是存在死循环，为了证实猜想，开始对整个for循环体做单步调试，结果发现，并不存在死循环，程序卡在某个SQL执行处；于是我就想，难道是慢SQL，导致一直从DB拿不到返回结果，但很快我就排除了这种可能性，毕竟问题是发生第十次，而不是第一次；在问题稳定复现后，我开始总结规律，问题复现一定是在for循环执行到第十次的时候，就有这么巧吗，回回都是第十次，也太邪乎了。</p>
+</blockquote>
+<p><u>针对上述的问题，毫无疑问，肯定是出了DB上的问题，然后又是第十次稳定复现，我开始怀疑DB连接的问题，比如连接被吃满，不够用</u>；于是乎，我开始检查程序连接DB的配置，发现active激活连接数，配置的最大值就是10个，这不刚好就是10嘛，<span style="color:orange">这不是巧了嘛！这不是巧了嘛！</span>那就调大嘛，结果然并软，反而换了一个报错<u>（MySQL error code 1135 (ER_CANT_CREATE_THREAD): Can’t create a new thread (errno %d); if you are not out of available memory, you can consult the manual for a possible OS-dependent bug）</u>，这又是什么鬼啊，why！！！<br><img data-src="question.jpeg">哼，不陪你玩了，哪儿凉快哪儿呆着去吧；哈哈，回到正题，不然要被你们打😄</p>
+<p><strong style="font-size:20px;color:blue">难道不是连接的问题吗，我开始更换思路</strong>；我的SQL请求到底有没有打到MySQL服务器呢，我开始求助DBA，希望帮捞下，第十次的SQL执行日志，得到的反馈是一切正常。what，不对啊；因为程序DB操作，用的是Gorm，我开始查阅官方文档，搜索github上的issue，并为找到任何有用的消息。对新出现的error信息，同向DBA老师求证后，排除了，没办法，我只能把连接配置，改回去，继续排查问题。然后一步步的检查代码，发现DB操作，<u style="color:red">少了一个释放连接的动作</u>，于是我加上，赶紧验证了一下，好在问题得到解决了。<br><img data-src="good.jpeg">我们来看看代码：</p>
+<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原生 SQL</span></span><br><span class="line">rows, err := db.Raw(<span class="string">&quot;select name, age, email from users where name = ?&quot;</span>, <span class="string">&quot;jinzhu&quot;</span>).Rows()</span><br><span class="line"><span class="keyword">defer</span> rows.Close()   <span class="comment">// 就是这行代码少了，导致的</span></span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">  rows.Scan(&amp;name, &amp;age, &amp;email)</span><br><span class="line">  <span class="comment">// 业务逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查阅资料后，大胆猜测：<u>有可能是mysql每次去查询的时候，获取一个连接，没有空闲的连接，则创建一个新的，查询完成后释放连接到连接池，以便下一个请求使用，而由于没有调用rows.Close()，导致拿了连接之后，没有再放回连接池复用；而我的连接配置最大就是10，所以在第十次执行完后，第十一次，已经无法分配新的连接去执行SQL，最终一直等待，拿不到结果。</u><a href="https://segmentfault.com/a/1190000021493463" target="_blank">感兴趣的朋友，可以看看这篇文章，基于gorm源码解释了问题原因</a>；未执行rows.Close()还可能导致内存泄漏、启动一堆的goroutine不退出等问题。</p>
+]]></content>
+      <categories>
+        <category>gorm</category>
+      </categories>
+      <tags>
+        <tag>gorm</tag>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gitlab维护指南</title>
     <url>/2021/08/02/gitlab-ctl/</url>
     <content><![CDATA[<h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><h3 id="彻底卸载gitlab"><a href="#彻底卸载gitlab" class="headerlink" title="彻底卸载gitlab"></a>彻底卸载gitlab</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl stop</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl uninstall</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo gitlab-ctl cleanse</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo rm -rf /opt/gitlab</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可通过`sudo gitlab-ctl <span class="built_in">help</span>`来获取相关命令</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo gitlab-ctl uninstall，关于其的说明是</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Kill all processes and uninstall the process supervisor (data will be preserved).</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 但在实际操作中，只通过uninstall无法彻底卸载gitlab</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo gitlab-ctl reconfigure</span></span><br></pre></td></tr></table></figure>
@@ -335,25 +354,6 @@
       </categories>
       <tags>
         <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gorm血泪史</title>
-    <url>/2021/09/10/go-gorm-blood-tears/</url>
-    <content><![CDATA[<h3 id="Rows没有Close"><a href="#Rows没有Close" class="headerlink" title="Rows没有Close"></a>Rows没有Close</h3><blockquote>
-<p><strong>上下文</strong>：有个实习生，写了一个需求，结果for循环到第十次的时候，一直卡死，没有任何响应，最终请求超时；不仅如此，后续的接口请求，都是没有处理的，整个程序仿佛处于假死状态。这让当时的我感到十分诧异，我的第一个感觉是存在死循环，为了证实猜想，开始对整个for循环体做单步调试，结果发现，并不存在死循环，程序卡在某个SQL执行处；于是我就想，难道是慢SQL，导致一直从DB拿不到返回结果，但很快我就排除了这种可能性，毕竟问题是发生第十次，而不是第一次；在问题稳定复现后，我开始总结规律，问题复现一定是在for循环执行到第十次的时候，就有这么巧吗，回回都是第十次，也太邪乎了。</p>
-</blockquote>
-<p><u>针对上述的问题，毫无疑问，肯定是出了DB上的问题，然后又是第十次稳定复现，我开始怀疑DB连接的问题，比如连接被吃满，不够用</u>；于是乎，我开始检查程序连接DB的配置，发现active激活连接数，配置的最大值就是10个，这不刚好就是10嘛，<span style="color:orange">这不是巧了嘛！这不是巧了嘛！</span>那就调大嘛，结果然并软，反而换了一个报错<u>（MySQL error code 1135 (ER_CANT_CREATE_THREAD): Can’t create a new thread (errno %d); if you are not out of available memory, you can consult the manual for a possible OS-dependent bug）</u>，这又是什么鬼啊，why！！！<br><img data-src="question.jpeg">哼，不陪你玩了，哪儿凉快哪儿呆着去吧；哈哈，回到正题，不然要被你们打😄</p>
-<p><strong style="font-size:20px;color:blue">难道不是连接的问题吗，我开始更换思路</strong>；我的SQL请求到底有没有打到MySQL服务器呢，我开始求助DBA，希望帮捞下，第十次的SQL执行日志，得到的反馈是一切正常。what，不对啊；因为程序DB操作，用的是Gorm，我开始查阅官方文档，搜索github上的issue，并为找到任何有用的消息。对新出现的error信息，同向DBA老师求证后，排除了，没办法，我只能把连接配置，改回去，继续排查问题。然后一步步的检查代码，发现DB操作，<u style="color:red">少了一个释放连接的动作</u>，于是我加上，赶紧验证了一下，好在问题得到解决了。<br><img data-src="good.jpeg">我们来看看代码：</p>
-<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原生 SQL</span></span><br><span class="line">rows, err := db.Raw(<span class="string">&quot;select name, age, email from users where name = ?&quot;</span>, <span class="string">&quot;jinzhu&quot;</span>).Rows()</span><br><span class="line"><span class="keyword">defer</span> rows.Close()   <span class="comment">// 就是这行代码少了，导致的</span></span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">  rows.Scan(&amp;name, &amp;age, &amp;email)</span><br><span class="line">  <span class="comment">// 业务逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>查阅资料后，大胆猜测：<u>有可能是mysql每次去查询的时候，获取一个连接，没有空闲的连接，则创建一个新的，查询完成后释放连接到连接池，以便下一个请求使用，而由于没有调用rows.Close()，导致拿了连接之后，没有再放回连接池复用；而我的连接配置最大就是10，所以在第十次执行完后，第十一次，已经无法分配新的连接去执行SQL，最终一直等待，拿不到结果。</u><a href="https://segmentfault.com/a/1190000021493463" target="_blank">感兴趣的朋友，可以看看这篇文章，基于gorm源码解释了问题原因</a>；未执行rows.Close()还可能导致内存泄漏、启动一堆的goroutine不退出等问题。</p>
-]]></content>
-      <categories>
-        <category>gorm</category>
-      </categories>
-      <tags>
-        <tag>gorm</tag>
-        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -952,6 +952,20 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       <tags>
         <tag>K8S</tag>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>运维实践指南</title>
+    <url>/2024/01/27/linux/</url>
+    <content><![CDATA[<h2 id="远端服务端口探测"><a href="#远端服务端口探测" class="headerlink" title="远端服务端口探测"></a>远端服务端口探测</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nmap -p 80 example.com</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> telnet example.com 22</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -zv example.com 443</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="检查ssh是否ready"><a href="#检查ssh是否ready" class="headerlink" title="检查ssh是否ready"></a>检查ssh是否ready</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh -T git@example.com</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
