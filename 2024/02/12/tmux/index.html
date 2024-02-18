@@ -32,7 +32,7 @@
 <meta property="og:description" content="linux下也有Screen命令，但tmux功能更强大，受众也更广.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-02-12T06:36:50.000Z">
-<meta property="article:modified_time" content="2024-02-18T10:37:41.065Z">
+<meta property="article:modified_time" content="2024-02-18T10:39:10.476Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="ops">
 <meta name="twitter:card" content="summary">
@@ -316,7 +316,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-02-18 18:37:41" itemprop="dateModified" datetime="2024-02-18T18:37:41+08:00">2024-02-18</time>
+        <time title="修改时间：2024-02-18 18:39:10" itemprop="dateModified" datetime="2024-02-18T18:39:10+08:00">2024-02-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -387,25 +387,25 @@
 <p>3.2 分离会话<br>在 Tmux 窗口中，按下Ctrl+b d或者输入tmux detach命令，就会将当前会话与窗口分离。</p>
 <p>$ tmux detach<br>上面命令执行后，就会退出当前 Tmux 窗口，但是会话和里面的进程仍然在后台运行。</p>
 <p>tmux ls命令可以查看当前所有的 Tmux 会话。</p>
-<p>$ tmux ls</p>
+<p>$ tmux ls     </p>
 <h1 id="or"><a href="#or" class="headerlink" title="or"></a>or</h1><p>$ tmux list-session<br>3.3 接入会话<br>tmux attach命令用于重新接入某个已存在的会话。</p>
-<h1 id="使用会话编号"><a href="#使用会话编号" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux attach -t 0<br>$ tmux a -t xxxx</p>
+<h1 id="使用会话编号"><a href="#使用会话编号" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux attach -t 0<br>$ tmux a -t xxxx     </p>
 <h1 id="使用会话名称"><a href="#使用会话名称" class="headerlink" title="使用会话名称"></a>使用会话名称</h1><p>$ tmux attach -t <session-name><br>3.4 杀死会话<br>tmux kill-session命令用于杀死某个会话。</session-name></p>
-<h1 id="使用会话编号-1"><a href="#使用会话编号-1" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux kill-session -t 0</p>
+<h1 id="使用会话编号-1"><a href="#使用会话编号-1" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux kill-session -t 0     </p>
 <h1 id="使用会话名称-1"><a href="#使用会话名称-1" class="headerlink" title="使用会话名称"></a>使用会话名称</h1><p>$ tmux kill-session -t <session-name><br>3.5 切换会话<br>tmux switch命令用于切换会话。</session-name></p>
-<h1 id="使用会话编号-2"><a href="#使用会话编号-2" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux switch -t 0</p>
+<h1 id="使用会话编号-2"><a href="#使用会话编号-2" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux switch -t 0     </p>
 <h1 id="使用会话名称-2"><a href="#使用会话名称-2" class="headerlink" title="使用会话名称"></a>使用会话名称</h1><p>$ tmux switch -t <session-name><br>3.6 重命名会话<br>tmux rename-session命令用于重命名会话。</session-name></p>
 <p>$ tmux rename-session -t 0 <new-name><br>上面命令将0号会话重命名。</new-name></p>
 <p>3.7 会话快捷键<br>下面是一些会话相关的快捷键。</p>
 <p>Ctrl+b d：分离当前会话。<br>Ctrl+b s：列出所有会话。<br>Ctrl+b $：重命名当前会话。<br>四、最简操作流程<br>综上所述，以下是 Tmux 的最简操作流程。</p>
 <p>新建会话tmux new -s my_session。<br>在 Tmux 窗口运行所需的程序。<br>按下快捷键Ctrl+b d将会话分离。<br>下次使用时，重新连接到会话tmux attach-session -t my_session。<br>五、窗格操作<br>Tmux 可以将窗口分成多个窗格（pane），每个窗格运行不同的命令。以下命令都是在 Tmux 窗口中执行。</p>
 <p>5.1 划分窗格<br>tmux split-window命令用来划分窗格。</p>
-<h1 id="划分上下两个窗格"><a href="#划分上下两个窗格" class="headerlink" title="划分上下两个窗格"></a>划分上下两个窗格</h1><p>$ tmux split-window</p>
-<h1 id="划分左右两个窗格"><a href="#划分左右两个窗格" class="headerlink" title="划分左右两个窗格"></a>划分左右两个窗格</h1><p>$ tmux split-window -h</p>
+<h1 id="划分上下两个窗格"><a href="#划分上下两个窗格" class="headerlink" title="划分上下两个窗格"></a>划分上下两个窗格</h1><p>$ tmux split-window     </p>
+<h1 id="划分左右两个窗格"><a href="#划分左右两个窗格" class="headerlink" title="划分左右两个窗格"></a>划分左右两个窗格</h1><p>$ tmux split-window -h     </p>
 <p>5.2 移动光标<br>tmux select-pane命令用来移动光标位置。</p>
-<h1 id="光标切换到上方窗格"><a href="#光标切换到上方窗格" class="headerlink" title="光标切换到上方窗格"></a>光标切换到上方窗格</h1><p>$ tmux select-pane -U</p>
-<h1 id="光标切换到下方窗格"><a href="#光标切换到下方窗格" class="headerlink" title="光标切换到下方窗格"></a>光标切换到下方窗格</h1><p>$ tmux select-pane -D</p>
-<h1 id="光标切换到左边窗格"><a href="#光标切换到左边窗格" class="headerlink" title="光标切换到左边窗格"></a>光标切换到左边窗格</h1><p>$ tmux select-pane -L</p>
+<h1 id="光标切换到上方窗格"><a href="#光标切换到上方窗格" class="headerlink" title="光标切换到上方窗格"></a>光标切换到上方窗格</h1><p>$ tmux select-pane -U     </p>
+<h1 id="光标切换到下方窗格"><a href="#光标切换到下方窗格" class="headerlink" title="光标切换到下方窗格"></a>光标切换到下方窗格</h1><p>$ tmux select-pane -D     </p>
+<h1 id="光标切换到左边窗格"><a href="#光标切换到左边窗格" class="headerlink" title="光标切换到左边窗格"></a>光标切换到左边窗格</h1><p>$ tmux select-pane -L     </p>
 <h1 id="光标切换到右边窗格"><a href="#光标切换到右边窗格" class="headerlink" title="光标切换到右边窗格"></a>光标切换到右边窗格</h1><p>$ tmux select-pane -R<br>5.3 交换窗格位置<br>tmux swap-pane命令用来交换窗格位置。</p>
 <h1 id="当前窗格上移"><a href="#当前窗格上移" class="headerlink" title="当前窗格上移"></a>当前窗格上移</h1><p>$ tmux swap-pane -U</p>
 <h1 id="当前窗格下移"><a href="#当前窗格下移" class="headerlink" title="当前窗格下移"></a>当前窗格下移</h1><p>$ tmux swap-pane -D<br>5.4 窗格快捷键<br>下面是一些窗格操作的快捷键。</p>
