@@ -28,83 +28,6 @@
       </tags>
   </entry>
   <entry>
-    <title>前端常见面试题</title>
-    <url>/2021/09/27/frontend-interview/</url>
-    <content><![CDATA[<h2 id="前端工程师"><a href="#前端工程师" class="headerlink" title="前端工程师"></a>前端工程师</h2><h3 id="技能要求"><a href="#技能要求" class="headerlink" title="技能要求"></a>技能要求</h3><ul>
-<li>熟悉<code>Vue</code>/<code>React</code>其中一种</li>
-<li>熟悉<code>Webpack</code>配置</li>
-<li>精通<code>Html5</code>、<code>Javascript</code>，熟练掌握主流<code>mvc</code>、<code>mvvm</code>前端框架</li>
-<li>具备良好的数据结构和算法知识</li>
-<li>对前端有浓厚的兴趣，具有快速学习能力，乐于探索，并有良好的编码习惯</li>
-</ul>
-<h3 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h3><ul>
-<li>vue指令，v-show指令和v-if指令的区别是什么？</li>
-<li>data为什么是一个函数而不是对象</li>
-<li>vue常用指令<ul>
-<li>v-model 多用于表单元素实现双向数据绑定（同angular中的ng-model）</li>
-<li>v-bind 动态绑定 作用： 及时对页面的数据进行更改</li>
-<li>v-on:click 给标签绑定函数，可以缩写为@，例如绑定一个点击函数 函数必须写在methods里面</li>
-<li>v-for 格式： v-for=”字段名 in(of) 数组json” 循环数组或json(同angular中的ng-repeat)</li>
-<li>v-show 显示内容 （同angular中的ng-show）</li>
-<li>v-hide 隐藏内容（同angular中的ng-hide）</li>
-<li>v-if 显示与隐藏 （dom元素的删除添加 同angular中的ng-if 默认值为false）</li>
-<li>v-else-if 必须和v-if连用</li>
-<li>v-else 必须和v-if连用 不能单独使用 否则报错 模板编译错误</li>
-<li>v-text 解析文本</li>
-<li>v-html 解析html标签</li>
-<li>v-bind:class 三种绑定方法 1、对象型 ‘{red:isred}’ 2、三元型 ‘isred?”red”:”blue”‘ 3、数组型 ‘[{red:”isred”},{blue:”isblue”}]’</li>
-<li>v-once 进入页面时 只渲染一次 不在进行渲染</li>
-<li>v-cloak 防止闪烁</li>
-<li>v-pre 把标签内部的元素原位输出</li>
-</ul>
-</li>
-<li>组件传值方式有哪些，父子之间的数据如果需要相互访问，可以有哪些方式？<ul>
-<li>父传子：子组件通过props[‘xx’] 来接收父组件传递的属性 xx 的值</li>
-<li>子传父：子组件通过 this.$emit(‘fnName’,value) 来传递,父组件通过接收 fnName 事件方法来接收回调</li>
-<li>使用Vuex</li>
-</ul>
-</li>
-<li>vuex的核心概念<ul>
-<li>state =&gt; 基本数据</li>
-<li>getters =&gt; 从基本数据派生的数据</li>
-<li>mutations =&gt; 修改数据，同步</li>
-<li>actions =&gt; 修改数据，异步 (Action 提交的是 mutation，而不是直接变更状态)</li>
-<li>modules =&gt; 模块化Vuex</li>
-</ul>
-</li>
-<li>目前的前端开发架子，是？<ul>
-<li>路由是用哪个库？</li>
-<li>UI组件是哪个？</li>
-<li>css解析是哪个？</li>
-<li>ajax异步接口请求，用的是哪个库？</li>
-<li>图表类库，都用过哪些</li>
-<li>全局状态维护，用的是哪个库？</li>
-</ul>
-</li>
-<li>css如何只在当前组件起作用？</li>
-<li>vue实现数据双向绑定的原理</li>
-<li>vue的生命周期函数，都有哪些？</li>
-<li>css的选择器，都有哪些？</li>
-<li>cookie和session的区别</li>
-<li>localStorage和SessionStorage的区别</li>
-<li>get和post的区别</li>
-<li>说一说http的缓存</li>
-<li>常见状态码的含义和产生原因</li>
-<li>从浏览器输入url后都经历了什么</li>
-</ul>
-]]></content>
-      <categories>
-        <category>vue</category>
-        <category>javascript</category>
-        <category>面试</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
-        <tag>javascript</tag>
-        <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>聊聊持续集成</title>
     <url>/2021/07/31/continuous-integration/</url>
     <content><![CDATA[<blockquote>
@@ -245,6 +168,83 @@
       </categories>
       <tags>
         <tag>CI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端常见面试题</title>
+    <url>/2021/09/27/frontend-interview/</url>
+    <content><![CDATA[<h2 id="前端工程师"><a href="#前端工程师" class="headerlink" title="前端工程师"></a>前端工程师</h2><h3 id="技能要求"><a href="#技能要求" class="headerlink" title="技能要求"></a>技能要求</h3><ul>
+<li>熟悉<code>Vue</code>/<code>React</code>其中一种</li>
+<li>熟悉<code>Webpack</code>配置</li>
+<li>精通<code>Html5</code>、<code>Javascript</code>，熟练掌握主流<code>mvc</code>、<code>mvvm</code>前端框架</li>
+<li>具备良好的数据结构和算法知识</li>
+<li>对前端有浓厚的兴趣，具有快速学习能力，乐于探索，并有良好的编码习惯</li>
+</ul>
+<h3 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h3><ul>
+<li>vue指令，v-show指令和v-if指令的区别是什么？</li>
+<li>data为什么是一个函数而不是对象</li>
+<li>vue常用指令<ul>
+<li>v-model 多用于表单元素实现双向数据绑定（同angular中的ng-model）</li>
+<li>v-bind 动态绑定 作用： 及时对页面的数据进行更改</li>
+<li>v-on:click 给标签绑定函数，可以缩写为@，例如绑定一个点击函数 函数必须写在methods里面</li>
+<li>v-for 格式： v-for=”字段名 in(of) 数组json” 循环数组或json(同angular中的ng-repeat)</li>
+<li>v-show 显示内容 （同angular中的ng-show）</li>
+<li>v-hide 隐藏内容（同angular中的ng-hide）</li>
+<li>v-if 显示与隐藏 （dom元素的删除添加 同angular中的ng-if 默认值为false）</li>
+<li>v-else-if 必须和v-if连用</li>
+<li>v-else 必须和v-if连用 不能单独使用 否则报错 模板编译错误</li>
+<li>v-text 解析文本</li>
+<li>v-html 解析html标签</li>
+<li>v-bind:class 三种绑定方法 1、对象型 ‘{red:isred}’ 2、三元型 ‘isred?”red”:”blue”‘ 3、数组型 ‘[{red:”isred”},{blue:”isblue”}]’</li>
+<li>v-once 进入页面时 只渲染一次 不在进行渲染</li>
+<li>v-cloak 防止闪烁</li>
+<li>v-pre 把标签内部的元素原位输出</li>
+</ul>
+</li>
+<li>组件传值方式有哪些，父子之间的数据如果需要相互访问，可以有哪些方式？<ul>
+<li>父传子：子组件通过props[‘xx’] 来接收父组件传递的属性 xx 的值</li>
+<li>子传父：子组件通过 this.$emit(‘fnName’,value) 来传递,父组件通过接收 fnName 事件方法来接收回调</li>
+<li>使用Vuex</li>
+</ul>
+</li>
+<li>vuex的核心概念<ul>
+<li>state =&gt; 基本数据</li>
+<li>getters =&gt; 从基本数据派生的数据</li>
+<li>mutations =&gt; 修改数据，同步</li>
+<li>actions =&gt; 修改数据，异步 (Action 提交的是 mutation，而不是直接变更状态)</li>
+<li>modules =&gt; 模块化Vuex</li>
+</ul>
+</li>
+<li>目前的前端开发架子，是？<ul>
+<li>路由是用哪个库？</li>
+<li>UI组件是哪个？</li>
+<li>css解析是哪个？</li>
+<li>ajax异步接口请求，用的是哪个库？</li>
+<li>图表类库，都用过哪些</li>
+<li>全局状态维护，用的是哪个库？</li>
+</ul>
+</li>
+<li>css如何只在当前组件起作用？</li>
+<li>vue实现数据双向绑定的原理</li>
+<li>vue的生命周期函数，都有哪些？</li>
+<li>css的选择器，都有哪些？</li>
+<li>cookie和session的区别</li>
+<li>localStorage和SessionStorage的区别</li>
+<li>get和post的区别</li>
+<li>说一说http的缓存</li>
+<li>常见状态码的含义和产生原因</li>
+<li>从浏览器输入url后都经历了什么</li>
+</ul>
+]]></content>
+      <categories>
+        <category>vue</category>
+        <category>javascript</category>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>javascript</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -955,20 +955,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
-    <title>运维实践指南</title>
-    <url>/2024/01/27/linux/</url>
-    <content><![CDATA[<h2 id="远端服务端口探测"><a href="#远端服务端口探测" class="headerlink" title="远端服务端口探测"></a>远端服务端口探测</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nmap -p 80 example.com</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> telnet example.com 22</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -zv example.com 443</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="检查ssh是否ready"><a href="#检查ssh是否ready" class="headerlink" title="检查ssh是否ready"></a>检查ssh是否ready</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh -T git@example.com</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>nginx配置实战</title>
     <url>/2023/06/24/nginx/</url>
     <content><![CDATA[<h2 id="前端路由结合Nginx"><a href="#前端路由结合Nginx" class="headerlink" title="前端路由结合Nginx"></a>前端路由结合Nginx</h2><blockquote>
@@ -1019,6 +1005,20 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </categories>
       <tags>
         <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>运维实践指南</title>
+    <url>/2024/01/27/linux/</url>
+    <content><![CDATA[<h2 id="远端服务端口探测"><a href="#远端服务端口探测" class="headerlink" title="远端服务端口探测"></a>远端服务端口探测</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nmap -p 80 example.com</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> telnet example.com 22</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -zv example.com 443</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="检查ssh是否ready"><a href="#检查ssh是否ready" class="headerlink" title="检查ssh是否ready"></a>检查ssh是否ready</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh -T git@example.com</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1361,6 +1361,78 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       <tags>
         <tag>同步</tag>
         <tag>异步</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tmux使用教程</title>
+    <url>/2024/02/12/tmux/</url>
+    <content><![CDATA[<p>Tmux 是一个终端复用器（terminal multiplexer），非常有用，属于常用的开发工具。<br>本文介绍如何使用 Tmux。</p>
+<p>一、Tmux 是什么？<br>1.1 会话与进程<br>命令行的典型使用方式是，打开一个终端窗口（terminal window，以下简称”窗口”），在里面输入命令。用户与计算机的这种临时的交互，称为一次”会话”（session） 。</p>
+<p>会话的一个重要特点是，窗口与其中启动的进程是连在一起的。打开窗口，会话开始；关闭窗口，会话结束，会话内部的进程也会随之终止，不管有没有运行完。</p>
+<p>一个典型的例子就是，SSH 登录远程计算机，打开一个远程窗口执行命令。这时，网络突然断线，再次登录的时候，是找不回上一次执行的命令的。因为上一次 SSH 会话已经终止了，里面的进程也随之消失了。</p>
+<p>为了解决这个问题，会话与窗口可以”解绑”：窗口关闭时，会话并不终止，而是继续运行，等到以后需要的时候，再让会话”绑定”其他窗口。</p>
+<p>1.2 Tmux 的作用<br>Tmux 就是会话与窗口的”解绑”工具，将它们彻底分离。</p>
+<p>（1）它允许在单个窗口中，同时访问多个会话。这对于同时运行多个命令行程序很有用。</p>
+<p>（2） 它可以让新窗口”接入”已经存在的会话。</p>
+<p>（3）它允许每个会话有多个连接窗口，因此可以多人实时共享会话。</p>
+<p>（4）它还支持窗口任意的垂直和水平拆分。</p>
+<p>类似的终端复用器还有 GNU Screen。Tmux 与它功能相似，但是更易用，也更强大。</p>
+<p>二、基本用法<br>2.1 安装<br>Tmux 一般需要自己安装。</p>
+<h1 id="Ubuntu-或-Debian"><a href="#Ubuntu-或-Debian" class="headerlink" title="Ubuntu 或 Debian"></a>Ubuntu 或 Debian</h1><p>$ sudo apt-get install tmux</p>
+<h1 id="CentOS-或-Fedora"><a href="#CentOS-或-Fedora" class="headerlink" title="CentOS 或 Fedora"></a>CentOS 或 Fedora</h1><p>$ sudo yum install <a href="http://galaxy4.net/repo/galaxy4-release-7-current.noarch.rpm">http://galaxy4.net/repo/galaxy4-release-7-current.noarch.rpm</a> # 此步骤可选<br>$ sudo yum install tmux</p>
+<h1 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a>Mac</h1><p>$ brew install tmux<br>2.2 启动与退出<br>安装完成后，键入tmux命令，就进入了 Tmux 窗口。</p>
+<p>$ tmux<br>上面命令会启动 Tmux 窗口，底部有一个状态栏。状态栏的左侧是窗口信息（编号和名称），右侧是系统信息。</p>
+<p>按下Ctrl+d或者显式输入exit命令，就可以退出 Tmux 窗口。</p>
+<p>$ exit<br>2.3 前缀键<br>Tmux 窗口有大量的快捷键。所有快捷键都要通过前缀键唤起。默认的前缀键是Ctrl+b，即先按下Ctrl+b，快捷键才会生效。</p>
+<p>举例来说，帮助命令的快捷键是Ctrl+b ?。它的用法是，在 Tmux 窗口中，先按下Ctrl+b，再按下?，就会显示帮助信息。</p>
+<p>然后，按下 ESC 键或q键，就可以退出帮助。</p>
+<p>三、会话管理<br>3.1 新建会话<br>第一个启动的 Tmux 窗口，编号是0，第二个窗口的编号是1，以此类推。这些窗口对应的会话，就是 0 号会话、1 号会话。</p>
+<p>使用编号区分会话，不太直观，更好的方法是为会话起名。</p>
+<p>$ tmux new -s <session-name><br>上面命令新建一个指定名称的会话。</session-name></p>
+<p>3.2 分离会话<br>在 Tmux 窗口中，按下Ctrl+b d或者输入tmux detach命令，就会将当前会话与窗口分离。</p>
+<p>$ tmux detach<br>上面命令执行后，就会退出当前 Tmux 窗口，但是会话和里面的进程仍然在后台运行。</p>
+<p>tmux ls命令可以查看当前所有的 Tmux 会话。</p>
+<p>$ tmux ls</p>
+<h1 id="or"><a href="#or" class="headerlink" title="or"></a>or</h1><p>$ tmux list-session<br>3.3 接入会话<br>tmux attach命令用于重新接入某个已存在的会话。</p>
+<h1 id="使用会话编号"><a href="#使用会话编号" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux attach -t 0<br>$ tmux a -t xxxx</p>
+<h1 id="使用会话名称"><a href="#使用会话名称" class="headerlink" title="使用会话名称"></a>使用会话名称</h1><p>$ tmux attach -t <session-name><br>3.4 杀死会话<br>tmux kill-session命令用于杀死某个会话。</session-name></p>
+<h1 id="使用会话编号-1"><a href="#使用会话编号-1" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux kill-session -t 0</p>
+<h1 id="使用会话名称-1"><a href="#使用会话名称-1" class="headerlink" title="使用会话名称"></a>使用会话名称</h1><p>$ tmux kill-session -t <session-name><br>3.5 切换会话<br>tmux switch命令用于切换会话。</session-name></p>
+<h1 id="使用会话编号-2"><a href="#使用会话编号-2" class="headerlink" title="使用会话编号"></a>使用会话编号</h1><p>$ tmux switch -t 0</p>
+<h1 id="使用会话名称-2"><a href="#使用会话名称-2" class="headerlink" title="使用会话名称"></a>使用会话名称</h1><p>$ tmux switch -t <session-name><br>3.6 重命名会话<br>tmux rename-session命令用于重命名会话。</session-name></p>
+<p>$ tmux rename-session -t 0 <new-name><br>上面命令将0号会话重命名。</new-name></p>
+<p>3.7 会话快捷键<br>下面是一些会话相关的快捷键。</p>
+<p>Ctrl+b d：分离当前会话。<br>Ctrl+b s：列出所有会话。<br>Ctrl+b $：重命名当前会话。<br>四、最简操作流程<br>综上所述，以下是 Tmux 的最简操作流程。</p>
+<p>新建会话tmux new -s my_session。<br>在 Tmux 窗口运行所需的程序。<br>按下快捷键Ctrl+b d将会话分离。<br>下次使用时，重新连接到会话tmux attach-session -t my_session。<br>五、窗格操作<br>Tmux 可以将窗口分成多个窗格（pane），每个窗格运行不同的命令。以下命令都是在 Tmux 窗口中执行。</p>
+<p>5.1 划分窗格<br>tmux split-window命令用来划分窗格。</p>
+<h1 id="划分上下两个窗格"><a href="#划分上下两个窗格" class="headerlink" title="划分上下两个窗格"></a>划分上下两个窗格</h1><p>$ tmux split-window</p>
+<h1 id="划分左右两个窗格"><a href="#划分左右两个窗格" class="headerlink" title="划分左右两个窗格"></a>划分左右两个窗格</h1><p>$ tmux split-window -h</p>
+<p>5.2 移动光标<br>tmux select-pane命令用来移动光标位置。</p>
+<h1 id="光标切换到上方窗格"><a href="#光标切换到上方窗格" class="headerlink" title="光标切换到上方窗格"></a>光标切换到上方窗格</h1><p>$ tmux select-pane -U</p>
+<h1 id="光标切换到下方窗格"><a href="#光标切换到下方窗格" class="headerlink" title="光标切换到下方窗格"></a>光标切换到下方窗格</h1><p>$ tmux select-pane -D</p>
+<h1 id="光标切换到左边窗格"><a href="#光标切换到左边窗格" class="headerlink" title="光标切换到左边窗格"></a>光标切换到左边窗格</h1><p>$ tmux select-pane -L</p>
+<h1 id="光标切换到右边窗格"><a href="#光标切换到右边窗格" class="headerlink" title="光标切换到右边窗格"></a>光标切换到右边窗格</h1><p>$ tmux select-pane -R<br>5.3 交换窗格位置<br>tmux swap-pane命令用来交换窗格位置。</p>
+<h1 id="当前窗格上移"><a href="#当前窗格上移" class="headerlink" title="当前窗格上移"></a>当前窗格上移</h1><p>$ tmux swap-pane -U</p>
+<h1 id="当前窗格下移"><a href="#当前窗格下移" class="headerlink" title="当前窗格下移"></a>当前窗格下移</h1><p>$ tmux swap-pane -D<br>5.4 窗格快捷键<br>下面是一些窗格操作的快捷键。</p>
+<p>Ctrl+b %：划分左右两个窗格。<br>Ctrl+b “：划分上下两个窗格。<br>Ctrl+b <arrow key>：光标切换到其他窗格。<arrow key>是指向要切换到的窗格的方向键，比如切换到下方窗格，就按方向键↓。<br>Ctrl+b ;：光标切换到上一个窗格。<br>Ctrl+b o：光标切换到下一个窗格。<br>Ctrl+b {：当前窗格与上一个窗格交换位置。<br>Ctrl+b }：当前窗格与下一个窗格交换位置。<br>Ctrl+b Ctrl+o：所有窗格向前移动一个位置，第一个窗格变成最后一个窗格。<br>Ctrl+b Alt+o：所有窗格向后移动一个位置，最后一个窗格变成第一个窗格。<br>Ctrl+b x：关闭当前窗格。<br>Ctrl+b !：将当前窗格拆分为一个独立窗口。<br>Ctrl+b z：当前窗格全屏显示，再使用一次会变回原来大小。<br>Ctrl+b Ctrl+<arrow key>：按箭头方向调整窗格大小。<br>Ctrl+b q：显示窗格编号。<br>六、窗口管理<br>除了将一个窗口划分成多个窗格，Tmux 也允许新建多个窗口。</arrow></arrow></arrow></p>
+<p>6.1 新建窗口<br>tmux new-window命令用来创建新窗口。</p>
+<p>$ tmux new-window</p>
+<h1 id="新建一个指定名称的窗口"><a href="#新建一个指定名称的窗口" class="headerlink" title="新建一个指定名称的窗口"></a>新建一个指定名称的窗口</h1><p>$ tmux new-window -n <window-name><br>6.2 切换窗口<br>tmux select-window命令用来切换窗口。</window-name></p>
+<h1 id="切换到指定编号的窗口"><a href="#切换到指定编号的窗口" class="headerlink" title="切换到指定编号的窗口"></a>切换到指定编号的窗口</h1><p>$ tmux select-window -t <window-number></window-number></p>
+<h1 id="切换到指定名称的窗口"><a href="#切换到指定名称的窗口" class="headerlink" title="切换到指定名称的窗口"></a>切换到指定名称的窗口</h1><p>$ tmux select-window -t <window-name><br>6.3 重命名窗口<br>tmux rename-window命令用于为当前窗口起名（或重命名）。</window-name></p>
+<p>$ tmux rename-window <new-name><br>6.4 窗口快捷键<br>下面是一些窗口操作的快捷键。</new-name></p>
+<p>Ctrl+b c：创建一个新窗口，状态栏会显示多个窗口的信息。<br>Ctrl+b p：切换到上一个窗口（按照状态栏上的顺序）。<br>Ctrl+b n：切换到下一个窗口。<br>Ctrl+b <number>：切换到指定编号的窗口，其中的<number>是状态栏上的窗口编号。<br>Ctrl+b w：从列表中选择窗口。<br>Ctrl+b ,：窗口重命名。<br>七、其他命令<br>下面是一些其他命令。</number></number></p>
+<h1 id="列出所有快捷键，及其对应的-Tmux-命令"><a href="#列出所有快捷键，及其对应的-Tmux-命令" class="headerlink" title="列出所有快捷键，及其对应的 Tmux 命令"></a>列出所有快捷键，及其对应的 Tmux 命令</h1><p>$ tmux list-keys</p>
+<h1 id="列出所有-Tmux-命令及其参数"><a href="#列出所有-Tmux-命令及其参数" class="headerlink" title="列出所有 Tmux 命令及其参数"></a>列出所有 Tmux 命令及其参数</h1><p>$ tmux list-commands</p>
+<h1 id="列出当前所有-Tmux-会话的信息"><a href="#列出当前所有-Tmux-会话的信息" class="headerlink" title="列出当前所有 Tmux 会话的信息"></a>列出当前所有 Tmux 会话的信息</h1><p>$ tmux info</p>
+<h1 id="重新加载当前的-Tmux-配置"><a href="#重新加载当前的-Tmux-配置" class="headerlink" title="重新加载当前的 Tmux 配置"></a>重新加载当前的 Tmux 配置</h1><p>$ tmux source-file ~/.tmux.conf</p>
+<p>提示：本文转载 <a href="http://www.ruanyifeng.com/blog/2019/10/tmux.html">http://www.ruanyifeng.com/blog/2019/10/tmux.html</a></p>
+]]></content>
+      <categories>
+        <category>ops</category>
+      </categories>
+      <tags>
+        <tag>ops</tag>
       </tags>
   </entry>
 </search>
