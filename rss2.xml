@@ -9,8 +9,31 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Sat, 27 Jan 2024 12:19:21 GMT</pubDate>
+    <pubDate>Sun, 18 Feb 2024 03:14:32 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>实用技巧指南</title>
+      <link>http://hq1363.github.io/2024/02/10/practice/</link>
+      <guid>http://hq1363.github.io/2024/02/10/practice/</guid>
+      <pubDate>Sat, 10 Feb 2024 06:36:50 GMT</pubDate>
+      
+      <description>如果你是理论派，就是缺少实操，不妨来了解下常见的实操技能；如果你是实践派，也可以来查漏补缺下，温故而知新，可以为师矣.</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="如何监听go应用程序CPU-Mem情况"><a href="#如何监听go应用程序CPU-Mem情况" class="headerlink" title="如何监听go应用程序CPU/Mem情况"></a>如何监听go应用程序CPU/Mem情况</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl http://localhost:xxxx/debug/pprof/profile?seconds=60 &gt; prof.log</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install graphviz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> go tool pprof -http=127.0.0.1:8080 prof.log</span></span><br></pre></td></tr></table></figure>]]></content:encoded>
+      
+      
+      <category domain="http://HQ1363.github.io/categories/ops/">ops</category>
+      
+      
+      <category domain="http://HQ1363.github.io/tags/ops/">ops</category>
+      
+      
+      <comments>http://hq1363.github.io/2024/02/10/practice/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>运维实践指南</title>
@@ -234,31 +257,6 @@
       
       
       <comments>http://hq1363.github.io/2021/09/14/grpc-intro/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>gorm血泪史</title>
-      <link>http://hq1363.github.io/2021/09/10/go-gorm-blood-tears/</link>
-      <guid>http://hq1363.github.io/2021/09/10/go-gorm-blood-tears/</guid>
-      <pubDate>Fri, 10 Sep 2021 04:03:49 GMT</pubDate>
-      
-      <description>如果你用过gorm，只希望各位大佬不要踩这些坑，每一个都是血和泪的教训。</description>
-      
-      
-      
-      <content:encoded><![CDATA[<h3 id="Rows没有Close"><a href="#Rows没有Close" class="headerlink" title="Rows没有Close"></a>Rows没有Close</h3><blockquote><p><strong>上下文</strong>：有个实习生，写了一个需求，结果for循环到第十次的时候，一直卡死，没有任何响应，最终请求超时；不仅如此，后续的接口请求，都是没有处理的，整个程序仿佛处于假死状态。这让当时的我感到十分诧异，我的第一个感觉是存在死循环，为了证实猜想，开始对整个for循环体做单步调试，结果发现，并不存在死循环，程序卡在某个SQL执行处；于是我就想，难道是慢SQL，导致一直从DB拿不到返回结果，但很快我就排除了这种可能性，毕竟问题是发生第十次，而不是第一次；在问题稳定复现后，我开始总结规律，问题复现一定是在for循环执行到第十次的时候，就有这么巧吗，回回都是第十次，也太邪乎了。</p></blockquote><p><u>针对上述的问题，毫无疑问，肯定是出了DB上的问题，然后又是第十次稳定复现，我开始怀疑DB连接的问题，比如连接被吃满，不够用</u>；于是乎，我开始检查程序连接DB的配置，发现active激活连接数，配置的最大值就是10个，这不刚好就是10嘛，<span style="color:orange">这不是巧了嘛！这不是巧了嘛！</span>那就调大嘛，结果然并软，反而换了一个报错<u>（MySQL error code 1135 (ER_CANT_CREATE_THREAD): Can’t create a new thread (errno %d); if you are not out of available memory, you can consult the manual for a possible OS-dependent bug）</u>，这又是什么鬼啊，why！！！<br><img data-src="question.jpeg">哼，不陪你玩了，哪儿凉快哪儿呆着去吧；哈哈，回到正题，不然要被你们打😄</p><p><strong style="font-size:20px;color:blue">难道不是连接的问题吗，我开始更换思路</strong>；我的SQL请求到底有没有打到MySQL服务器呢，我开始求助DBA，希望帮捞下，第十次的SQL执行日志，得到的反馈是一切正常。what，不对啊；因为程序DB操作，用的是Gorm，我开始查阅官方文档，搜索github上的issue，并为找到任何有用的消息。对新出现的error信息，同向DBA老师求证后，排除了，没办法，我只能把连接配置，改回去，继续排查问题。然后一步步的检查代码，发现DB操作，<u style="color:red">少了一个释放连接的动作</u>，于是我加上，赶紧验证了一下，好在问题得到解决了。<br><img data-src="good.jpeg">我们来看看代码：</p><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原生 SQL</span></span><br><span class="line">rows, err := db.Raw(<span class="string">&quot;select name, age, email from users where name = ?&quot;</span>, <span class="string">&quot;jinzhu&quot;</span>).Rows()</span><br><span class="line"><span class="keyword">defer</span> rows.Close()   <span class="comment">// 就是这行代码少了，导致的</span></span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">  rows.Scan(&amp;name, &amp;age, &amp;email)</span><br><span class="line">  <span class="comment">// 业务逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>查阅资料后，大胆猜测：<u>有可能是mysql每次去查询的时候，获取一个连接，没有空闲的连接，则创建一个新的，查询完成后释放连接到连接池，以便下一个请求使用，而由于没有调用rows.Close()，导致拿了连接之后，没有再放回连接池复用；而我的连接配置最大就是10，所以在第十次执行完后，第十一次，已经无法分配新的连接去执行SQL，最终一直等待，拿不到结果。</u><a href="https://segmentfault.com/a/1190000021493463" target="_blank">感兴趣的朋友，可以看看这篇文章，基于gorm源码解释了问题原因</a>；未执行rows.Close()还可能导致内存泄漏、启动一堆的goroutine不退出等问题。</p>]]></content:encoded>
-      
-      
-      <category domain="http://HQ1363.github.io/categories/gorm/">gorm</category>
-      
-      
-      <category domain="http://HQ1363.github.io/tags/gorm/">gorm</category>
-      
-      <category domain="http://HQ1363.github.io/tags/go/">go</category>
-      
-      
-      <comments>http://hq1363.github.io/2021/09/10/go-gorm-blood-tears/#disqus_thread</comments>
       
     </item>
     
