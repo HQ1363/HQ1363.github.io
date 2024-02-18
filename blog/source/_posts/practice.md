@@ -7,6 +7,7 @@ excerpt: 如果你是理论派，就是缺少实操，不妨来了解下常见�
 ---
 
 ## 如何监听go应用程序CPU/Mem情况
+> 有时可能并非应用程序占用CPU、Mem过高，应当结合htop一同分析
 ```shell
 $ curl http://localhost:xxxx/debug/pprof/profile?seconds=60 > prof.log
 $ brew install graphviz
