@@ -9,7 +9,7 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Sun, 18 Feb 2024 03:14:32 GMT</pubDate>
+    <pubDate>Sun, 18 Feb 2024 03:16:29 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -22,7 +22,7 @@
       
       
       
-      <content:encoded><![CDATA[<h2 id="如何监听go应用程序CPU-Mem情况"><a href="#如何监听go应用程序CPU-Mem情况" class="headerlink" title="如何监听go应用程序CPU/Mem情况"></a>如何监听go应用程序CPU/Mem情况</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl http://localhost:xxxx/debug/pprof/profile?seconds=60 &gt; prof.log</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install graphviz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> go tool pprof -http=127.0.0.1:8080 prof.log</span></span><br></pre></td></tr></table></figure>]]></content:encoded>
+      <content:encoded><![CDATA[<h2 id="如何监听go应用程序CPU-Mem情况"><a href="#如何监听go应用程序CPU-Mem情况" class="headerlink" title="如何监听go应用程序CPU/Mem情况"></a>如何监听go应用程序CPU/Mem情况</h2><blockquote><p>有时可能并非应用程序占用CPU、Mem过高，应当结合htop一同分析</p></blockquote><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl http://localhost:xxxx/debug/pprof/profile?seconds=60 &gt; prof.log</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install graphviz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> go tool pprof -http=127.0.0.1:8080 prof.log</span></span><br></pre></td></tr></table></figure>]]></content:encoded>
       
       
       <category domain="http://HQ1363.github.io/categories/ops/">ops</category>
