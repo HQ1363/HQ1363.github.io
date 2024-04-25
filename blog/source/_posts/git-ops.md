@@ -58,6 +58,7 @@ $ git log -1 --pretty=format:%h # 前7位
 ### 查看某次commit的内容
 ```shell
 $ git show commitId
+$ git show <commitid> --stat
 ```
 
 ### 查看目录的diff信息
@@ -92,6 +93,7 @@ $ git clone -b <tag-name|branch-name> xxxxxxxxx.git
 ### 查看分支合并图
 ```shell
 $ git log --graph
+$ git log --graph --since="2024-03-05" --until="2024-03-08"   # 查询某个区间下的commit图谱
 ```
 
 ### 查看标签信息
