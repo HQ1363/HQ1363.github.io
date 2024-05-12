@@ -86,7 +86,8 @@ set character_set_results=utf8;
 
 ### 更新某列为另一列的值
 ```shell
-UPDATE table_a SET integration_id = auto_test_id WHERE id = 102 and integration_id != auto_test_id;
+UPDATE table_a SET integration_id = auto_test_id WHERE id = 102 and integration_id != auto_test_id;  # 同表
+UPDATE employees e JOIN employee_emails ee ON e.id = ee.employee_id SET e.email = ee.email;          # 不同表
 ```
 
 ### JSON字段处理
