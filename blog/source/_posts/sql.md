@@ -84,6 +84,11 @@ set character_set_database=utf8;
 set character_set_results=utf8;
 ```
 
+### 更新某列为另一列的值
+```shell
+UPDATE table_a SET integration_id = auto_test_id WHERE id = 102 and integration_id != auto_test_id;
+```
+
 ### JSON字段处理
 JSON对象
 - 使用对象操作的方法进行查询：字段->'$.json属性'   
