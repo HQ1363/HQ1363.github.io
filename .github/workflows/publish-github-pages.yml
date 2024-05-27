@@ -41,8 +41,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd blog
-          export NODE_TLS_REJECT_UNAUTHORIZED=0
-          yarn install --registry http://registry.npm.taobao.org
+          yarn config set registry https://registry.npmjs.org
+          yarn install --registry https://registry.yarnpkg.com
           mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
       - name: Build docs
