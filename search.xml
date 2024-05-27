@@ -28,83 +28,6 @@
       </tags>
   </entry>
   <entry>
-    <title>前端常见面试题</title>
-    <url>/2021/09/27/frontend-interview/</url>
-    <content><![CDATA[<h2 id="前端工程师"><a href="#前端工程师" class="headerlink" title="前端工程师"></a>前端工程师</h2><h3 id="技能要求"><a href="#技能要求" class="headerlink" title="技能要求"></a>技能要求</h3><ul>
-<li>熟悉<code>Vue</code>/<code>React</code>其中一种</li>
-<li>熟悉<code>Webpack</code>配置</li>
-<li>精通<code>Html5</code>、<code>Javascript</code>，熟练掌握主流<code>mvc</code>、<code>mvvm</code>前端框架</li>
-<li>具备良好的数据结构和算法知识</li>
-<li>对前端有浓厚的兴趣，具有快速学习能力，乐于探索，并有良好的编码习惯</li>
-</ul>
-<h3 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h3><ul>
-<li>vue指令，v-show指令和v-if指令的区别是什么？</li>
-<li>data为什么是一个函数而不是对象</li>
-<li>vue常用指令<ul>
-<li>v-model 多用于表单元素实现双向数据绑定（同angular中的ng-model）</li>
-<li>v-bind 动态绑定 作用： 及时对页面的数据进行更改</li>
-<li>v-on:click 给标签绑定函数，可以缩写为@，例如绑定一个点击函数 函数必须写在methods里面</li>
-<li>v-for 格式： v-for=”字段名 in(of) 数组json” 循环数组或json(同angular中的ng-repeat)</li>
-<li>v-show 显示内容 （同angular中的ng-show）</li>
-<li>v-hide 隐藏内容（同angular中的ng-hide）</li>
-<li>v-if 显示与隐藏 （dom元素的删除添加 同angular中的ng-if 默认值为false）</li>
-<li>v-else-if 必须和v-if连用</li>
-<li>v-else 必须和v-if连用 不能单独使用 否则报错 模板编译错误</li>
-<li>v-text 解析文本</li>
-<li>v-html 解析html标签</li>
-<li>v-bind:class 三种绑定方法 1、对象型 ‘{red:isred}’ 2、三元型 ‘isred?”red”:”blue”‘ 3、数组型 ‘[{red:”isred”},{blue:”isblue”}]’</li>
-<li>v-once 进入页面时 只渲染一次 不在进行渲染</li>
-<li>v-cloak 防止闪烁</li>
-<li>v-pre 把标签内部的元素原位输出</li>
-</ul>
-</li>
-<li>组件传值方式有哪些，父子之间的数据如果需要相互访问，可以有哪些方式？<ul>
-<li>父传子：子组件通过props[‘xx’] 来接收父组件传递的属性 xx 的值</li>
-<li>子传父：子组件通过 this.$emit(‘fnName’,value) 来传递,父组件通过接收 fnName 事件方法来接收回调</li>
-<li>使用Vuex</li>
-</ul>
-</li>
-<li>vuex的核心概念<ul>
-<li>state =&gt; 基本数据</li>
-<li>getters =&gt; 从基本数据派生的数据</li>
-<li>mutations =&gt; 修改数据，同步</li>
-<li>actions =&gt; 修改数据，异步 (Action 提交的是 mutation，而不是直接变更状态)</li>
-<li>modules =&gt; 模块化Vuex</li>
-</ul>
-</li>
-<li>目前的前端开发架子，是？<ul>
-<li>路由是用哪个库？</li>
-<li>UI组件是哪个？</li>
-<li>css解析是哪个？</li>
-<li>ajax异步接口请求，用的是哪个库？</li>
-<li>图表类库，都用过哪些</li>
-<li>全局状态维护，用的是哪个库？</li>
-</ul>
-</li>
-<li>css如何只在当前组件起作用？</li>
-<li>vue实现数据双向绑定的原理</li>
-<li>vue的生命周期函数，都有哪些？</li>
-<li>css的选择器，都有哪些？</li>
-<li>cookie和session的区别</li>
-<li>localStorage和SessionStorage的区别</li>
-<li>get和post的区别</li>
-<li>说一说http的缓存</li>
-<li>常见状态码的含义和产生原因</li>
-<li>从浏览器输入url后都经历了什么</li>
-</ul>
-]]></content>
-      <categories>
-        <category>vue</category>
-        <category>javascript</category>
-        <category>面试</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
-        <tag>javascript</tag>
-        <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>聊聊持续集成</title>
     <url>/2021/07/31/continuous-integration/</url>
     <content><![CDATA[<blockquote>
@@ -248,6 +171,83 @@
       </tags>
   </entry>
   <entry>
+    <title>前端常见面试题</title>
+    <url>/2021/09/27/frontend-interview/</url>
+    <content><![CDATA[<h2 id="前端工程师"><a href="#前端工程师" class="headerlink" title="前端工程师"></a>前端工程师</h2><h3 id="技能要求"><a href="#技能要求" class="headerlink" title="技能要求"></a>技能要求</h3><ul>
+<li>熟悉<code>Vue</code>/<code>React</code>其中一种</li>
+<li>熟悉<code>Webpack</code>配置</li>
+<li>精通<code>Html5</code>、<code>Javascript</code>，熟练掌握主流<code>mvc</code>、<code>mvvm</code>前端框架</li>
+<li>具备良好的数据结构和算法知识</li>
+<li>对前端有浓厚的兴趣，具有快速学习能力，乐于探索，并有良好的编码习惯</li>
+</ul>
+<h3 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h3><ul>
+<li>vue指令，v-show指令和v-if指令的区别是什么？</li>
+<li>data为什么是一个函数而不是对象</li>
+<li>vue常用指令<ul>
+<li>v-model 多用于表单元素实现双向数据绑定（同angular中的ng-model）</li>
+<li>v-bind 动态绑定 作用： 及时对页面的数据进行更改</li>
+<li>v-on:click 给标签绑定函数，可以缩写为@，例如绑定一个点击函数 函数必须写在methods里面</li>
+<li>v-for 格式： v-for=”字段名 in(of) 数组json” 循环数组或json(同angular中的ng-repeat)</li>
+<li>v-show 显示内容 （同angular中的ng-show）</li>
+<li>v-hide 隐藏内容（同angular中的ng-hide）</li>
+<li>v-if 显示与隐藏 （dom元素的删除添加 同angular中的ng-if 默认值为false）</li>
+<li>v-else-if 必须和v-if连用</li>
+<li>v-else 必须和v-if连用 不能单独使用 否则报错 模板编译错误</li>
+<li>v-text 解析文本</li>
+<li>v-html 解析html标签</li>
+<li>v-bind:class 三种绑定方法 1、对象型 ‘{red:isred}’ 2、三元型 ‘isred?”red”:”blue”‘ 3、数组型 ‘[{red:”isred”},{blue:”isblue”}]’</li>
+<li>v-once 进入页面时 只渲染一次 不在进行渲染</li>
+<li>v-cloak 防止闪烁</li>
+<li>v-pre 把标签内部的元素原位输出</li>
+</ul>
+</li>
+<li>组件传值方式有哪些，父子之间的数据如果需要相互访问，可以有哪些方式？<ul>
+<li>父传子：子组件通过props[‘xx’] 来接收父组件传递的属性 xx 的值</li>
+<li>子传父：子组件通过 this.$emit(‘fnName’,value) 来传递,父组件通过接收 fnName 事件方法来接收回调</li>
+<li>使用Vuex</li>
+</ul>
+</li>
+<li>vuex的核心概念<ul>
+<li>state =&gt; 基本数据</li>
+<li>getters =&gt; 从基本数据派生的数据</li>
+<li>mutations =&gt; 修改数据，同步</li>
+<li>actions =&gt; 修改数据，异步 (Action 提交的是 mutation，而不是直接变更状态)</li>
+<li>modules =&gt; 模块化Vuex</li>
+</ul>
+</li>
+<li>目前的前端开发架子，是？<ul>
+<li>路由是用哪个库？</li>
+<li>UI组件是哪个？</li>
+<li>css解析是哪个？</li>
+<li>ajax异步接口请求，用的是哪个库？</li>
+<li>图表类库，都用过哪些</li>
+<li>全局状态维护，用的是哪个库？</li>
+</ul>
+</li>
+<li>css如何只在当前组件起作用？</li>
+<li>vue实现数据双向绑定的原理</li>
+<li>vue的生命周期函数，都有哪些？</li>
+<li>css的选择器，都有哪些？</li>
+<li>cookie和session的区别</li>
+<li>localStorage和SessionStorage的区别</li>
+<li>get和post的区别</li>
+<li>说一说http的缓存</li>
+<li>常见状态码的含义和产生原因</li>
+<li>从浏览器输入url后都经历了什么</li>
+</ul>
+]]></content>
+      <categories>
+        <category>vue</category>
+        <category>javascript</category>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>javascript</tag>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gitlab维护指南</title>
     <url>/2021/08/02/gitlab-ctl/</url>
     <content><![CDATA[<h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><h3 id="彻底卸载gitlab"><a href="#彻底卸载gitlab" class="headerlink" title="彻底卸载gitlab"></a>彻底卸载gitlab</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo gitlab-ctl stop</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo gitlab-ctl uninstall</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo gitlab-ctl cleanse</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo <span class="built_in">rm</span> -rf /opt/gitlab</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">可通过`sudo gitlab-ctl <span class="built_in">help</span>`来获取相关命令</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo gitlab-ctl uninstall，关于其的说明是</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Kill all processes and uninstall the process supervisor (data will be preserved).</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">但在实际操作中，只通过uninstall无法彻底卸载gitlab</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo gitlab-ctl reconfigure</span></span><br></pre></td></tr></table></figure>
@@ -273,7 +273,7 @@
   <entry>
     <title>git操作指南</title>
     <url>/2021/08/02/git-ops/</url>
-    <content><![CDATA[<h2 id="Git-SubModule"><a href="#Git-SubModule" class="headerlink" title="Git SubModule"></a>Git SubModule</h2><h3 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule init &amp;&amp; git submodule update   <span class="comment"># 将子模块下载到本地</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/xx/xx.git --recursive  <span class="comment"># 此命令可一次性下载好主库和子库</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule <span class="built_in">sync</span>  <span class="comment"># 修改.gitmodule文件后，用此命令同步子模块信息</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule add https://github.com/xxxx/xxxxx.git  <span class="comment"># 添加submodule</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule update --init --recursive</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">update：更新子模块到指定的 commit。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--init：初始化子模块，如果子模块还没有被初始化。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--recursive：递归地更新和初始化子模块及其嵌套的子模块。</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule status  <span class="comment"># 查看子模块的状态</span></span> </span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h2 id="Git-SubModule"><a href="#Git-SubModule" class="headerlink" title="Git SubModule"></a>Git SubModule</h2><h3 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule init &amp;&amp; git submodule update   <span class="comment"># 将子模块下载到本地</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/xx/xx.git --recursive  <span class="comment"># 此命令可一次性下载好主库和子库</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> --recurse-submodules https://github.com/TabbyML/tabby</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule <span class="built_in">sync</span>  <span class="comment"># 修改.gitmodule文件后，用此命令同步子模块信息</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule add https://github.com/xxxx/xxxxx.git  <span class="comment"># 添加submodule</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule update --init --recursive</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">update：更新子模块到指定的 commit。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--init：初始化子模块，如果子模块还没有被初始化。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--recursive：递归地更新和初始化子模块及其嵌套的子模块。</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule status  <span class="comment"># 查看子模块的状态</span></span> </span><br></pre></td></tr></table></figure>
 
 <h3 id="批量操作submodule"><a href="#批量操作submodule" class="headerlink" title="批量操作submodule"></a>批量操作submodule</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule foreach &lt;<span class="built_in">command</span>&gt;</span></span><br><span class="line">比如:</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule foreach git checkout master</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git submodule foreach git submodule update</span></span><br></pre></td></tr></table></figure>
 
