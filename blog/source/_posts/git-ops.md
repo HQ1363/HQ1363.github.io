@@ -14,6 +14,11 @@ $ git submodule init && git submodule update   # 将子模块下载到本地
 $ git clone https://github.com/xx/xx.git --recursive  # 此命令可一次性下载好主库和子库
 $ git submodule sync  # 修改.gitmodule文件后，用此命令同步子模块信息
 $ git submodule add https://github.com/xxxx/xxxxx.git  # 添加submodule
+$ git submodule update --init --recursive
+#   update：更新子模块到指定的 commit。
+#   --init：初始化子模块，如果子模块还没有被初始化。
+#   --recursive：递归地更新和初始化子模块及其嵌套的子模块。
+$ git submodule status  # 查看子模块的状态 
 ```
 
 ### 批量操作submodule
