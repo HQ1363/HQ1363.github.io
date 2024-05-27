@@ -12,6 +12,7 @@ excerpt: git已然成为开发的必备技能了，来看看有哪些相见恨�
 ```shell
 $ git submodule init && git submodule update   # 将子模块下载到本地
 $ git clone https://github.com/xx/xx.git --recursive  # 此命令可一次性下载好主库和子库
+$ git clone --recurse-submodules https://github.com/TabbyML/tabby
 $ git submodule sync  # 修改.gitmodule文件后，用此命令同步子模块信息
 $ git submodule add https://github.com/xxxx/xxxxx.git  # 添加submodule
 $ git submodule update --init --recursive
