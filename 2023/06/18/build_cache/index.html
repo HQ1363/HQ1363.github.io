@@ -32,7 +32,7 @@
 <meta property="og:description" content="像Java&#x2F;Go&#x2F;Node&#x2F;Python构建都是需要下载依赖的，如何加速构建，减少研发CICD的等待时间显得尤为重要.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-06-18T10:36:50.000Z">
-<meta property="article:modified_time" content="2024-04-25T12:34:12.624Z">
+<meta property="article:modified_time" content="2024-05-27T06:29:05.451Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="cicd">
 <meta property="article:tag" content="cache">
@@ -317,7 +317,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-04-25 20:34:12" itemprop="dateModified" datetime="2024-04-25T20:34:12+08:00">2024-04-25</time>
+        <time title="修改时间：2024-05-27 14:29:05" itemprop="dateModified" datetime="2024-05-27T14:29:05+08:00">2024-05-27</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -365,7 +365,7 @@
         <h2 id="Java-缓存"><a href="#Java-缓存" class="headerlink" title="Java 缓存"></a>Java 缓存</h2><blockquote>
 <p>我们知道Java的缓存配置，对于Maven构建，是由settings文件指定的，一般是全局共用的本地缓存，当然我们也可以在执行mvn命令的时候，指定<code>-s</code>参数来设置settings文件，具体的配置项如下：</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;localRepository&gt;<span class="regexp">/root/</span>.m2/repository&lt;/localRepository&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;localRepository&gt;<span class="regexp">/root/</span>.<span class="property">m2</span>/repository&lt;/localRepository&gt;</span><br></pre></td></tr></table></figure>
 <p>目前实践下来的缓存思路是按仓库来隔离每一个缓存，这么做的原因是：我们经常遇到不同仓库/应用之间的依赖相互影响，导致经常性出现缓存脏了的构建问题，处理起来很头疼.</p>
 <h2 id="Go-缓存"><a href="#Go-缓存" class="headerlink" title="Go 缓存"></a>Go 缓存</h2><p>只缓存<code>GOCACHE</code>和<code>GOMODCACHE</code>目录，同时按仓库级别做隔离.</p>
 <h2 id="Node-缓存"><a href="#Node-缓存" class="headerlink" title="Node 缓存"></a>Node 缓存</h2><p>缓存<code>NPM_CONFIG_CACHE</code>和<code>YARN_CACHE_FOLDER</code>目录，其次就是<code>node_modules</code>目录了，按仓库做隔离，然后动态挂载到对应构建仓库的<code>node_modules</code>目录上. </p>
