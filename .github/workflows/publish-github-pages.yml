@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd blog
-          yarn install
+          yarn install --registry https://registry.npm.taobao.org
           mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
       - name: Build docs
