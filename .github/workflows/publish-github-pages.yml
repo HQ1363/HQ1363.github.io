@@ -42,6 +42,7 @@ jobs:
         run: |
           cd blog
           yarn config set registry https://registry.npmjs.org
+          yarn cache clean
           yarn install --registry https://registry.yarnpkg.com
           mkdir -p ~/bin/ && export PATH="~/bin/:$PATH"
 
