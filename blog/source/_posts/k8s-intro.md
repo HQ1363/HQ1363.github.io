@@ -98,7 +98,13 @@ $ docker stop $(docker ps -q) & docker rm $(docker ps -aq)
 
 # 查看所有容器： 
 $ docker ps -a
- 
+
+# 登录到运行中的pod
+$ docker exec -it bapis-pre /bin/bash
+
+# 启动已stop的容器
+$ docker start bapis-pre
+
 # 查看运行容器：
 $ docker ps
  
