@@ -87,6 +87,7 @@ $ docker pull jenkins打包日志里的镜像名
 $ docker run --name cargo-test -u root --rm -P  harbor.test.com/app/cargo-test:python-dev-jdk8-20200109_161946 python3 -c "import schedule"
 $ docker run -it --name testmock -u root --rm -P harbor.test.com/app/testmock:python-master-jdk8-20200407_143644 bash
 $ docker run -it --entrypoint /bin/bash --name bapis-pre -u root --rm -P hub.test.co/k8s-prow/bapis-pre:v0.0.7
+$ docker commit -m "some update" <docker id>   # 将一个运行中的pod，制作成镜像
 ```
 
 ```shell
