@@ -103,6 +103,9 @@ $ docker ps -a
 # 登录到运行中的pod
 $ docker exec -it bapis-pre /bin/bash
 
+# 从docker里cp文件到本地
+$ docker cp bapis-pre:/opt/scc/scc /tmp/scc
+
 # 启动已stop的容器
 $ docker start bapis-pre
 
