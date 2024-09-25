@@ -670,18 +670,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
-    <title>学习GPRC，这篇就够了</title>
-    <url>/2021/09/14/grpc-intro/</url>
-    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
-      <categories>
-        <category>grpc</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>grpc</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DevOps面试题</title>
     <url>/2021/03/29/interview/</url>
     <content><![CDATA[<blockquote>
@@ -952,6 +940,18 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       <tags>
         <tag>K8S</tag>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学习GPRC，这篇就够了</title>
+    <url>/2021/09/14/grpc-intro/</url>
+    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
+      <categories>
+        <category>grpc</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>grpc</tag>
       </tags>
   </entry>
   <entry>
@@ -1280,6 +1280,8 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
 <h3 id="IF-语句"><a href="#IF-语句" class="headerlink" title="IF 语句"></a>IF 语句</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">case</span> 1</span></span><br><span class="line">SELECT</span><br><span class="line">  project_name,</span><br><span class="line">  repo,</span><br><span class="line">  env_name,</span><br><span class="line">  IF (json_extract(setting, &#x27;$.enabled&#x27;) = true, &#x27;开启&#x27;, &#x27;关闭&#x27;)</span><br><span class="line">FROM</span><br><span class="line">  `table_a`</span><br><span class="line">where</span><br><span class="line">  repo in (&#x27;xxxx&#x27;, &#x27;yyyy&#x27;);</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">case</span> 2</span></span><br><span class="line">SELECT if(id in(</span><br><span class="line">  select distinct(`table_b`.`project_id`)  from `table_b`</span><br><span class="line">    where `table_b`.`category`= &#x27;set&#x27;), &#x27;使用&#x27;, &#x27;不使用&#x27;)  as &#x27;状态&#x27;,</span><br><span class="line">       count(1)  as &#x27;数量&#x27;</span><br><span class="line">  from table_c;</span><br></pre></td></tr></table></figure>
 
 <h3 id="中文乱码问题解决"><a href="#中文乱码问题解决" class="headerlink" title="中文乱码问题解决"></a>中文乱码问题解决</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">show variables like&#x27;%char%&#x27;;  # 查看</span><br><span class="line">set character_set_results=utf8;</span><br><span class="line">set character_set_client=utf8;</span><br><span class="line">set character_set_connection=utf8;</span><br><span class="line">set character_set_database=utf8;</span><br><span class="line">set character_set_results=utf8;</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态修改表字段"><a href="#动态修改表字段" class="headerlink" title="动态修改表字段"></a>动态修改表字段</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">数据从自身表来</span></span><br><span class="line">UPDATE table_a AS t1</span><br><span class="line">JOIN (</span><br><span class="line">    SELECT repo_id, MAX(big_file_num) AS max_big_file_num</span><br><span class="line">    FROM table_a</span><br><span class="line">    GROUP BY repo_id</span><br><span class="line">) AS t2 ON t1.repo_id = t2.repo_id</span><br><span class="line">SET t1.big_file_num = t2.max_big_file_num;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">数据从其他表来</span></span><br><span class="line">update table_a as cp JOIN (SELECT cpg.`id`, cpg.`template_id`, cpt.`integration_type` FROM `table_b` as cpg INNER join `table_c` as cpt ON cpg.`template_id` = cpt.`id` WHERE cpg.`prd_id` &lt;= 0 and cpg.`template_id` &gt; 0 and cpg.`created_at` &lt;= &quot;2024-07-05&quot; ) as ctp on cp.`group_id` = ctp.`id` SET cp.`integration_type` = ctp.`integration_type` WHERE cp.`group_id` &gt; 0 and cp.`template_id` &gt; 0 and cp.`created_at` &lt;= &quot;2024-07-05 00:00:00&quot; and cp.`created_at` &gt;= &quot;2024-05-10 00:00:00&quot; and cp.`integration_type` = &quot;&quot;;</span><br></pre></td></tr></table></figure>
 
 <h3 id="更新某列为另一列的值"><a href="#更新某列为另一列的值" class="headerlink" title="更新某列为另一列的值"></a>更新某列为另一列的值</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">UPDATE table_a SET integration_id = auto_test_id WHERE id = 102 and integration_id != auto_test_id;  # 同表</span><br><span class="line">UPDATE employees e JOIN employee_emails ee ON e.id = ee.employee_id SET e.email = ee.email;          # 不同表</span><br></pre></td></tr></table></figure>
 

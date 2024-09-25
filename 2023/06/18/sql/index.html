@@ -32,7 +32,7 @@
 <meta property="og:description" content="日常开发工作中，经常需要和SQL打交道，好的SQL姿势可以事半功倍.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-06-18T06:36:50.000Z">
-<meta property="article:modified_time" content="2024-09-09T07:16:07.145Z">
+<meta property="article:modified_time" content="2024-09-25T10:20:29.314Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -190,7 +190,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E5%90%88%E6%88%90%E4%B8%80%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">多行合成一行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%88%97%E5%90%88%E6%88%90%E4%B8%80%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">多列合成一列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Case-When%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.</span> <span class="nav-text">Case When语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IF-%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.</span> <span class="nav-text">IF 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-number">5.</span> <span class="nav-text">中文乱码问题解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%9F%90%E5%88%97%E4%B8%BA%E5%8F%A6%E4%B8%80%E5%88%97%E7%9A%84%E5%80%BC"><span class="nav-number">6.</span> <span class="nav-text">更新某列为另一列的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON%E5%AD%97%E6%AE%B5%E5%A4%84%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">JSON字段处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D"><span class="nav-number">8.</span> <span class="nav-text">正则匹配</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E5%90%88%E6%88%90%E4%B8%80%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">多行合成一行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%88%97%E5%90%88%E6%88%90%E4%B8%80%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">多列合成一列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Case-When%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.</span> <span class="nav-text">Case When语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IF-%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.</span> <span class="nav-text">IF 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-number">5.</span> <span class="nav-text">中文乱码问题解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%BF%AE%E6%94%B9%E8%A1%A8%E5%AD%97%E6%AE%B5"><span class="nav-number">6.</span> <span class="nav-text">动态修改表字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%9F%90%E5%88%97%E4%B8%BA%E5%8F%A6%E4%B8%80%E5%88%97%E7%9A%84%E5%80%BC"><span class="nav-number">7.</span> <span class="nav-text">更新某列为另一列的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON%E5%AD%97%E6%AE%B5%E5%A4%84%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">JSON字段处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D"><span class="nav-number">9.</span> <span class="nav-text">正则匹配</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -316,7 +316,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-09-09 15:16:07" itemprop="dateModified" datetime="2024-09-09T15:16:07+08:00">2024-09-09</time>
+        <time title="修改时间：2024-09-25 18:20:29" itemprop="dateModified" datetime="2024-09-25T18:20:29+08:00">2024-09-25</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -343,7 +343,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4k</span>
+      <span>4.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -370,6 +370,8 @@
 <h3 id="IF-语句"><a href="#IF-语句" class="headerlink" title="IF 语句"></a>IF 语句</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">case</span> 1</span></span><br><span class="line">SELECT</span><br><span class="line">  project_name,</span><br><span class="line">  repo,</span><br><span class="line">  env_name,</span><br><span class="line">  IF (json_extract(setting, &#x27;$.enabled&#x27;) = true, &#x27;开启&#x27;, &#x27;关闭&#x27;)</span><br><span class="line">FROM</span><br><span class="line">  `table_a`</span><br><span class="line">where</span><br><span class="line">  repo in (&#x27;xxxx&#x27;, &#x27;yyyy&#x27;);</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">case</span> 2</span></span><br><span class="line">SELECT if(id in(</span><br><span class="line">  select distinct(`table_b`.`project_id`)  from `table_b`</span><br><span class="line">    where `table_b`.`category`= &#x27;set&#x27;), &#x27;使用&#x27;, &#x27;不使用&#x27;)  as &#x27;状态&#x27;,</span><br><span class="line">       count(1)  as &#x27;数量&#x27;</span><br><span class="line">  from table_c;</span><br></pre></td></tr></table></figure>
 
 <h3 id="中文乱码问题解决"><a href="#中文乱码问题解决" class="headerlink" title="中文乱码问题解决"></a>中文乱码问题解决</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">show variables like&#x27;%char%&#x27;;  # 查看</span><br><span class="line">set character_set_results=utf8;</span><br><span class="line">set character_set_client=utf8;</span><br><span class="line">set character_set_connection=utf8;</span><br><span class="line">set character_set_database=utf8;</span><br><span class="line">set character_set_results=utf8;</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态修改表字段"><a href="#动态修改表字段" class="headerlink" title="动态修改表字段"></a>动态修改表字段</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">数据从自身表来</span></span><br><span class="line">UPDATE table_a AS t1</span><br><span class="line">JOIN (</span><br><span class="line">    SELECT repo_id, MAX(big_file_num) AS max_big_file_num</span><br><span class="line">    FROM table_a</span><br><span class="line">    GROUP BY repo_id</span><br><span class="line">) AS t2 ON t1.repo_id = t2.repo_id</span><br><span class="line">SET t1.big_file_num = t2.max_big_file_num;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">数据从其他表来</span></span><br><span class="line">update table_a as cp JOIN (SELECT cpg.`id`, cpg.`template_id`, cpt.`integration_type` FROM `table_b` as cpg INNER join `table_c` as cpt ON cpg.`template_id` = cpt.`id` WHERE cpg.`prd_id` &lt;= 0 and cpg.`template_id` &gt; 0 and cpg.`created_at` &lt;= &quot;2024-07-05&quot; ) as ctp on cp.`group_id` = ctp.`id` SET cp.`integration_type` = ctp.`integration_type` WHERE cp.`group_id` &gt; 0 and cp.`template_id` &gt; 0 and cp.`created_at` &lt;= &quot;2024-07-05 00:00:00&quot; and cp.`created_at` &gt;= &quot;2024-05-10 00:00:00&quot; and cp.`integration_type` = &quot;&quot;;</span><br></pre></td></tr></table></figure>
 
 <h3 id="更新某列为另一列的值"><a href="#更新某列为另一列的值" class="headerlink" title="更新某列为另一列的值"></a>更新某列为另一列的值</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_a SET integration_id = auto_test_id WHERE id = 102 and integration_id != auto_test_id;  # 同表</span><br><span class="line">UPDATE employees e JOIN employee_emails ee ON e.id = ee.employee_id SET e.email = ee.email;          # 不同表</span><br></pre></td></tr></table></figure>
 
@@ -534,7 +536,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:05</span>
+    <span title="站点阅读时长">1:06</span>
   </span>
 </div>
 <div class="busuanzi-count">
