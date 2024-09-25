@@ -84,6 +84,20 @@ set character_set_database=utf8;
 set character_set_results=utf8;
 ```
 
+### 动态修改表字段
+```shell
+# 数据从自身表来
+UPDATE table_a AS t1
+JOIN (
+    SELECT repo_id, MAX(big_file_num) AS max_big_file_num
+    FROM table_a
+    GROUP BY repo_id
+) AS t2 ON t1.repo_id = t2.repo_id
+SET t1.big_file_num = t2.max_big_file_num;
+# 数据从其他表来
+update table_a as cp JOIN (SELECT cpg.`id`, cpg.`template_id`, cpt.`integration_type` FROM `table_b` as cpg INNER join `table_c` as cpt ON cpg.`template_id` = cpt.`id` WHERE cpg.`prd_id` <= 0 and cpg.`template_id` > 0 and cpg.`created_at` <= "2024-07-05" ) as ctp on cp.`group_id` = ctp.`id` SET cp.`integration_type` = ctp.`integration_type` WHERE cp.`group_id` > 0 and cp.`template_id` > 0 and cp.`created_at` <= "2024-07-05 00:00:00" and cp.`created_at` >= "2024-05-10 00:00:00" and cp.`integration_type` = "";
+```
+
 ### 更新某列为另一列的值
 ```shell
 UPDATE table_a SET integration_id = auto_test_id WHERE id = 102 and integration_id != auto_test_id;  # 同表
