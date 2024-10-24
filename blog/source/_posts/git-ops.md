@@ -214,6 +214,13 @@ password <personal-token>
 ```
 详情可见：https://gitlab.com/gitlab-org/gitlab-foss/-/issues/30785
 
+### 使用cherry-pick实现需要的代码
+```shell
+# 本地有个A分支，上面有aa、bb、cc、dd四个commit，我现在只想要aa、cc、dd三个commit
+$ 切到一个不包含 aa、bb、cc、dd四个commit 的分支上
+$ git cherry-pick aa、cc、dd 就可以啦
+```
+
 ### 一个分支上的几个commit的代码不再需要了，如何处理?
 方式一：
 ```shell
