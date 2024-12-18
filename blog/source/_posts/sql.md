@@ -162,3 +162,15 @@ select * from users where address->'$.tags' is not null;
 ```shell
 select count(*) from table_a inner join table_b on table_a.id = table_b.color_id where table_a.version = '527' and table_a.name not REGEXP '-[0-9]{3}-[0-9]+-[0-9]+$' order by color_id desc;
 ```
+
+### 批量更新
+```shell
+update table_a set `repo_path` = REPLACE(`repo_path`, 'aaaaa', 'bbbbb') where `repo_id` in (1212, 11, 333, 442);
+UPDATE table_a AS t1
+JOIN (
+    SELECT repo_id, MAX(big_file_num) AS max_big_file_num
+    FROM table_a
+    WHERE `repo_id` = 112122332122
+) AS t2 ON t1.repo_id = t2.repo_id
+SET t1.big_file_num = t2.max_big_file_num;
+```
