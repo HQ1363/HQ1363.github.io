@@ -32,7 +32,7 @@
 <meta property="og:description" content="如果你是理论派，就是缺少实操，不妨来了解下常见的实操技能；如果你是实践派，也可以来查漏补缺下，温故而知新，可以为师矣.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-02-10T06:36:50.000Z">
-<meta property="article:modified_time" content="2025-01-19T08:22:31.412Z">
+<meta property="article:modified_time" content="2025-01-19T08:45:55.208Z">
 <meta property="article:author" content="HQ">
 <meta property="article:tag" content="ops">
 <meta name="twitter:card" content="summary">
@@ -316,7 +316,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2025-01-19 16:22:31" itemprop="dateModified" datetime="2025-01-19T16:22:31+08:00">2025-01-19</time>
+        <time title="修改时间：2025-01-19 16:45:55" itemprop="dateModified" datetime="2025-01-19T16:45:55+08:00">2025-01-19</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -343,7 +343,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>185</span>
+      <span>625</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -364,7 +364,7 @@
         <h2 id="如何监听go应用程序CPU-Mem情况"><a href="#如何监听go应用程序CPU-Mem情况" class="headerlink" title="如何监听go应用程序CPU/Mem情况"></a>如何监听go应用程序CPU/Mem情况</h2><blockquote>
 <p>有时可能并非应用程序占用CPU、Mem过高，应当结合htop一同分析</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://localhost:xxxx/debug/pprof/profile?seconds=60 &gt; prof.log</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">brew install graphviz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go tool pprof -http=127.0.0.1:8080 prof.log</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式一：</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://localhost:xxxx/debug/pprof/profile?seconds=60 &gt; prof.log    <span class="comment">## 收集go程序CPU资源占用情况</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式二：</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go tool pprof http://IP:Port/debug/pprof/profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">go tool pprof -seconds=5 http://IP:Port/debug/pprof/profile  <span class="comment"># -seconds=5设置采样时间为5s</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">brew install graphviz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go tool pprof -http=127.0.0.1:8080 prof.log  <span class="comment"># 查看</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式一：</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -o heap.out http://127.0.0.1:8080/debug/pprof/heap <span class="comment"># 收集go程序Mem资源占用情况</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式二：</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go tool pprof http://xx/debug/pprof/heap</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go tool pprof -http=127.0.0.1:8080 heap.out  <span class="comment"># 查看</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看协程信息</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go tool pprof http://IP:Port/debug/pprof/goroutine</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看代码阻塞信息</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go tool pprof http://IP:Port/debug/pprof/block</span></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -507,7 +507,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:06</span>
+    <span title="站点阅读时长">1:07</span>
   </span>
 </div>
 <div class="busuanzi-count">
