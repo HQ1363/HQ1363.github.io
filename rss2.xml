@@ -9,23 +9,8 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Sun, 19 Jan 2025 08:21:06 GMT</pubDate>
+    <pubDate>Sun, 19 Jan 2025 08:22:31 GMT</pubDate>
     <generator>http://hexo.io/</generator>
-    
-    <item>
-      <title></title>
-      <link>http://hq1363.github.io/2025/01/19/go%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/</link>
-      <guid>http://hq1363.github.io/2025/01/19/go%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/</guid>
-      <pubDate>Sun, 19 Jan 2025 08:21:06 GMT</pubDate>
-      
-      
-      
-      
-      
-      
-      <comments>http://hq1363.github.io/2025/01/19/go%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/#disqus_thread</comments>
-      
-    </item>
     
     <item>
       <title>tmux使用教程</title>
@@ -239,6 +224,37 @@
       
       
       <comments>http://hq1363.github.io/2022/01/03/pb/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>前端常见面试题</title>
+      <link>http://hq1363.github.io/2021/09/27/frontend-interview/</link>
+      <guid>http://hq1363.github.io/2021/09/27/frontend-interview/</guid>
+      <pubDate>Mon, 27 Sep 2021 04:01:40 GMT</pubDate>
+      
+      <description>最近公司在招人，面了挺多人，这里总结下招人的心得和常见问题.</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="前端工程师"><a href="#前端工程师" class="headerlink" title="前端工程师"></a>前端工程师</h2><h3 id="技能要求"><a href="#技能要求" class="headerlink" title="技能要求"></a>技能要求</h3><ul><li>熟悉<code>Vue</code>/<code>React</code>其中一种</li><li>熟悉<code>Webpack</code>配置</li><li>精通<code>Html5</code>、<code>Javascript</code>，熟练掌握主流<code>mvc</code>、<code>mvvm</code>前端框架</li><li>具备良好的数据结构和算法知识</li><li>对前端有浓厚的兴趣，具有快速学习能力，乐于探索，并有良好的编码习惯</li></ul><h3 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h3><ul><li>vue指令，v-show指令和v-if指令的区别是什么？</li><li>data为什么是一个函数而不是对象</li><li>vue常用指令<ul><li>v-model 多用于表单元素实现双向数据绑定（同angular中的ng-model）</li><li>v-bind 动态绑定 作用： 及时对页面的数据进行更改</li><li>v-on:click 给标签绑定函数，可以缩写为@，例如绑定一个点击函数 函数必须写在methods里面</li><li>v-for 格式： v-for=”字段名 in(of) 数组json” 循环数组或json(同angular中的ng-repeat)</li><li>v-show 显示内容 （同angular中的ng-show）</li><li>v-hide 隐藏内容（同angular中的ng-hide）</li><li>v-if 显示与隐藏 （dom元素的删除添加 同angular中的ng-if 默认值为false）</li><li>v-else-if 必须和v-if连用</li><li>v-else 必须和v-if连用 不能单独使用 否则报错 模板编译错误</li><li>v-text 解析文本</li><li>v-html 解析html标签</li><li>v-bind:class 三种绑定方法 1、对象型 ‘{red:isred}’ 2、三元型 ‘isred?”red”:”blue”‘ 3、数组型 ‘[{red:”isred”},{blue:”isblue”}]’</li><li>v-once 进入页面时 只渲染一次 不在进行渲染</li><li>v-cloak 防止闪烁</li><li>v-pre 把标签内部的元素原位输出</li></ul></li><li>组件传值方式有哪些，父子之间的数据如果需要相互访问，可以有哪些方式？<ul><li>父传子：子组件通过props[‘xx’] 来接收父组件传递的属性 xx 的值</li><li>子传父：子组件通过 this.$emit(‘fnName’,value) 来传递,父组件通过接收 fnName 事件方法来接收回调</li><li>使用Vuex</li></ul></li><li>vuex的核心概念<ul><li>state =&gt; 基本数据</li><li>getters =&gt; 从基本数据派生的数据</li><li>mutations =&gt; 修改数据，同步</li><li>actions =&gt; 修改数据，异步 (Action 提交的是 mutation，而不是直接变更状态)</li><li>modules =&gt; 模块化Vuex</li></ul></li><li>目前的前端开发架子，是？<ul><li>路由是用哪个库？</li><li>UI组件是哪个？</li><li>css解析是哪个？</li><li>ajax异步接口请求，用的是哪个库？</li><li>图表类库，都用过哪些</li><li>全局状态维护，用的是哪个库？</li></ul></li><li>css如何只在当前组件起作用？</li><li>vue实现数据双向绑定的原理</li><li>vue的生命周期函数，都有哪些？</li><li>css的选择器，都有哪些？</li><li>cookie和session的区别</li><li>localStorage和SessionStorage的区别</li><li>get和post的区别</li><li>说一说http的缓存</li><li>常见状态码的含义和产生原因</li><li>从浏览器输入url后都经历了什么</li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://HQ1363.github.io/categories/vue/">vue</category>
+      
+      <category domain="http://HQ1363.github.io/categories/vue/javascript/">javascript</category>
+      
+      <category domain="http://HQ1363.github.io/categories/vue/javascript/%E9%9D%A2%E8%AF%95/">面试</category>
+      
+      
+      <category domain="http://HQ1363.github.io/tags/vue/">vue</category>
+      
+      <category domain="http://HQ1363.github.io/tags/javascript/">javascript</category>
+      
+      <category domain="http://HQ1363.github.io/tags/%E9%9D%A2%E8%AF%95/">面试</category>
+      
+      
+      <comments>http://hq1363.github.io/2021/09/27/frontend-interview/#disqus_thread</comments>
       
     </item>
     
