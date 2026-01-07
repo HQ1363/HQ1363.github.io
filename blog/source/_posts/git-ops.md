@@ -140,6 +140,7 @@ $ git config --global url.ssh://git@github.com/.insteadOf https://github.com/
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 # 完成替换后，记得添加ssh public key到gitlab profile配置里
+# ssh -T git@xxx.yyy.com    // ssh key配置后，执行这个命令，可验证是否ok
 # 删除Local认证
 $ git config --local --unset credential.helper
 # 删除全局认证
