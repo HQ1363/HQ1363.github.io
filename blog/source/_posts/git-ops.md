@@ -163,6 +163,11 @@ $ git reset --hard HEAD
 $ git clean -fd  # 删除未跟踪的文件和目录
 ```
 
+### 如何恢复已删除文件
+```shell
+$ git restore --staged .claude/settings.local.json
+```
+
 ### 如何知道分支是从哪拉出来的
 ```shell
 $ git reflog --date=local | grep 本地分支名       # 仅限本地创建的分支
