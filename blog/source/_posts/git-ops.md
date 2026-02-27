@@ -233,6 +233,13 @@ $ 切到一个不包含 aa、bb、cc、dd四个commit 的分支上
 $ git cherry-pick aa、cc、dd 就可以啦
 ```
 
+### 如何根据用户私钥知道gitlab用户信息
+```shell
+$ ssh-keygen -l -E md5 -f id_rsa.pub   # id_rsa.pub 为你电脑上 ~/.ssh/下的公钥文件
+# 通过获取的输出，去请求下gitlab api
+# 浏览器访问 https://gitlab.xxxx.com/api/v4/keys?fingerprint=19:28:10:31:b8:65:d9:4d:5b:87:26:02:91:43:42:xx 可见API返回信息
+```
+
 ### 一个分支上的几个commit的代码不再需要了，如何处理?
 方式一：
 ```shell
