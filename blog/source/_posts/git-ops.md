@@ -72,6 +72,12 @@ $ git show <commitid> --stat
 $ git diff <dir-name>
 ```
 
+### 添加到.gitignore不生效？
+```shell
+# 如果新添加进.gitignore的内容，之前已经被git跟踪了，那就需要先执行下面的命令
+$ git rm --cached xxxx
+```
+
 ### diff迁移
 ```shell script
 $ git diff > diff.patch
