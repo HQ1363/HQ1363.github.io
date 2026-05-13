@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CI缓存加速实践</title>
-    <url>/2023/06/18/build_cache/</url>
-    <content><![CDATA[<h2 id="Java-缓存"><a href="#Java-缓存" class="headerlink" title="Java 缓存"></a>Java 缓存</h2><blockquote>
-<p>我们知道Java的缓存配置，对于Maven构建，是由settings文件指定的，一般是全局共用的本地缓存，当然我们也可以在执行mvn命令的时候，指定<code>-s</code>参数来设置settings文件，具体的配置项如下：</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;localRepository&gt;<span class="regexp">/root/</span>.<span class="property">m2</span>/repository&lt;/localRepository&gt;</span><br></pre></td></tr></table></figure>
-<p>目前实践下来的缓存思路是按仓库来隔离每一个缓存，这么做的原因是：我们经常遇到不同仓库/应用之间的依赖相互影响，导致经常性出现缓存脏了的构建问题，处理起来很头疼.</p>
-<h2 id="Go-缓存"><a href="#Go-缓存" class="headerlink" title="Go 缓存"></a>Go 缓存</h2><p>只缓存<code>GOCACHE</code>和<code>GOMODCACHE</code>目录，同时按仓库级别做隔离.</p>
-<h2 id="Node-缓存"><a href="#Node-缓存" class="headerlink" title="Node 缓存"></a>Node 缓存</h2><p>缓存<code>NPM_CONFIG_CACHE</code>和<code>YARN_CACHE_FOLDER</code>目录，其次就是<code>node_modules</code>目录了，按仓库做隔离，然后动态挂载到对应构建仓库的<code>node_modules</code>目录上. </p>
-<h3 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h3><ul>
-<li>node仓库未按仓库做隔离，导致出现奇奇怪怪的缓存问题</li>
-<li>使用软链的方式做仓库隔离，构建失败，没有用</li>
-<li>使用cp/mv的方式做仓库隔离，磁盘IO非常慢，小文件又众多，跨磁盘mv/cp，简直是噩梦</li>
-<li>使用mount的方式，挂载进去，又提示权限问题（内部系统不允许直接mount命令操作，允许的话，此方案可行）</li>
-<li>基于k8s的磁盘挂载方式，实现动态挂载</li>
-<li>清理node/go/java等缓存目录，简直是噩梦，速度非常非常慢，建议mv或者格式化操作</li>
-</ul>
-]]></content>
-      <categories>
-        <category>cache</category>
-      </categories>
-      <tags>
-        <tag>cicd</tag>
-        <tag>cache</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>聊聊持续集成</title>
     <url>/2021/07/31/continuous-integration/</url>
     <content><![CDATA[<blockquote>
@@ -168,6 +141,33 @@
       </categories>
       <tags>
         <tag>CI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CI缓存加速实践</title>
+    <url>/2023/06/18/build_cache/</url>
+    <content><![CDATA[<h2 id="Java-缓存"><a href="#Java-缓存" class="headerlink" title="Java 缓存"></a>Java 缓存</h2><blockquote>
+<p>我们知道Java的缓存配置，对于Maven构建，是由settings文件指定的，一般是全局共用的本地缓存，当然我们也可以在执行mvn命令的时候，指定<code>-s</code>参数来设置settings文件，具体的配置项如下：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;localRepository&gt;<span class="regexp">/root/</span>.<span class="property">m2</span>/repository&lt;/localRepository&gt;</span><br></pre></td></tr></table></figure>
+<p>目前实践下来的缓存思路是按仓库来隔离每一个缓存，这么做的原因是：我们经常遇到不同仓库/应用之间的依赖相互影响，导致经常性出现缓存脏了的构建问题，处理起来很头疼.</p>
+<h2 id="Go-缓存"><a href="#Go-缓存" class="headerlink" title="Go 缓存"></a>Go 缓存</h2><p>只缓存<code>GOCACHE</code>和<code>GOMODCACHE</code>目录，同时按仓库级别做隔离.</p>
+<h2 id="Node-缓存"><a href="#Node-缓存" class="headerlink" title="Node 缓存"></a>Node 缓存</h2><p>缓存<code>NPM_CONFIG_CACHE</code>和<code>YARN_CACHE_FOLDER</code>目录，其次就是<code>node_modules</code>目录了，按仓库做隔离，然后动态挂载到对应构建仓库的<code>node_modules</code>目录上. </p>
+<h3 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h3><ul>
+<li>node仓库未按仓库做隔离，导致出现奇奇怪怪的缓存问题</li>
+<li>使用软链的方式做仓库隔离，构建失败，没有用</li>
+<li>使用cp/mv的方式做仓库隔离，磁盘IO非常慢，小文件又众多，跨磁盘mv/cp，简直是噩梦</li>
+<li>使用mount的方式，挂载进去，又提示权限问题（内部系统不允许直接mount命令操作，允许的话，此方案可行）</li>
+<li>基于k8s的磁盘挂载方式，实现动态挂载</li>
+<li>清理node/go/java等缓存目录，简直是噩梦，速度非常非常慢，建议mv或者格式化操作</li>
+</ul>
+]]></content>
+      <categories>
+        <category>cache</category>
+      </categories>
+      <tags>
+        <tag>cicd</tag>
+        <tag>cache</tag>
       </tags>
   </entry>
   <entry>
@@ -323,6 +323,12 @@
       <tags>
         <tag>git</tag>
       </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2026/05/13/go-blood-tears/</url>
+    <content><![CDATA[<h1 id="go-http请求和CURL返回结果不一致情况"><a href="#go-http请求和CURL返回结果不一致情况" class="headerlink" title="go http请求和CURL返回结果不一致情况"></a>go http请求和CURL返回结果不一致情况</h1><p>go 代码发送 http 请求时，会自动默认添加 Accept-Encoding: gzip ，可能引发和CURL请求不一致的地方</p>
+]]></content>
   </entry>
   <entry>
     <title>gitlab维护指南</title>
@@ -654,24 +660,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
-    <title>学习GPRC，这篇就够了</title>
-    <url>/2021/09/14/grpc-intro/</url>
-    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
-      <categories>
-        <category>grpc</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>grpc</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2026/05/13/go_bloor_tears/</url>
-    <content><![CDATA[<p>go 代码发送 http 请求时，会自动默认添加 Accept-Encoding: gzip ，可能引发和CURL请求不一致的地方</p>
-]]></content>
-  </entry>
-  <entry>
     <title>go坑大勿踩</title>
     <url>/2023/12/09/go_pit/</url>
     <content><![CDATA[<h3 id="For循环内启动Goroutine问题"><a href="#For循环内启动Goroutine问题" class="headerlink" title="For循环内启动Goroutine问题"></a>For循环内启动Goroutine问题</h3><p>以下是一段很常见的代码：</p>
@@ -695,6 +683,18 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </categories>
       <tags>
         <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学习GPRC，这篇就够了</title>
+    <url>/2021/09/14/grpc-intro/</url>
+    <content><![CDATA[<h2 id="GRPC简介"><a href="#GRPC简介" class="headerlink" title="GRPC简介"></a>GRPC简介</h2>]]></content>
+      <categories>
+        <category>grpc</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>grpc</tag>
       </tags>
   </entry>
   <entry>
@@ -950,6 +950,20 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
+    <title>运维实践指南</title>
+    <url>/2024/01/27/linux/</url>
+    <content><![CDATA[<h2 id="远端服务端口探测"><a href="#远端服务端口探测" class="headerlink" title="远端服务端口探测"></a>远端服务端口探测</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">nmap -p 80 example.com</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">telnet example.com 22</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">nc -zv example.com 443</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="检查ssh是否ready"><a href="#检查ssh是否ready" class="headerlink" title="检查ssh是否ready"></a>检查ssh是否ready</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh -T git@example.com</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>K8S常见指令</title>
     <url>/2021/09/07/k8s-intro/</url>
     <content><![CDATA[<h2 id="K8S"><a href="#K8S" class="headerlink" title="K8S"></a>K8S</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl == kubernetes + control  <span class="comment"># 即：k8s控制器</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get namespace  <span class="comment"># 查询物理cluster下拆分出的namespace信息</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get node  <span class="comment"># 查看k8s集群有哪些k8s节点</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get pod -ndevga -owide -w |grep -i secrets-distribution-admin</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -ndevga describe deploy secrets-distribution-admin-devga</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get po pod-redis -o yaml  <span class="comment"># 以yaml文件形式显示一个pod的详细信息</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get po &lt;podname&gt; -o json  <span class="comment"># 以json形式显示一个pod的详细信息</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl describe po rc-nginx-3-l8v2r</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl delete -f rc-nginx.yaml</span>   </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl delete po rc-nginx-btv4j</span>   </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl delete po -lapp=nginx-2</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n prodbj <span class="built_in">exec</span> nginx-2476590065-1vtsp  -it sh</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get service</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get service nginx -o yaml &gt; nginx_forreplace.yaml</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n qa rollback status deployment xxxxxxx</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n qa rollback resume deployment xxxxxxx</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl rollout <span class="built_in">history</span> deployment cargo-detail-dev -n dev  <span class="comment"># 滚动发布的历史记录</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl rollout undo deployment cargo-detail-dev -n dev --to-revision=7  <span class="comment"># 回滚到指定的某个版本</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl rollout restart deploy xxxxx</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n qa get crd  <span class="comment"># 获取所有的自定义资源</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">node节点打标</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n qa lable nodes ip/name key=value  <span class="comment"># 加标签</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n qa lable nodes ip/name key=value --overwrite  <span class="comment"># 更新</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n qa lable nodes ip/name key-  <span class="comment"># 删除标签</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl -n qa edit node ip/name  <span class="comment"># 编辑node资源   -- 看起来node节点可以同时打多个标签，倒也合理</span></span></span><br></pre></td></tr></table></figure>
@@ -968,20 +982,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       <tags>
         <tag>K8S</tag>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>运维实践指南</title>
-    <url>/2024/01/27/linux/</url>
-    <content><![CDATA[<h2 id="远端服务端口探测"><a href="#远端服务端口探测" class="headerlink" title="远端服务端口探测"></a>远端服务端口探测</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">nmap -p 80 example.com</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">telnet example.com 22</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">nc -zv example.com 443</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="检查ssh是否ready"><a href="#检查ssh是否ready" class="headerlink" title="检查ssh是否ready"></a>检查ssh是否ready</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh -T git@example.com</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1228,18 +1228,6 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </tags>
   </entry>
   <entry>
-    <title>慢SQL优化实践</title>
-    <url>/2023/11/11/slow-sql/</url>
-    <content><![CDATA[<h1 id="慢SQL优化实践"><a href="#慢SQL优化实践" class="headerlink" title="慢SQL优化实践"></a>慢SQL优化实践</h1>]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>SQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python编码规范</title>
     <url>/2021/03/28/pythonic/</url>
     <content><![CDATA[<h3 id="变量交换"><a href="#变量交换" class="headerlink" title="变量交换"></a>变量交换</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tmp = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = tmp</span><br><span class="line"><span class="comment"># pythonic</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b = b, a</span><br></pre></td></tr></table></figure>
@@ -1282,6 +1270,18 @@ per1 和 per2 对应的类型是<code>*Person</code>，值是<code>Person</code>
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>慢SQL优化实践</title>
+    <url>/2023/11/11/slow-sql/</url>
+    <content><![CDATA[<h1 id="慢SQL优化实践"><a href="#慢SQL优化实践" class="headerlink" title="慢SQL优化实践"></a>慢SQL优化实践</h1>]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>

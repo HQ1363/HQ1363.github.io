@@ -9,29 +9,28 @@
     <atom:link href="http://hq1363.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>这一路收获的不只是美丽的风景, 还有一份厚重充实、满满幸福的乐观豁达心情</description>
-    <pubDate>Wed, 13 May 2026 10:07:53 GMT</pubDate>
+    <pubDate>Wed, 13 May 2026 10:08:27 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
       <title></title>
-      <link>http://hq1363.github.io/2026/05/13/go_bloor_tears/</link>
-      <guid>http://hq1363.github.io/2026/05/13/go_bloor_tears/</guid>
-      <pubDate>Wed, 13 May 2026 10:07:53 GMT</pubDate>
+      <link>http://hq1363.github.io/2026/05/13/go-blood-tears/</link>
+      <guid>http://hq1363.github.io/2026/05/13/go-blood-tears/</guid>
+      <pubDate>Wed, 13 May 2026 10:08:27 GMT</pubDate>
       
         
         
-      <description>&lt;p&gt;go 代码发送 http 请求时，会自动默认添加 Accept-Encoding: gzip ，可能引发和CURL请求不一致的地方&lt;/p&gt;
-</description>
+      <description>&lt;h1 id=&quot;go-http请求和CURL返回结果不一致情况&quot;&gt;&lt;a href=&quot;#go-http请求和CURL返回结果不一致情况&quot; class=&quot;headerlink&quot; title=&quot;go http请求和CURL返回结果不一致情况&quot;&gt;&lt;/a&gt;go http请求和CURL返回结</description>
         
       
       
       
-      <content:encoded><![CDATA[<p>go 代码发送 http 请求时，会自动默认添加 Accept-Encoding: gzip ，可能引发和CURL请求不一致的地方</p>]]></content:encoded>
+      <content:encoded><![CDATA[<h1 id="go-http请求和CURL返回结果不一致情况"><a href="#go-http请求和CURL返回结果不一致情况" class="headerlink" title="go http请求和CURL返回结果不一致情况"></a>go http请求和CURL返回结果不一致情况</h1><p>go 代码发送 http 请求时，会自动默认添加 Accept-Encoding: gzip ，可能引发和CURL请求不一致的地方</p>]]></content:encoded>
       
       
       
       
-      <comments>http://hq1363.github.io/2026/05/13/go_bloor_tears/#disqus_thread</comments>
+      <comments>http://hq1363.github.io/2026/05/13/go-blood-tears/#disqus_thread</comments>
       
     </item>
     
